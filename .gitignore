@@ -7,6 +7,5 @@
 *.iml
 out
 gen
-/js
 /cg2-a00-test
 /cg2-a00-warmup
