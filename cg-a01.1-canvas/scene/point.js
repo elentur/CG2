@@ -43,7 +43,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             // what shape to draw
             context.beginPath();
-            context.arc( this.p[0],  this.p[1], // position
+            context.arc(this.p[0], this.p[1], // position
                 this.radius,    // radius
                 0.0, Math.PI * 2,           // start and end angle
                 true);                    // clockwise
@@ -59,8 +59,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         // test whether the mouse position is on this line segment
         Point.prototype.isHit = function (context, pos) {
-            var dx = this.p[0] - pos[0];
-            var dy =  this.p[1] - pos[1];
+            var dx = pos[0] - this.p[0];
+            var dy = pos[1] - this.p[1];
             var r = this.radius * 2;
             return (dx * dx + dy * dy) <= (r * r);
 
@@ -75,7 +75,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var _point = this;
 
             var getP0 = function () {
-                 return _point.p;
+                return _point.p;
             };
             var setP0 = function (dragEvent) {
                 _point.p = dragEvent.position;

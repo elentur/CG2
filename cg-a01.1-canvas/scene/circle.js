@@ -31,8 +31,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
         var Circle = function (point, radius, lineStyle) {
 
             /*console.log("creating straight line from [" +
-                point0[0] + "," + point0[1] + "] to [" +
-                point1[0] + "," + point1[1] + "].");*/
+             point0[0] + "," + point0[1] + "] to [" +
+             point1[0] + "," + point1[1] + "].");*/
 
             // draw style for drawing the line
             this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
@@ -51,14 +51,14 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // set points to be drawn
             //context.moveTo(this.p0[0], this.p0[1]);
 
-            var x              = this.p[0];               // x coordinate
-            var y              = this.p[1];               // y coordinate
-            var radius         = this.radius;                    // Arc radius
-            var startAngle     = 0;                     // Starting point on circle
-            var endAngle       = Math.PI+(Math.PI*2)/2;
+            var x = this.p[0];               // x coordinate
+            var y = this.p[1];               // y coordinate
+            var radius = this.radius;                    // Arc radius
+            var startAngle = 0;                     // Starting point on circle
+            var endAngle = Math.PI + (Math.PI * 2) / 2;
 
 
-            context.arc(x,y,radius,startAngle,endAngle);
+            context.arc(x, y, radius, startAngle, endAngle);
 
             // set drawing style
             context.lineWidth = this.lineStyle.width;
@@ -73,7 +73,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Circle.prototype.isHit = function (context, pos) {
 
             var dx = pos[0] - this.p[0];
-            var dy =  pos[1] - this.p[1];
+            var dy = pos[1] - this.p[1];
             var r = this.radius * 2;
             return (dx * dx + dy * dy) <= (r * r);
 
@@ -89,7 +89,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var _circle = this;
             // zeigt den äußeren Punkt zur Justierung an
             var getP0 = function () {
-                return [_circle.p[0] + _circle.radius ,_circle.p[1]];
+                return [_circle.p[0] + _circle.radius, _circle.p[1]];
             };
             var getP1 = function () {
                 return _circle.p;
@@ -106,7 +106,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             return draggers;
 
         };
-        
+
         // this module only exports the constructor for StraightLine objects
         return Circle;
 
