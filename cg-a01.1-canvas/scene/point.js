@@ -28,14 +28,13 @@ define(["util", "vec2", "Scene", "PointDragger"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Point = function (point, radius, lineStyle) {
+        var Point = function (point, lineStyle) {
 
             // draw style for drawing the line
-            this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
+            this.lineStyle = lineStyle || {width: "2", color: "#0000AA", radius: "5"};
 
             // initial values in case either point is undefined
             this.p = point || [10, 10];
-            this.radius = radius || 20;
         };
 
         // draw this line into the provided 2D rendering context
@@ -44,13 +43,13 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // what shape to draw
             context.beginPath();
             context.arc(this.p[0], this.p[1], // position
-                this.radius,    // radius
+                this.lineStyle.radius,    // radius
                 0.0, Math.PI * 2,           // start and end angle
                 true);                    // clockwise
             context.closePath();
 
             // draw style
-            context.lineWidth = this.radius * 2;
+            context.lineWidth = this.lineStyle.radius * 2;
             context.strokeStyle = this.lineStyle.color;
 
             context.stroke();
@@ -61,7 +60,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Point.prototype.isHit = function (context, pos) {
             var dx = pos[0] - this.p[0];
             var dy = pos[1] - this.p[1];
-            var r = this.radius * 2;
+            var r = this.lineStyle.radius * 2;
             return (dx * dx + dy * dy) <= (r * r);
 
         };

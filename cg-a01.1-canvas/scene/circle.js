@@ -28,18 +28,17 @@ define(["util", "vec2", "Scene", "PointDragger"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Circle = function (point, radius, lineStyle) {
+        var Circle = function (point, lineStyle) {
 
             /*console.log("creating straight line from [" +
              point0[0] + "," + point0[1] + "] to [" +
              point1[0] + "," + point1[1] + "].");*/
 
             // draw style for drawing the line
-            this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
+            this.lineStyle = lineStyle || {width: "2", color: "#0000AA", radius : "20"};
 
             // initial values in case either point is undefined
             this.p = point || [10, 10];
-            this.radius = radius || 20;
         };
 
         // draw this line into the provided 2D rendering context
@@ -53,7 +52,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             var x = this.p[0];               // x coordinate
             var y = this.p[1];               // y coordinate
-            var radius = this.radius;                    // Arc radius
+            var radius = this.lineStyle.radius;                    // Arc radius
             var startAngle = 0;                     // Starting point on circle
             var endAngle = Math.PI + (Math.PI * 2) / 2;
 
@@ -74,7 +73,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             var dx = pos[0] - this.p[0];
             var dy = pos[1] - this.p[1];
-            var r = this.radius * 2;
+            var r = this.lineStyle.radius * 2;
             return (dx * dx + dy * dy) <= (r * r);
 
         };
@@ -89,13 +88,13 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var _circle = this;
             // zeigt den äußeren Punkt zur Justierung an
             var getP0 = function () {
-                return [_circle.p[0] + _circle.radius, _circle.p[1]];
+                return [_circle.p[0] + _circle.lineStyle.radius, _circle.p[1]];
             };
             var getP1 = function () {
                 return _circle.p;
             };
             var setP0 = function (dragEvent) {
-                _circle.radius = dragEvent.position[0] - _circle.p[0];
+                _circle.lineStyle.radius = dragEvent.position[0] - _circle.p[0];
             };
             var setP1 = function (dragEvent) {
                 _circle.p = dragEvent.position;

@@ -88,12 +88,12 @@ define(["jquery", "Line", "Circle", "Point"],
                 // create the actual circle and add it to the scene
                 var style = {
                     width: Math.floor(Math.random()*3)+1,
-                    color: randomColor()
+                    color: randomColor(),
+                    radius: randomRadius()
                 };
 
                 var circle = new Circle(
                     [randomX(),randomY()],
-                    randomRadius(),
                     style );
 
                 scene.addObjects([circle]);
@@ -113,12 +113,12 @@ define(["jquery", "Line", "Circle", "Point"],
                 // create the actual circle and add it to the scene
                 var style = {
                     width: Math.floor(Math.random()*3)+1,
-                    color: randomColor()
+                    color: randomColor(),
+                    radius: 5
                 };
 
                 var point = new Point(
                     [randomX(),randomY()],
-                    5,
                     style );
 
                 scene.addObjects([point]);
@@ -129,11 +129,54 @@ define(["jquery", "Line", "Circle", "Point"],
 
             }));
 
+            sceneController.onSelection((function(){
+
+                var obj = sceneController.getSelectedObject();
+
+                lineStyleWidth(obj);
+            }));
+
+            sceneController.onObjChange((function(){
+
+                var obj = sceneController.getSelectedObject();
+
+                lineStyleWidth(obj);
+            }));
+
+            var lineStyleWidth = function(obj){
+
+
+                var objColor = obj.lineStyle.color,
+                    objWidth = obj.lineStyle.width,
+                    objRadius = obj.lineStyle.radius || false,
+                    colorInput =  $("#objColor").val(objColor),
+                    widthInput =  $("#objWidth").val(objWidth),
+                    radiusInput = (objRadius) ? $("#objRadius").val(objRadius).show() : $("#objRadius").hide();
+
+                colorInput.on('change',function(){
+                    console.log(obj);
+                    obj.lineStyle.color = $(this).val();
+
+                    sceneController.deselect();
+                    sceneController.select(obj);
+                });
+                
+                widthInput.on('change',function(){
+                    obj.lineStyle.width = $(this).val();
+
+                    sceneController.deselect();
+                    sceneController.select(obj);
+                });
+
+                radiusInput.on('change',function(){
+                    obj.lineStyle.radius = $(this).val();
+                    sceneController.select(obj);
+                });
+            };
         };
 
         // return the constructor function
         return HtmlController;
-
 
     })); // require
 
