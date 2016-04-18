@@ -2,10 +2,11 @@
  * JavaScript / Canvas teaching framwork 
  * (C)opyright Hartmut Schirmacher, hschirmacher.beuth-hochschule.de
  * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
+ * changes by Marcus Bätz
  *
- * Module: straight_line
+ * Module: point
  *
- * A StraighLine knows how to draw itself into a specified 2D context,
+ * A point knows how to draw itself into a specified 2D context,
  * can tell whether a certain mouse position "hits" the object,
  * and implements the function createDraggers() to create a set of
  * draggers to manipulate itself.
@@ -20,70 +21,86 @@ define(["util", "vec2", "Scene", "PointDragger"],
         "use strict";
 
         /**
-         *  A simple straight line that can be dragged
-         *  around by its endpoints.
+         *  A point that can be dragged
+         *  around by its center and is resizeable.
          *  Parameters:
-         *  - point0 and point1: array objects representing [x,y] coordinates of start and end point
+         *  - center : array object representing [x,y] coordinates of center of the point
+         *  - radius : number value representing the radius of the point
          *  - lineStyle: object defining width and color attributes for line drawing,
-         *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Point = function (point, lineStyle) {
+        var Point = function (center, radius, lineStyle) {
 
-            // draw style for drawing the line
-            this.lineStyle = lineStyle || {width: "2", color: "#0000AA", radius: "5"};
+            console.log("creating point at [" +
+                center[0] + "," + center[1] + "] with radius "+ radius + ".");
 
-            // initial values in case either point is undefined
-            this.p = point || [10, 10];
+            // draw style for drawing the pointLine
+            this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
+
+            // initial values in case center is undefined
+            this.center = center || [10, 10];
+            // initial values in case radius is undefined
+            this.radius = radius || 2;
         };
 
-        // draw this line into the provided 2D rendering context
+        // draw this point into the provided 2D rendering context
         Point.prototype.draw = function (context) {
 
-            // what shape to draw
+            // draw actual point
             context.beginPath();
-            context.arc(this.p[0], this.p[1], // position
-                this.lineStyle.radius,    // radius
+            context.arc(this.center[0], this.center[1],     // position
+                this.radius,                          // radius
                 0.0, Math.PI * 2,           // start and end angle
                 true);                    // clockwise
             context.closePath();
 
-            // draw style
-            context.lineWidth = this.lineStyle.radius * 2;
+            // set drawing style
+            context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
+            context.fillStyle = this.lineStyle.color;
 
+            // trigger the actual drawing
+            if (this.lineStyle.fill) {
+                context.fill();
+            }
+            // actually start drawing
             context.stroke();
 
         };
 
-        // test whether the mouse position is on this line segment
+        // test whether the mouse position is on this point segment
         Point.prototype.isHit = function (context, pos) {
-            var dx = pos[0] - this.p[0];
-            var dy = pos[1] - this.p[1];
-            var r = this.lineStyle.radius * 2;
-            return (dx * dx + dy * dy) <= (r * r);
+
+            // project point on line, get parameter of that projection point
+            var t = vec2.length(vec2.sub(pos,this.center));
+            console.log("t:", t);
+            // outside the point?
+            return (t <= this.radius+2);
 
         };
 
-        // return list of draggers to manipulate this line
+        // return list of draggers to manipulate this point
         Point.prototype.createDraggers = function () {
 
-            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true}
+            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true};
+            var draggers = [];
 
             // create closure and callbacks for dragger
             var _point = this;
-
-            var getP0 = function () {
-                return _point.p;
+            var getCenter = function () {
+                return _point.center;
             };
-            var setP0 = function (dragEvent) {
-                _point.p = dragEvent.position;
+            var setCenter = function (dragEvent) {
+                _point.center = dragEvent.position;
             };
+            draggers.push(new PointDragger(getCenter, setCenter, draggerStyle));
 
-            return [new PointDragger(getP0, setP0, draggerStyle)];
+            return draggers;
+
         };
 
-        // this module only exports the constructor for StraightLine objects
+
+        // this module only exports the constructor for Point objects
         return Point;
 
     })); // define

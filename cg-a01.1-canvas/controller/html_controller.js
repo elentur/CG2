@@ -2,6 +2,7 @@
  * JavaScript / Canvas teaching framwork 
  * (C)opyright Hartmut Schirmacher, hschirmacher.beuth-hochschule.de
  * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
+ * changes by Marcus Bätz
  *
  * Module: html_controller
  *
@@ -12,8 +13,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point"],
-    (function($, Line, Circle, Point) {
+define(["jquery", "Line", "Circle","Point","Star"],
+    (function($, Line,Circle,Point,Star) {
         "use strict";
 
         /*
@@ -33,12 +34,15 @@ define(["jquery", "Line", "Circle", "Point"],
                 return Math.floor(Math.random()*(context.canvas.height-10))+5;
             };
 
-            // generate random Y coordinate within the canvas
-            var randomRadius = function() {
-                return Math.floor(Math.random()*(context.canvas.height-10) / 2)+5;
+            // generate random radius for circle
+            var randomCircleRadius = function() {
+                return Math.floor(Math.random()*(context.canvas.height)/3);
             };
 
-
+            // generate random radius for point
+            var randomPointRadius = function() {
+                return Math.floor(Math.random()*5);
+            };
             // generate random color in hex notation
             var randomColor = function() {
 
@@ -80,22 +84,19 @@ define(["jquery", "Line", "Circle", "Point"],
             }));
 
             /*
-             * event handler for "new circle button".
+             * event handler for "new Circle button".
              */
-
             $("#btnNewCircle").click( (function() {
 
                 // create the actual circle and add it to the scene
                 var style = {
                     width: Math.floor(Math.random()*3)+1,
-                    color: randomColor(),
-                    radius: randomRadius()
+                    color: randomColor()
                 };
 
-                var circle = new Circle(
-                    [randomX(),randomY()],
+                var circle = new Circle( [randomX(),randomY()],
+                    randomCircleRadius(),
                     style );
-
                 scene.addObjects([circle]);
 
                 // deselect all objects, then select the newly created object
@@ -107,25 +108,45 @@ define(["jquery", "Line", "Circle", "Point"],
             /*
              * event handler for "new point button".
              */
-
             $("#btnNewPoint").click( (function() {
 
-                // create the actual circle and add it to the scene
+                // create the actual point and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: 1,
                     color: randomColor(),
-                    radius: 5
+                    fill:true
                 };
 
-                var point = new Point(
-                    [randomX(),randomY()],
+                var point = new Point( [randomX(),randomY()],
+                    randomPointRadius(),
                     style );
-
                 scene.addObjects([point]);
 
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
                 sceneController.select(point); // this will also redraw
+
+            }));
+            /*
+             * event handler for "new star button".
+             */
+            $("#btnNewStar").click( (function() {
+
+                // create the actual line and add it to the scene
+                var style = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+                var radius = randomCircleRadius();
+                var innerRadius  = Math.random()*(radius-1);
+                var star = new Star( [randomX(),randomY()],
+                    radius,Math.floor(Math.random()*6)+4,innerRadius,
+                    style );
+                scene.addObjects([star]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+                sceneController.select(star); // this will also redraw
 
             }));
 
