@@ -209,7 +209,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 widthInput.off('change');
 
                 widthInput.on('change',function(){
-                    obj.lineStyle.width = $(this).val();
+                    obj.lineStyle.width = parseFloat($(this).val()) || 10;
 
                     sceneController.deselect();
                     sceneController.select(obj);
@@ -233,7 +233,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     radiusInput.off('change');
 
                     radiusInput.on('change',function(){
-                        obj.radius = $(this).val();
+                        obj.radius = parseFloat($(this).val()) || 10;
                         sceneController.deselect();
                         sceneController.select(obj);
                     });
