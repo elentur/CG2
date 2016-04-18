@@ -223,6 +223,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
             var radius = function(obj){
                 
                 var objRadius = obj.radius || false;
+                var objInnerRadius = obj.innerRadius || false;
 
                 if(objRadius){
 
@@ -241,6 +242,22 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     $("#objRadiusLabel").hide();
                 }
 
+                if(objInnerRadius){
+
+                    $("#objInnerRadiusLabel").show();
+
+                    var innerRadiusInput = $("#objInnerRadius").val(objInnerRadius);
+
+                    innerRadiusInput.off('change');
+
+                    innerRadiusInput.on('change',function(){
+                        obj.innerRadius = parseFloat($(this).val()) || 10;
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    });
+                }else{
+                    $("#objInnerRadiusLabel").hide();
+                }
             };
         };
 
