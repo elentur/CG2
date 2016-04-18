@@ -122,7 +122,7 @@ define(["util", "Scene"],
         SceneController.prototype.select = function (obj) {
 
             if (!obj) {
-                throw new "SceneController.select(): no object provided";
+                throw new util.RuntimeError();
             }
 
             // let the object create its draggers
