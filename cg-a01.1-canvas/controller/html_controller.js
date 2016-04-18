@@ -133,45 +133,69 @@ define(["jquery", "Line", "Circle", "Point"],
 
                 var obj = sceneController.getSelectedObject();
 
-                lineStyleWidth(obj);
+                updatePanel(obj);
             }));
 
             sceneController.onObjChange((function(){
 
                 var obj = sceneController.getSelectedObject();
 
-                lineStyleWidth(obj);
+                updatePanel(obj);
             }));
 
-            var lineStyleWidth = function(obj){
+            var updatePanel = function(obj){
+                lineColor(obj);
+                lineWidth(obj);
+                radius(obj);
+            };
 
+            var lineColor = function(obj){
 
                 var objColor = obj.lineStyle.color,
-                    objWidth = obj.lineStyle.width,
-                    objRadius = obj.lineStyle.radius || false,
-                    colorInput =  $("#objColor").val(objColor),
-                    widthInput =  $("#objWidth").val(objWidth),
-                    radiusInput = (objRadius) ? $("#objRadius").val(objRadius).show() : $("#objRadius").hide();
+                    colorInput =  $("#objColor").val(objColor);
+
+                colorInput.off('change');
 
                 colorInput.on('change',function(){
-                    console.log(obj);
                     obj.lineStyle.color = $(this).val();
 
                     sceneController.deselect();
                     sceneController.select(obj);
                 });
-                
+            };
+
+            var lineWidth = function(obj){
+                var objWidth = obj.lineStyle.width,
+                    widthInput =  $("#objWidth").val(objWidth);
+
+                widthInput.off('change');
+
                 widthInput.on('change',function(){
                     obj.lineStyle.width = $(this).val();
 
                     sceneController.deselect();
                     sceneController.select(obj);
                 });
+            };
 
-                radiusInput.on('change',function(){
-                    obj.lineStyle.radius = $(this).val();
-                    sceneController.select(obj);
-                });
+            var radius = function(obj){
+                var objRadius = obj.lineStyle.radius || false;
+
+                if(objRadius){
+
+                    var radiusInput = $("#objRadius").val(objRadius).show();
+
+                    radiusInput.off('change');
+
+                    radiusInput.on('change',function(){
+                        obj.lineStyle.radius = $(this).val();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    });
+                }else{
+                    $("#objRadius").hide();
+                }
+
             };
         };
 
