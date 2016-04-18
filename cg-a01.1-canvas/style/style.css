@@ -37,7 +37,19 @@ h3 {
     text-align:left;
 }
 
-/* all input elements get a fixed width */
+#param_area button{
+    margin-left: 10px;
+    display: inline-block;
+    width: 100px;
+}
+
+#param_area label span {
+    display: inline-block;
+    margin-left: 10px;
+    width: 100px;
+}
+
+    /* all input elements get a fixed width */
 input {
     width:80px;
 }

@@ -140,7 +140,9 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 var radius = randomCircleRadius();
                 var innerRadius  = Math.random()*(radius-1);
                 var star = new Star( [randomX(),randomY()],
-                    radius,Math.floor(Math.random()*6)+4,innerRadius,
+                    radius,
+                    Math.floor(Math.random()*6)+4,
+                    innerRadius,
                     style );
                 scene.addObjects([star]);
 
@@ -150,6 +152,9 @@ define(["jquery", "Line", "Circle","Point","Star"],
 
             }));
 
+            /*
+             * event handler if an item was selected.
+             */
             sceneController.onSelection((function(){
 
                 var obj = sceneController.getSelectedObject();
@@ -157,6 +162,9 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 updatePanel(obj);
             }));
 
+            /*
+             * event handler if an item was changed.
+             */
             sceneController.onObjChange((function(){
 
                 var obj = sceneController.getSelectedObject();
@@ -164,12 +172,18 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 updatePanel(obj);
             }));
 
+            /*
+            *  updates the panel according to the selected item
+            */
             var updatePanel = function(obj){
                 lineColor(obj);
                 lineWidth(obj);
                 radius(obj);
             };
 
+            /*
+            *  updates the color field on the panel and the item's color if the color is changed.
+            */
             var lineColor = function(obj){
 
                 var objColor = obj.lineStyle.color,
@@ -185,6 +199,9 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 });
             };
 
+            /*
+             *  updates the width field on the panel and the item's width if the width is changed.
+             */
             var lineWidth = function(obj){
                 var objWidth = obj.lineStyle.width,
                     widthInput =  $("#objWidth").val(objWidth);
@@ -199,22 +216,29 @@ define(["jquery", "Line", "Circle","Point","Star"],
                 });
             };
 
+            /*
+             *  updates the radius field on the panel if the item 
+             *  has a radius and the item's radius if the radius is changed.
+             */
             var radius = function(obj){
-                var objRadius = obj.lineStyle.radius || false;
+                
+                var objRadius = obj.radius || false;
 
                 if(objRadius){
 
-                    var radiusInput = $("#objRadius").val(objRadius).show();
+                    $("#objRadiusLabel").show();
+
+                    var radiusInput = $("#objRadius").val(objRadius);
 
                     radiusInput.off('change');
 
                     radiusInput.on('change',function(){
-                        obj.lineStyle.radius = $(this).val();
+                        obj.radius = $(this).val();
                         sceneController.deselect();
                         sceneController.select(obj);
                     });
                 }else{
-                    $("#objRadius").hide();
+                    $("#objRadiusLabel").hide();
                 }
 
             };

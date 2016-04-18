@@ -96,10 +96,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
             draggers.push(new PointDragger(getCenter, setCenter, draggerStyle));
 
             return draggers;
-
         };
-
-
+        
         // this module only exports the constructor for Point objects
         return Point;
 
