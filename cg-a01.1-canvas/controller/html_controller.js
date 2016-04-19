@@ -209,7 +209,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     $("#objWidth"),
                     obj.lineStyle.width || false,
                     function(){
-                        obj.lineStyle.width = $(this).val();
+                        obj.lineStyle.width = parseFloat($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
@@ -221,7 +221,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     $("#objRadius"),
                     obj.radius || false,
                     function(){
-                        obj.radius = $(this).val();
+                        obj.radius = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
@@ -233,7 +233,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     $("#objInnerRadius"),
                     obj.innerRadius || false,
                     function(){
-                        obj.innerRadius = $(this).val();
+                        obj.innerRadius = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
@@ -245,7 +245,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     $("#objArm"),
                     obj.armNumber || false,
                     function(){
-                        obj.armNumber = $(this).val();
+                        obj.armNumber = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
                     }

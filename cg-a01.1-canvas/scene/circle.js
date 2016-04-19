@@ -71,7 +71,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var t = vec2.length(vec2.sub(pos,this.center));
             console.log("t:", t + " " + this.radius );
             // outside the circle-line segment?
-            return (t <= this.radius +3 && t >= this.radius-3);
+            return (t <= this.radius + this.lineStyle.width / 2 + 3 && t >= this.radius - this.lineStyle.width / 2 - 3);
 
         };
 
