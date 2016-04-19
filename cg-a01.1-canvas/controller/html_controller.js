@@ -138,7 +138,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
                     color: randomColor()
                 };
                 var radius = randomCircleRadius();
-                var innerRadius  = Math.random()*(radius-1);
+                var innerRadius  = Math.floor(Math.random()*(radius-1));
                 var star = new Star( [randomX(),randomY()],
                     radius,
                     Math.floor(Math.random()*6)+4,
@@ -159,7 +159,7 @@ define(["jquery", "Line", "Circle","Point","Star"],
 
                 var obj = sceneController.getSelectedObject();
 
-                updatePanel(obj);
+                showPanelItems(obj);
             }));
 
             /*
@@ -169,96 +169,88 @@ define(["jquery", "Line", "Circle","Point","Star"],
 
                 var obj = sceneController.getSelectedObject();
 
-                updatePanel(obj);
+                showPanelItems(obj);
             }));
 
             /*
-            *  updates the panel according to the selected item
+            * set value for parameter bar and remove prior listener
+            * and create a new listener
             */
-            var updatePanel = function(obj){
-                lineColor(obj);
-                lineWidth(obj);
-                radius(obj);
-            };
+            function createListener(label, input, objVal, func) {
+                if(objVal) {
+                    input.val(objVal);
+                    label.show();
 
-            /*
-            *  updates the color field on the panel and the item's color if the color is changed.
-            */
-            var lineColor = function(obj){
+                    input.off('change');
 
-                var objColor = obj.lineStyle.color,
-                    colorInput =  $("#objColor").val(objColor);
+                    input.on('change', func);
+                }else{
+                    label.hide();
+                }
+            }
 
-                colorInput.off('change');
-
-                colorInput.on('change',function(){
-                    obj.lineStyle.color = $(this).val();
-
-                    sceneController.deselect();
-                    sceneController.select(obj);
-                });
-            };
-
-            /*
-             *  updates the width field on the panel and the item's width if the width is changed.
-             */
-            var lineWidth = function(obj){
-                var objWidth = obj.lineStyle.width,
-                    widthInput =  $("#objWidth").val(objWidth);
-
-                widthInput.off('change');
-
-                widthInput.on('change',function(){
-                    obj.lineStyle.width = parseFloat($(this).val()) || 10;
-
-                    sceneController.deselect();
-                    sceneController.select(obj);
-                });
-            };
-
-            /*
-             *  updates the radius field on the panel if the item 
-             *  has a radius and the item's radius if the radius is changed.
-             */
-            var radius = function(obj){
+            var showPanelItems = function(obj){
                 
-                var objRadius = obj.radius || false;
-                var objInnerRadius = obj.innerRadius || false;
-
-                if(objRadius){
-
-                    $("#objRadiusLabel").show();
-
-                    var radiusInput = $("#objRadius").val(objRadius);
-
-                    radiusInput.off('change');
-
-                    radiusInput.on('change',function(){
-                        obj.radius = parseFloat($(this).val()) || 10;
+                // color Listener
+                createListener(
+                    $("#objColorLabel"),
+                    $("#objColor"),
+                    obj.lineStyle.color || false,
+                    function(){
+                        obj.lineStyle.color = $(this).val();
                         sceneController.deselect();
                         sceneController.select(obj);
-                    });
-                }else{
-                    $("#objRadiusLabel").hide();
-                }
+                    }
+                );
 
-                if(objInnerRadius){
-
-                    $("#objInnerRadiusLabel").show();
-
-                    var innerRadiusInput = $("#objInnerRadius").val(objInnerRadius);
-
-                    innerRadiusInput.off('change');
-
-                    innerRadiusInput.on('change',function(){
-                        obj.innerRadius = parseFloat($(this).val()) || 10;
+                // width listener
+                createListener(
+                    $("#objWidthLabel"),
+                    $("#objWidth"),
+                    obj.lineStyle.width || false,
+                    function(){
+                        obj.lineStyle.width = $(this).val();
                         sceneController.deselect();
                         sceneController.select(obj);
-                    });
-                }else{
-                    $("#objInnerRadiusLabel").hide();
-                }
-            };
+                    }
+                );
+
+                // radius listener
+                createListener(
+                    $("#objRadiusLabel"),
+                    $("#objRadius"),
+                    obj.radius || false,
+                    function(){
+                        obj.radius = $(this).val();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                // inner radius listener
+                createListener(
+                    $("#objInnerRadiusLabel"),
+                    $("#objInnerRadius"),
+                    obj.innerRadius || false,
+                    function(){
+                        obj.innerRadius = $(this).val();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                // arm listener
+                createListener(
+                    $("#objArmLabel"),
+                    $("#objArm"),
+                    obj.armNumber || false,
+                    function(){
+                        obj.armNumber = $(this).val();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+            }
         };
 
         // return the constructor function
