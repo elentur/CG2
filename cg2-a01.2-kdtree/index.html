@@ -42,16 +42,11 @@
 
         <p>
             <button id="btnNewLine" type="button">New Line</button>
-        </p>
-        <!-- add more here... -->
-        <p>
-            <button id="btnNewCircle" type="button">New Circle</button>
-        </p>
-        <p>
-            <button id="btnNewStar" type="button">New Star</button>
-        </p>
 
-        <p>
+            <button id="btnNewCircle" type="button">New Circle</button>
+
+            <button id="btnNewStar" type="button">New Star</button>
+
             <button id="btnNewPoint" type="button">New Point</button>
         </p>
 
@@ -74,7 +69,7 @@
 
             <p>
                 <label id="objRadiusLabel">
-                    <span>Radius:</span>
+                   <span>Radius:</span>
                     <input id="objRadius" type="number" min="1" value="0">
                 </label>
             </p>
@@ -93,11 +88,32 @@
                 </label>
             </p>
         </div>
+
+        <h3>KD-Tree:</h3>
+
+        <p>
+            <button id="btnNewPointList" type="button">New Point List</button>
+            <input type="number" name="pointListNumber" value="0">
+        </p>
+
+        <p>
+            <button id="btnBuildKdTree" type="button">Build kdTree</button>
+            <button id="btnQueryKdTree" type="button">Query kdTree</button>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="visKdTree" value="1">
+                show kd-Tree
+            </label>
+        </p>
+
     </div>
 
 
     <div style="clear:both;">
     </div>
+
+</div>
 
 </div>
 
