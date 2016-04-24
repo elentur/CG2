@@ -73,7 +73,6 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             // project point on line, get parameter of that projection point
             var t = vec2.length(vec2.sub(pos,this.center));
-            console.log("t:", t);
             // outside the point?
             return (t <= this.radius+ this.lineStyle.width / 2 + 2);
 

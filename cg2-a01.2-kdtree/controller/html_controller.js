@@ -302,8 +302,6 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
 
                 var numPoints = parseInt($("#numPoints").attr("value"));
 
-                console.log(numPoints);
-
                 for(var i=0; i<numPoints; ++i) {
                     var point = new Point([randomX(), randomY()], 5,
                         style);
@@ -329,7 +327,7 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
             $("#btnBuildKdTree").click( (function() {
 
                 kdTree = new KdTree(pointList);
-
+console.log(kdTree.root);
             }));
 
             /**

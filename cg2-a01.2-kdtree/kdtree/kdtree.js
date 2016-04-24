@@ -45,6 +45,42 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 //<Neuen Knoten im Baum erzeugen>
                 //<Berechne Split Position in pointlist>
 
+
+                if (!pointList || pointList.length == 0) return;
+
+                var axis = dim % pointList.length;
+
+                pointList.sort(function(a, b) {
+                    if (a[axis] < b[axis]) return -1;
+                    else if (a[axis] > b[axis]) return 1;
+                    else return 0;
+                });
+
+                var median = Math.floor(pointList.length / 2);
+
+                node = new KdNode(axis);
+                node.point = pointList[median];
+                node.leftChild = this.build(pointList.slice(0, median), dim + 1,node, true);
+                node.rightChild = this.build(pointList.slice(median + 1), dim + 1,node, false);
+
+                if(!parent)
+                    parent = node;
+
+
+                var xmin = parent.point.center[0] <= node.point.center[0] ? parent.point.center[0] : node.point.center[0],
+                    ymin = parent.point.center[1] <= node.point.center[1] ? parent.point.center[1] : node.point.center[1],
+                    xmax = parent.point.center[0] >= node.point.center[0] ? parent.point.center[0] : node.point.center[0],
+                    ymax = parent.point.center[1] >= node.point.center[1] ? parent.point.center[1] : node.point.center[1];
+
+                node.bbox = new BoundingBox(
+                    xmin,
+                    ymin,
+                    xmax,
+                    ymax,
+                    node.point,
+                    dim);
+                
+
                 //<set node.point>
 
                 //<Berechne Bounding Box des Unterbaumes / node.bbox >
@@ -116,7 +152,6 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
                 return closest;
             };
-
 
             //
             this.root = this.build(pointList, 0);
