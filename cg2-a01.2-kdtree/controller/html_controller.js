@@ -301,11 +301,15 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                 };
 
                 var numPoints = parseInt($("#numPoints").attr("value"));
+
+                console.log(numPoints);
+
                 for(var i=0; i<numPoints; ++i) {
                     var point = new Point([randomX(), randomY()], 5,
                         style);
                     scene.addObjects([point]);
                     pointList.push(point);
+
                 }
 
                 // deselect all objects, then select the newly created object
