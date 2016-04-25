@@ -296,18 +296,17 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
 
                 // create the actual line and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
-                    color: randomColor()
+                    width: 1,
+                    color: randomColor(),
+                    fill:true
                 };
 
                 var numPoints = parseInt($("#numPoints").attr("value"));
 
                 for(var i=0; i<numPoints; ++i) {
-                    var point = new Point([randomX(), randomY()], 5,
-                        style);
+                    var point = new Point([randomX(), randomY()], 3, style);
                     scene.addObjects([point]);
                     pointList.push(point);
-
                 }
 
                 // deselect all objects, then select the newly created object
@@ -327,7 +326,6 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
             $("#btnBuildKdTree").click( (function() {
 
                 kdTree = new KdTree(pointList);
-console.log(kdTree.root);
             }));
 
             /**
@@ -338,7 +336,8 @@ console.log(kdTree.root);
 
                 var style = {
                     width: 2,
-                    color: "#ff0000"
+                    color: "#ff0000",
+                    fill:true
                 };
                 var queryPoint = new Point([randomX(), randomY()], 2,
                     style);
@@ -354,11 +353,19 @@ console.log(kdTree.root);
                 var linearTiming;
                 var kdTiming;
 
+                console.time("linearSearch");
+
                 var minIdx = KdUtil.linearSearch(pointList, queryPoint);
+
+                console.timeEnd("linearSearch");
 
                 console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
-                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, 10000000, kdTree.root, 0);
+                console.time("kdTreeSearch");
+
+                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, kdTree.root, 10000000, 0);
+
+                console.timeEnd("kdTreeSearch");
 
                 console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 

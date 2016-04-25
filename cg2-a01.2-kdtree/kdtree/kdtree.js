@@ -46,40 +46,76 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 //<Berechne Split Position in pointlist>
 
 
-                if (!pointList || pointList.length == 0) return;
-
-                var axis = dim % pointList.length;
+                if (pointList.length == 0) return node;
 
                 pointList.sort(function(a, b) {
-                    if (a[axis] < b[axis]) return -1;
-                    else if (a[axis] > b[axis]) return 1;
-                    else return 0;
+                    return a.center[dim] - b.center[dim];
                 });
 
                 var median = Math.floor(pointList.length / 2);
 
-                node = new KdNode(axis);
+
+
+                node = new KdNode(dim);
                 node.point = pointList[median];
-                node.leftChild = this.build(pointList.slice(0, median), dim + 1,node, true);
-                node.rightChild = this.build(pointList.slice(median + 1), dim + 1,node, false);
 
-                if(!parent)
-                    parent = node;
+                // we start with no parent
 
+                var minX = 0,
+                    minY = 0,
+                    maxX = $('#drawing_area').width(),
+                    maxY = $('#drawing_area').height();
 
-                var xmin = parent.point.center[0] <= node.point.center[0] ? parent.point.center[0] : node.point.center[0],
-                    ymin = parent.point.center[1] <= node.point.center[1] ? parent.point.center[1] : node.point.center[1],
-                    xmax = parent.point.center[0] >= node.point.center[0] ? parent.point.center[0] : node.point.center[0],
-                    ymax = parent.point.center[1] >= node.point.center[1] ? parent.point.center[1] : node.point.center[1];
+                if(parent){
+                    if(isLeft){
+                        if(dim == 0){
+                            minX = parent.bbox.xmin;
+                            minY = parent.bbox.ymin;
+                            maxX = parent.bbox.xmax;
+                            maxY = parent.point.center[1];
+                        }else{
+                            minX = parent.bbox.xmin;
+                            minY = parent.bbox.ymin;
+                            maxX = parent.point.center[0];
+                            maxY = parent.bbox.ymax;
+                        }
+                    }else{
+                        if(dim == 0){   
+                            minX = parent.bbox.xmin;
+                            minY = parent.point.center[1];
+                            maxX = parent.bbox.xmax;
+                            maxY = parent.bbox.ymax;
+                        }else{
+                            minX = parent.point.center[0];
+                            minY = parent.bbox.ymin;
+                            maxX = parent.bbox.xmax;
+                            maxY = parent.bbox.ymax;
+                        }
+                    }
+                }
 
                 node.bbox = new BoundingBox(
-                    xmin,
-                    ymin,
-                    xmax,
-                    ymax,
+                    minX,
+                    minY,
+                    maxX,
+                    maxY,
                     node.point,
                     dim);
-                
+
+                node.leftChild = this.build(
+                    pointList.slice(0, median),
+                    dim == 0 ? 1 : 0,
+                    node,
+                    true);
+                node.rightChild = this.build(
+                    pointList.slice(median + 1, pointList.length),
+                    dim == 0 ? 1 : 0,
+                    node,
+                    false);
+
+
+
+
 
                 //<set node.point>
 
@@ -90,7 +126,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
                 //<Unterbaum für linke Seite aufbauen>
                 //<Unterbaum für rinke Seite aufbauen>
-                
+
 
                 return node;
             };

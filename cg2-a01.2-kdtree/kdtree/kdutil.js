@@ -63,6 +63,14 @@ define([], (function() {
         // ===========================================
 
         var minIdx = 0;
+
+        for(var i = 1; i < pointList.length; i++){
+            if(this.distance(queryPoint.center,pointList[minIdx].center) >
+                this.distance(queryPoint.center,pointList[i].center)){
+                minIdx = i;  
+            }
+        }
+        
         return minIdx;
 
     };
