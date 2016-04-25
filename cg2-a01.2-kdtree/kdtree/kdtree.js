@@ -48,13 +48,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
                 if (pointList.length == 0) return node;
 
-                pointList.sort(function(a, b) {
-                    return a.center[dim] - b.center[dim];
-                });
-
-                var median = Math.floor(pointList.length / 2);
-
-
+                var median = KdUtil.sortAndMedian(pointList,dim);
 
                 node = new KdNode(dim);
                 node.point = pointList[median];
@@ -80,7 +74,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                             maxY = parent.bbox.ymax;
                         }
                     }else{
-                        if(dim == 0){   
+                        if(dim == 0){
                             minX = parent.bbox.xmin;
                             minY = parent.point.center[1];
                             maxX = parent.bbox.xmax;

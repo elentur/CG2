@@ -361,14 +361,18 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
 
                 console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
-                console.time("kdTreeSearch");
+
+
+                console.time("kdSearch");
 
                 var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, kdTree.root, 10000000, 0);
 
-                console.timeEnd("kdTreeSearch");
+                console.timeEnd("kdSearch");
 
                 console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 
+
+                
                 sceneController.select(pointList[minIdx]);
                 sceneController.select(kdNearestNeighbor.point);
 
