@@ -50,6 +50,8 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
                 var median = KdUtil.sortAndMedian(pointList,dim);
 
+                var nextDim = dim == 0 ? 1 : 0;
+
                 node = new KdNode(dim);
                 node.point = pointList[median];
 
@@ -98,12 +100,12 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
                 node.leftChild = this.build(
                     pointList.slice(0, median),
-                    dim == 0 ? 1 : 0,
+                    nextDim,
                     node,
                     true);
                 node.rightChild = this.build(
                     pointList.slice(median + 1, pointList.length),
-                    dim == 0 ? 1 : 0,
+                    nextDim,
                     node,
                     false);
 
