@@ -39,20 +39,21 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 // TODO: implement build tree
                 // ===========================================
 
-                // Note: We need to compute the bounding box for EACH new 'node'
-                //       to be able to query correctly
-                
-                //<Neuen Knoten im Baum erzeugen>
-                //<Berechne Split Position in pointlist>
-
-
                 if (pointList.length == 0) return node;
+
+                //<Berechne Split Position in pointlist>
 
                 var median = KdUtil.sortAndMedian(pointList,dim);
 
                 var nextDim = dim == 0 ? 1 : 0;
 
+                // Note: We need to compute the bounding box for EACH new 'node'
+                //       to be able to query correctly
+
+
+                //<Neuen Knoten im Baum erzeugen>
                 node = new KdNode(dim);
+                //<set node.point>
                 node.point = pointList[median];
 
                 // we start with no parent
@@ -90,6 +91,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                     }
                 }
 
+                //<Berechne Bounding Box des Unterbaumes / node.bbox >
                 node.bbox = new BoundingBox(
                     minX,
                     minY,
@@ -98,31 +100,18 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                     node.point,
                     dim);
 
+                //<Extrahiere Punkte für die linke Unterbaumhälfte>
                 node.leftChild = this.build(
-                    pointList.slice(0, median),
+                    pointList.slice(0, median), //<Unterbaum für linke Seite aufbauen>
                     nextDim,
                     node,
                     true);
+                //<Extrahiere Punkte für die rechte Unterbaumhälfte>
                 node.rightChild = this.build(
-                    pointList.slice(median + 1, pointList.length),
+                    pointList.slice(median + 1, pointList.length),  //<Unterbaum für rinke Seite aufbauen>
                     nextDim,
                     node,
                     false);
-
-
-
-
-
-                //<set node.point>
-
-                //<Berechne Bounding Box des Unterbaumes / node.bbox >
-
-                //<Extrahiere Punkte für die linke Unterbaumhälfte>
-                //<Extrahiere Punkte für die rechte Unterbaumhälfte>
-
-                //<Unterbaum für linke Seite aufbauen>
-                //<Unterbaum für rinke Seite aufbauen>
-
 
                 return node;
             };
