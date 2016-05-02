@@ -1,0 +1,123 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <!--
+     *
+     * JavaScript / Canvas teaching framwork 
+     * (C)opyright Hartmut Schirmacher, hschirmacher@beuth-hochschule.de
+     * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
+     * changes by Marcus Bätz
+    -->
+
+    <title>CG2 A1: Points, Lines, Curves &amp; Canvas</title>
+
+    <!-- import main module using RequireJS -->
+    <script data-main="app.js" src="../lib/require.js"></script>
+
+    <!-- import style sheet -->
+    <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+
+</head>
+
+<body>
+
+<!-- this element will be used to diplay errors -->
+<pre id="error"></pre>
+
+<!-- centered region with drawing canvas and parameter area -->
+<div align="center">
+
+    <canvas id="drawing_area" width="500" height="500" style="position:relative;">
+        <!-- NOTE: the "position:relative" is required due to the current
+             implementation of mouse coordinate processing in module "util". -->
+        If you see this text, your browser probably does not
+        support the HTML5 canvas 2D drawing context.
+    </canvas>
+
+
+    <div id="param_area">
+
+        <h3>Create Objects:</h3>
+
+        <p>
+            <button id="btnNewLine" type="button">New Line</button>
+
+            <button id="btnNewCircle" type="button">New Circle</button>
+
+            <button id="btnNewStar" type="button">New Star</button>
+
+            <button id="btnNewPoint" type="button">New Point</button>
+
+            <button id="btnParametricCurve" type="button">new Parametric Curve</button>
+        </p>
+
+        <div id="panel">
+            <h3>Edit Objects:</h3>
+
+            <p>
+                <label id="objColorLabel">
+                    <span>Color:</span>
+                    <input id="objColor" type="color" value="">
+                </label>
+            </p>
+
+            <p>
+                <label id="objWidthLabel">
+                    <span>Line Width:</span>
+                    <input id="objWidth" type="number" step="0.5" min="1" max="100" value="0">
+                </label>
+            </p>
+
+            <p>
+                <label id="objRadiusLabel">
+                   <span>Radius:</span>
+                    <input id="objRadius" type="number" min="1" value="0">
+                </label>
+            </p>
+
+            <p>
+                <label id="objInnerRadiusLabel">
+                    <span>Inner Radius:</span>
+                    <input id="objInnerRadius" type="number" min="1" value="0">
+                </label>
+            </p>
+
+            <p>
+                <label id="objArmLabel">
+                    <span>Arms:</span>
+                    <input id="objArm" type="number" min="3" value="0">
+                </label>
+            </p>
+        </div>
+
+        <h3>KD-Tree:</h3>
+
+        <p>
+            <button id="btnNewPointList" type="button">New Point List</button>
+            <input id="numPoints" type="number" name="pointListNumber" value="1">
+        </p>
+
+        <p>
+            <button id="btnBuildKdTree" type="button">Build kdTree</button>
+            <button id="btnQueryKdTree" type="button">Query kdTree</button>
+        </p>
+        <p>
+            <label>
+                <input id="visKdTree" type="checkbox" name="visKdTree" value="1">
+                show kd-Tree
+            </label>
+        </p>
+
+    </div>
+
+
+    <div style="clear:both;">
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
