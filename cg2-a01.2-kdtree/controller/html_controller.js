@@ -13,8 +13,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
-    (function($, Line, Circle, Point, Star, KdTree, Util, KdUtil) {
+define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurve","BezierPolygon", "KdTree", "util", "kdutil"],
+    (function($, Line, Circle, Point, Star, ParametricCurve, BezierCurve,BezierPolygon, KdTree, Util, KdUtil) {
         "use strict";
 
         /*
@@ -192,13 +192,55 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                 sceneController.select(star); // this will also redraw
 
             }));
+            /*
+             * event handler for "new ParametricCurve button".
+             */
+
+            $("#btnParametricCurve").click( (function() {
+                // create the actual ParametricCurve and add it to the scene
+                var style = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+
+                var curve = new ParametricCurve([randomX(),randomY()], $("#objXfunction").val(),$("#objYfunction").val(),
+                    $("#objTMin").val(),$("#objTMax").val(), $("#objSegments").val(),
+                    style );
+                if(curve.generatePoints()) {
+                    scene.addObjects([curve]);
+                    // deselect all objects, then select the newly created object
+                    sceneController.deselect();
+                    sceneController.select(curve); // this will also redraw
+                }else{
+                    alert("Eine ihrer Funktionen ist fehlerhaft, bitte geben sie sie neu ein.")
+                }
 
 
-            $("#btnDelete").click( (function() {
-                console.log( sceneController.getSelectedObject());
-                scene.removeObjects(sceneController.getSelectedObject());
 
             }));
+
+            $("#btnBezierCurve").click( (function() {
+                // create the actual ParametricCurve and add it to the scene
+                var style = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+
+                var curve = new BezierCurve([randomX(),randomY()],[randomX(),randomY()] ,[randomX(),randomY()],
+                    [randomX(),randomY()],$("#objBezierSegments").val(),
+                    style );
+
+                    scene.addObjects([curve]);
+                    // deselect all objects, then select the newly created object
+                    sceneController.deselect();
+                    sceneController.select(curve); // this will also redraw
+
+
+
+
+            }));
+
+
 
             /*
              * event handler if an item was selected.
@@ -220,6 +262,7 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                 showPanelItems(obj);
             }));
 
+
             /*
             * set value for parameter bar and remove prior listener
             * and create a new listener
@@ -229,9 +272,12 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                     input.val(objVal);
                     label.show();
 
-                    input.off('change');
 
-                    input.on('change', func);
+                    if(input.is('button'))input.off('click');
+                    else input.off('change');
+
+                    if(input.is('button'))input.on('click', func);
+                    else   input.on('change', func);
                 }else{
                     label.hide();
                 }
@@ -298,17 +344,28 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                         sceneController.select(obj);
                     }
                 );
-
-                // deleteBtn Listener
+                // tickMarks checkbox Listener
                 createListener(
-                    $("#btnDelete"),
-                    $("#btnDelete"),
-                    true,
+                    $("#objTickMarksLabel"),
+                    $("#objTickMarks"),
+                    obj.curve!=undefined,
                     function(){
+                        obj.generateTickMarks();
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
                 );
+                // deleteBtn Listener
+                createListener(
+                    $("#btnDelete"),
+                    $("#btnDelete"),
+                    obj != undefined,
+                    function(){
+                        scene.removeObjects([sceneController.getSelectedObject()]);
+                        sceneController.deselect();
+                    }
+                );
+
 
             };
 

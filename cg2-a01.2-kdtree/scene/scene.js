@@ -53,7 +53,6 @@ define(["util"],
          * remove drawable objects from the scene (provided in an array)
          */
         Scene.prototype.removeObjects = function (objects) {
-
             for (var i = 0; i < objects.length; i++) {
                 // find obj in array
                 var idx = this.drawableObjects.indexOf(objects[i]);

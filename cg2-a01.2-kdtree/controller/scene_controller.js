@@ -160,6 +160,7 @@ define(["util", "Scene"],
                     this.scene.removeObjects(this.selected[i].draggers);
                     // remove object from list
                     this.selected.splice(i, 1);
+
                 }
             }
 

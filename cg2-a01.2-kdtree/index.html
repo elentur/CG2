@@ -50,13 +50,60 @@
             <button id="btnNewPoint" type="button">New Point</button>
         </p>
 
+        <div>
+            <button id="btnParametricCurve" type="button">Parametric Curve</button>
+            <p>
+                <label id="objXfunctionLabel">
+                    <span>X:</span>
+                    <input id="objXfunction" type="text" value="50*Math.sin(x)">
+                </label>
+            </p>
+
+            <p>
+                <label id="objYfunctionLabel">
+                    <span>Y:</span>
+                    <input id="objYfunction" type="text" value="50*Math.cos(x)">
+                </label>
+            </p>
+
+            <p>
+                <label id="objTMinLabel">
+                    <span>t-min:</span>
+                    <input id="objTMin" type="number" value="0">
+                </label>
+            </p>
+
+            <p>
+                <label id="objTMaxLabel">
+                    <span>t-max:</span>
+                    <input id="objTMax" type="number" value="7">
+                </label>
+            </p>
+
+            <p>
+                <label id="objSegmentsLabel">
+                    <span>Segments:</span>
+                    <input id="objSegments" type="number" value="20">
+                </label>
+            </p>
+        </div>
+        <div>
+
+            <button id="btnBezierCurve" type="button">Bezier Curve</button>
+            <p>
+                <label id="objBezierSegmentsLabel">
+                    <span>Segments:</span>
+                    <input id="objBezierSegments" type="number" value="20">
+                </label>
+            </p>
+        </div>
         <div id="panel">
             <h3>Edit Objects:</h3>
 
             <p>
                 <label id="objColorLabel">
                     <span>Color:</span>
-                    <input id="objColor" type="color" value="">
+                    <input id="objColor" type="color" value="#000000">
                 </label>
             </p>
 
@@ -69,7 +116,7 @@
 
             <p>
                 <label id="objRadiusLabel">
-                   <span>Radius:</span>
+                    <span>Radius:</span>
                     <input id="objRadius" type="number" min="1" value="0">
                 </label>
             </p>
@@ -88,6 +135,12 @@
                 </label>
             </p>
             <p>
+                <label id ="objTickMarksLabel">
+                    <input id="objTickMarks" type="checkbox" name="TickMarks" value="0">
+                    show tick marks:
+                </label>
+            </p>
+            <p>
                 <button id="btnDelete" type="button">delete Object</button>
             </p>
         </div>
@@ -96,7 +149,7 @@
 
         <p>
             <button id="btnNewPointList" type="button">New Point List</button>
-            <input id ="numPoints" type="number" name="pointListNumber" value="5">
+            <input id="numPoints" type="number" name="pointListNumber" value="5">
         </p>
 
         <p>
@@ -105,7 +158,7 @@
         </p>
         <p>
             <label>
-                <input id = "visKdTree" type="checkbox" name="visKdTree" value="1">
+                <input id="visKdTree" type="checkbox" name="visKdTree" value="1">
                 show kd-Tree
             </label>
         </p>
