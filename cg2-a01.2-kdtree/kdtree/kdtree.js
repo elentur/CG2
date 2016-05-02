@@ -32,30 +32,51 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
              * @returns returns root node after tree is build
              */
             this.build = function(pointList, dim, parent, isLeft) {
-
                 var node = undefined;
+                var leftPointList = [];
+                var rightPointList = [];
+                if(pointList.length >0) {
+                    //<Neuen Knoten im Baum erzeugen>
+                    node = new KdNode(dim);
 
-                // ===========================================
-                // TODO: implement build tree
-                // ===========================================
+                    //<Berechne Split Position in pointlist>
+                    pointList.sort(function (a, b) {
+                        return a.center[dim] - b.center[dim]
+                    });
+                    var center = Math.floor(pointList.length / 2);
 
-                // Note: We need to compute the bounding box for EACH new 'node'
-                //       to be able to query correctly
-                
-                //<Neuen Knoten im Baum erzeugen>
-                //<Berechne Split Position in pointlist>
+                    //<set node.point>
+                    node.point = pointList[center];
 
-                //<set node.point>
+                    //<Berechne Bounding Box des Unterbaumes / node.bbox >
+                    if(parent){
+                        if(isLeft){
+                            if(dim == 0) {
+                                node.bbox = new BoundingBox(parent.bbox.xmin, parent.bbox.ymin, parent.bbox.xmax, parent.point.center[1], node.point, dim);
+                            }else{
+                                node.bbox = new BoundingBox(parent.bbox.xmin, parent.bbox.ymin, parent.point.center[0], parent.bbox.ymax, node.point, dim);
+                            }
+                        }else{
+                            if(dim == 0) {
+                                node.bbox = new BoundingBox(parent.bbox.xmin,parent.point.center[1], parent.bbox.xmax, parent.bbox.ymax, node.point, dim);
+                            }else{
+                                node.bbox = new BoundingBox(parent.point.center[0], parent.bbox.ymin, parent.bbox.xmax, parent.bbox.ymax, node.point, dim);
+                            }
+                        }
+                    }else{
+                       var canvas =  $("#drawing_area");
+                        node.bbox = new BoundingBox(0,0,canvas.width(),canvas.height(),node.point,dim);
+                    }
 
-                //<Berechne Bounding Box des Unterbaumes / node.bbox >
-
-                //<Extrahiere Punkte für die linke Unterbaumhälfte>
-                //<Extrahiere Punkte für die rechte Unterbaumhälfte>
-
-                //<Unterbaum für linke Seite aufbauen>
-                //<Unterbaum für rinke Seite aufbauen>
-                
-
+                    //<Extrahiere Punkte für die linke Unterbaumhälfte>
+                    leftPointList = pointList.slice(0,center);
+                    //<Extrahiere Punkte für die rechte Unterbaumhälfte>
+                    rightPointList  = pointList.slice(center+1,pointList.length);
+                    //<Unterbaum für linke Seite aufbauen>
+                    node.leftChild= this.build(leftPointList, dim == 0 ? 1 : 0, node, true);
+                    //<Unterbaum für rinke Seite aufbauen>
+                    node.rightChild = this.build(rightPointList, dim == 0 ? 1 : 0, node, false);
+                }
                 return node;
             };
 

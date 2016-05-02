@@ -28,7 +28,7 @@
 <!-- centered region with drawing canvas and parameter area -->
 <div align="center">
 
-    <canvas id="drawing_area" width="500" height="400" style="position:relative;">
+    <canvas id="drawing_area" width="500" height="500" style="position:relative;">
         <!-- NOTE: the "position:relative" is required due to the current
              implementation of mouse coordinate processing in module "util". -->
         If you see this text, your browser probably does not
@@ -87,13 +87,16 @@
                     <input id="objArm" type="number" min="3" value="0">
                 </label>
             </p>
+            <p>
+                <button id="btnDelete" type="button">delete Object</button>
+            </p>
         </div>
 
         <h3>KD-Tree:</h3>
 
         <p>
             <button id="btnNewPointList" type="button">New Point List</button>
-            <input type="number" name="pointListNumber" value="0">
+            <input id ="numPoints" type="number" name="pointListNumber" value="5">
         </p>
 
         <p>
@@ -102,7 +105,7 @@
         </p>
         <p>
             <label>
-                <input type="checkbox" name="visKdTree" value="1">
+                <input id = "visKdTree" type="checkbox" name="visKdTree" value="1">
                 show kd-Tree
             </label>
         </p>

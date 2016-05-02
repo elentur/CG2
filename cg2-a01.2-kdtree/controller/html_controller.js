@@ -162,6 +162,7 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                     style );
                 scene.addObjects([point]);
 
+
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
                 sceneController.select(point); // this will also redraw
@@ -189,6 +190,13 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
                 sceneController.select(star); // this will also redraw
+
+            }));
+
+
+            $("#btnDelete").click( (function() {
+                console.log( sceneController.getSelectedObject());
+                scene.removeObjects(sceneController.getSelectedObject());
 
             }));
 
@@ -290,24 +298,37 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
                         sceneController.select(obj);
                     }
                 );
+
+                // deleteBtn Listener
+                createListener(
+                    $("#btnDelete"),
+                    $("#btnDelete"),
+                    true,
+                    function(){
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
             };
 
             $("#btnNewPointList").click( (function() {
 
-                // create the actual line and add it to the scene
+                // create the actual pointlist and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
-                    color: randomColor()
+                    width: 1,
+                    color: "#FF0000",
+                    fill:true
                 };
 
                 var numPoints = parseInt($("#numPoints").attr("value"));
                 for(var i=0; i<numPoints; ++i) {
-                    var point = new Point([randomX(), randomY()], 5,
+                    var point = new Point([randomX(), randomY()], 3,
                         style);
-                    scene.addObjects([point]);
+
                     pointList.push(point);
                 }
-
+                scene.addObjects(pointList);
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
 
@@ -334,10 +355,13 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
              */
             $("#btnQueryKdTree").click( (function() {
 
+                // create the actual pointlist and add it to the scene
                 var style = {
-                    width: 2,
-                    color: "#ff0000"
+                    width: 1,
+                    color: "#FF0000",
+                    fill:true
                 };
+
                 var queryPoint = new Point([randomX(), randomY()], 2,
                     style);
                 scene.addObjects([queryPoint]);
@@ -345,18 +369,15 @@ define(["jquery", "Line", "Circle","Point","Star", "KdTree", "util", "kdutil"],
 
                 console.log("query point: ", queryPoint.center);
 
-                ////////////////////////////////////////////////
-                // TODO: measure and compare timings of linear
-                //       and kd-nearest-neighbor search
-                ////////////////////////////////////////////////
-                var linearTiming;
-                var kdTiming;
-
+                console.time("linearSearch");
                 var minIdx = KdUtil.linearSearch(pointList, queryPoint);
+                console.timeEnd("linearSearch");
 
                 console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
-                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, 10000000, kdTree.root, 0);
+                console.time("kdSearch");
+                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, kdTree.root, 10000000, 0);
+                console.timeEnd("kdSearch");
 
                 console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 

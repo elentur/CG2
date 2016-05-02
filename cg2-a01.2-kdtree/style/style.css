@@ -38,7 +38,7 @@ h3 {
     padding: 0 10px
 }
 
-#param_area #panel p label{
+#param_area #panel p label, #param_area #panel p button{
     display: none;
 }
 

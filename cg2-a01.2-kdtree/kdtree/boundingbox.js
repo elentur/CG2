@@ -15,13 +15,13 @@ define([],
         "use strict";
 
         var BoundingBox = function (xmin, ymin, xmax, ymax, point, dim) {
-
             this.xmin = xmin;
             this.xmax = xmax;
             this.ymin = ymin;
             this.ymax = ymax;
 
             this.point = point;
+
             this.dim = dim;
 
             /**
