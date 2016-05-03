@@ -144,11 +144,7 @@ define(["util", "vec2", "Scene", "BezierPolygon", "TickMark", "PointDragger"],
             draggers.push(new PointDragger(getP2, setP2, draggerStyle));
             draggers.push(new PointDragger(getP3, setP3, draggerStyle));
             draggers.push(new BezierPolygon(getP0,getP1,getP2,getP3, draggerStyle));
-           /* if(this.tickMarks) {
-                for (var i = 0; i < this.tickMarks.length; i++) {
-                    draggers.push(this.tickMarks[i]);
-                }
-            }*/
+
             if(this.tickMarks) draggers.push(this.tickMarks);
             return draggers;
 
@@ -177,16 +173,6 @@ define(["util", "vec2", "Scene", "BezierPolygon", "TickMark", "PointDragger"],
             if(!this.tickMarks) this.tickMarks = new TickMark(function(){ return _line1.points});
             else this.tickMarks =undefined;
 
-
-
-
-
-            /*this.tickMarks.push(new TickMark(function(){return _line1.points[0] },function(){return vec2.sub(_line1.points[1],_line1.points[0])} ));
-            for(var i = 1 ; i < _line1.points.length -1; i++){
-                this.tickMarks.push(new TickMark(function(){return _line1.points[i]}, function(){return vec2.sub(_line1.points[i+1],_line1.points[i-1])} ));
-            }
-            this.tickMarks.push(new TickMark(function(){return _line1.points[_line1.points.length-1]},function(){return vec2.sub(_line1.points[_line1.points.length-1],_line1.points[_line1.points.length-2])}));
-*/
         };
         // this module only exports the constructor for Circle objects
         return BezierCurve;

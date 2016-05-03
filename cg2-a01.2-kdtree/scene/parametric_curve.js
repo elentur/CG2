@@ -15,8 +15,8 @@
 
 
 /* requireJS module definition */
-define(["util", "vec2", "Scene", "PointDragger"],
-    (function (util, vec2, Scene, PointDragger) {
+define(["util", "vec2", "Scene","TickMark"],
+    (function (util, vec2, Scene, TickMark) {
 
         "use strict";
 
@@ -42,7 +42,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             this.tMin = parseInt(tMin);
             this.tMax = parseInt(tMax);
             this.segments = parseInt(segments);
-            this.center=center;
+            this.center= center;
             this.curve = true;
             this.points = [];
 
@@ -55,18 +55,20 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 var fY =  eval("(function(x){return " + this.fY + ";})");
                 for (var i = 0; i < this.segments; i++) {
                     var t1 = this.tMin + (i / this.segments) * (this.tMax - this.tMin);
-                    this.points.push([fX(t1), fY(t1)]);
+
+                    this.points.push([fX(t1)+this.center[0],fY(t1)+this.center[1]]);
                 }
             }catch(e){
                 return false;
             }
+            console.log(this.points);
             return true;
         };
         // draw this circle into the provided 2D rendering context
         ParametricCurve.prototype.draw = function (context) {
             // draw actual circle
             context.beginPath();
-            context.translate(this.center[0],this.center[1]);
+           // context.translate(this.center[0],this.center[1]);
             for (var i = 1; i <  this.points.length; i++) {
                 // set points to be drawn
                 context.moveTo( this.points[i-1][0], this.points[i-1][1]);
@@ -75,7 +77,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // set drawing style
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
-            context.translate(-this.center[0],-this.center[1]);
+           // context.translate(-this.center[0],-this.center[1]);
             // actually start drawing
             context.stroke();
 
@@ -92,10 +94,10 @@ define(["util", "vec2", "Scene", "PointDragger"],
             for (var i = 1; i < this.points.length; i++){
                 //set coordinates for one arm
                 //set coordinates for the line outwards
-                x1 = this.points[i-1][0] + this.center[0];
-                y1 = this.points[i-1][1] + this.center[1];
-                x2 = this.points[i][0] + this.center[0];
-                y2 = this.points[i][1] + this.center[1];
+                x1 = this.points[i-1][0];
+                y1 = this.points[i-1][1];
+                x2 = this.points[i][0];
+                y2 = this.points[i][1];
                 isOnLine= this.hitLine(pos,x1,y1,x2,y2);
                 if(isOnLine) return true;
             }
@@ -104,7 +106,10 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         // return list of draggers to manipulate this circle
         ParametricCurve.prototype.createDraggers = function () {
-            return [];
+            var draggers = [];
+            if(this.tickMarks) draggers.push(this.tickMarks);
+            return draggers;
+
 
         };
         ParametricCurve.prototype.hitLine = function (pos,x1,y1,x2,y2){
@@ -124,7 +129,12 @@ define(["util", "vec2", "Scene", "PointDragger"],
             }
             return false;
         };
+        ParametricCurve.prototype.generateTickMarks = function (){
+            var _line1 =this;
+            if(!this.tickMarks) this.tickMarks = new TickMark(function(){ return _line1.points});
+            else this.tickMarks =undefined;
 
+        };
         // this module only exports the constructor for Circle objects
         return ParametricCurve;
 
