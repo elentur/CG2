@@ -54,7 +54,7 @@ define(["util", "vec2", "Scene", "BezierPolygon", "TickMark", "PointDragger"],
             var fX =  function(x) {return Math.pow((1-x),3)*that.p0[0]+3*Math.pow((1-x),2)*x*that.p1[0] + 3*(1-x)*Math.pow(x,2)*that.p2[0]+ Math.pow(x,3)*that.p3[0]};
             var fY =  function(x) {return Math.pow((1-x),3)*that.p0[1]+3*Math.pow((1-x),2)*x*that.p1[1] + 3*(1-x)*Math.pow(x,2)*that.p2[1]+ Math.pow(x,3)*that.p3[1]};
 
-            for (var i = 0; i < this.segments; i++) {
+            for (var i = 0; i <= this.segments; i++) {
                 var t1 =  (i / this.segments);
 
                 this.points.push([fX(t1), fY(t1)]);
