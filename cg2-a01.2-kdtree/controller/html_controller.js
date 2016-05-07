@@ -358,7 +358,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 // deleteBtn Listener
                 createListener(
                     $("#btnDelete"),
-                    $("#btnDelete"),
+                    $(".btnDelete"),
                     obj != undefined,
                     function(){
                         scene.removeObjects([sceneController.getSelectedObject()]);

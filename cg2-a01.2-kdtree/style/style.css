@@ -31,7 +31,7 @@ h3 {
 .w3c > div > a { margin-left: -1px; position: relative; left: 1px; text-decoration: none; color: black; background: white; display: block; float: left; padding: 5px 10px; border: 1px solid #ccc; border-bottom: 1px solid white; }
 .w3c > div:not(:target) > a { border-bottom: 0; background: -moz-linear-gradient(top, white, #eee); }
 .w3c > div:target > a { background: white; }
-.w3c > div > div { background: white; z-index: -2; left: 0; top: 30px; bottom: 0; right: 0; padding: 20px; border: 1px solid #ccc; }
+.w3c > div > div { background: white; z-index: -2; left: 0; top: 30px; bottom: 0; right: 0; padding: 10px; border: 1px solid #ccc; }
 .w3c > div:not(:target) > div { position: absolute }
 .w3c > div:target > div { position: absolute; z-index: 1; }
 
@@ -44,19 +44,32 @@ h3 {
     border-style: dashed;
     border-color: #c3c3c3;
     text-align:left;
-    padding: 0 10px
 }
 
-#param_area #panel p label, #param_area #panel p button{
-    display: none;
+#param_area .form-group{
+    margin: 10px 0;
 }
 
-#param_area label span {
-    display: inline-block;
-    width: 100px;
+#param_area .form-group label {
+    display:inline-block;
+    width:100px;
 }
 
-    /* all input elements get a fixed width */
-input {
+#param_area .form-group input {
+    display:inline-block;
     width:80px;
+}
+
+#param_area .form-group input[type='checkbox']{
+    width:0;
+}
+
+#param_area .form-group input.long-input {
+    width: 180px;
+}
+
+#param_area button.btndelete {
+    position: absolute;
+    left:10px;
+    bottom: 10px;
 }

@@ -41,141 +41,150 @@
         <div class="w3c">
             <div id="tab1">
                 <a href="#tab1">Objects</a>
-                <div>
-                    <button id="btnNewLine" type="button">New Line</button>
-
-                    <button id="btnNewCircle" type="button">New Circle</button>
-
-                    <button id="btnNewStar" type="button">New Star</button>
-
-                    <button id="btnNewPoint" type="button">New Point</button>
-
-                    <div id="panel">
-                        <h3>Edit Objects:</h3>
-
-                        <p>
-                            <label id="objColorLabel">
-                                <span>Color:</span>
-                                <input id="objColor" type="color" value="#000000">
-                            </label>
-                        </p>
-
-                        <p>
-                            <label id="objWidthLabel">
-                                <span>Line Width:</span>
-                                <input id="objWidth" type="number" step="0.5" min="1" max="100" value="0">
-                            </label>
-                        </p>
-
-                        <p>
-                            <label id="objRadiusLabel">
-                                <span>Radius:</span>
-                                <input id="objRadius" type="number" min="1" value="0">
-                            </label>
-                        </p>
-
-                        <p>
-                            <label id="objInnerRadiusLabel">
-                                <span>Inner Radius:</span>
-                                <input id="objInnerRadius" type="number" min="1" value="0">
-                            </label>
-                        </p>
-
-                        <p>
-                            <label id="objArmLabel">
-                                <span>Arms:</span>
-                                <input id="objArm" type="number" min="3" value="0">
-                            </label>
-                        </p>
-                        <p>
-                            <label id="objTickMarksLabel">
-                                <input id="objTickMarks" type="checkbox" name="TickMarks" value="0">
-                                show tick marks:
-                            </label>
-                        </p>
-
+                <div id="panel">
+                    <h3>Create Object:</h3>
+                    <div class="form-group">
+                        <button id="btnNewLine" type="button">New Line</button>
+                        <button id="btnNewCircle" type="button">New Circle</button>
                     </div>
+                    <div class="form-group">
+                        <button id="btnNewStar" type="button">New Star</button>
+                        <button id="btnNewPoint" type="button">New Point</button>
+                    </div>
+
+                    <h3>Edit Object:</h3>
+                    <div class="form-group">
+                        <label>
+                            Color:
+                        </label>
+                        <input id="objColor" type="color" value="#000000">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Line Width:
+                        </label>
+                        <input id="objWidth" type="number" step="0.5" min="1" max="100" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Radius:
+                        </label>
+                        <input id="objRadius" type="number" min="1" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Inner Radius:
+                        </label>
+                        <input id="objInnerRadius" type="number" min="1" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label> Arms: </label>
+                        <input id="objArm" type="number" min="3" value="0">
+                    </div>
+
+                    <button class="btnDelete" type="button">delete Object</button>
+
                 </div>
             </div>
             <div id="tab2">
                 <a href="#tab2">Parametric Curve</a>
-                <div>
-                    <button id="btnParametricCurve" type="button">Parametric Curve</button>
-                    <p>
-                        <label id="objXfunctionLabel">
-                            <span>X:</span>
-                            <input id="objXfunction" type="text" value="50*Math.sin(x)">
+                <div class="curves">
+                    <div class="form-group">
+                        <button id="btnParametricCurve" type="button">Parametric Curve</button>
+                    </div>
+                    <h3>Edit Curve:</h3>
+                    <div class="form-group">
+                        <label>
+                            X:
                         </label>
-                    </p>
+                        <input id="objXfunction" class="long-input" type="text" value="50*Math.sin(x)">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Y:
+                        </label>
+                        <input id="objYfunction" class="long-input" type="text" value="50*Math.cos(x)">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            t-min:
+                        </label>
+                        <input id="objTMin" type="number" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            t-max:
+                        </label>
+                        <input id="objTMax" type="number" value="7">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Segments:
+                        </label>
+                        <input id="objSegments" type="number" value="20">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            show tick marks:
+                        </label>
+                        <input class="objTickMarks" type="checkbox" name="TickMarks" value="0">
+                    </div>
 
-                    <p>
-                        <label id="objYfunctionLabel">
-                            <span>Y:</span>
-                            <input id="objYfunction" type="text" value="50*Math.cos(x)">
-                        </label>
-                    </p>
+                    <button class="btnDelete" type="button">delete Object</button>
 
-                    <p>
-                        <label id="objTMinLabel">
-                            <span>t-min:</span>
-                            <input id="objTMin" type="number" value="0">
-                        </label>
-                    </p>
-
-                    <p>
-                        <label id="objTMaxLabel">
-                            <span>t-max:</span>
-                            <input id="objTMax" type="number" value="7">
-                        </label>
-                    </p>
-
-                    <p>
-                        <label id="objSegmentsLabel">
-                            <span>Segments:</span>
-                            <input id="objSegments" type="number" value="20">
-                        </label>
-                    </p>
                 </div>
             </div>
             <div id="tab3">
                 <a href="#tab3">Bezier Curve</a>
-                <div>
-                    <button id="btnBezierCurve" type="button">Bezier Curve</button>
-                    <p>
+                <div class="curves">
+                    <div class="form-group">
+                        <button id="btnBezierCurve" type="button">Bezier Curve</button>
+                    </div>
+                    <h3>Edit Curve:</h3>
+                    <div class="form-group">
                         <label id="objBezierSegmentsLabel">
                             <span>Segments:</span>
-                            <input id="objBezierSegments" type="number" value="20">
                         </label>
-                    </p>
+                        <input id="objBezierSegments" type="number" value="20">
+                    </div>
+                    <div class="form-group">
+                        <label id="objTickMarksLabel">
+                            show tick marks:
+                        </label>
+                        <input class="objTickMarks" type="checkbox" name="TickMarks" value="0">
+                    </div>
+
+                    <button class="btnDelete" type="button">delete Object</button>
+
                 </div>
             </div>
             <div id="tab4">
                 <a href="#tab4">KD-Tree</a>
-                <div>
-                    <p>
-                        <button id="btnNewPointList" type="button">New Point List</button>
-                        <input id="numPoints" type="number" name="pointListNumber" value="5">
-                    </p>
+                <div id="kd-tree">
 
-                    <p>
+                    <div class="form-group">
+                        <label>Points: </label>
+                        <input id="numPoints" type="number" name="pointListNumber" value="5">
+                        <button id="btnNewPointList" type="button">New Point List</button>
+
+                    </div>
+                    <div class="form-group">
+                        <label>KD-Tree: </label>
                         <button id="btnBuildKdTree" type="button">Build kdTree</button>
                         <button id="btnQueryKdTree" type="button">Query kdTree</button>
-                    </p>
-                    <p>
+                    </div>
+                    <div class="form-group">
                         <label>
-                            <input id="visKdTree" type="checkbox" name="visKdTree" value="1">
                             show kd-Tree
                         </label>
-                    </p>
+                        <input id="visKdTree" type="checkbox" name="visKdTree" value="1">
+                    </div>
+
+                    <button class="btnDelete" type="button">delete Object</button>
+
                 </div>
             </div>
         </div>
-
-        <p>
-            <button id="btnDelete" type="button">delete Object</button>
-        </p>
-
-
     </div>
 
 
