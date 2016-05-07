@@ -61,7 +61,6 @@ define(["util", "vec2", "Scene","TickMark"],
             }catch(e){
                 return false;
             }
-            console.log(this.points);
             return true;
         };
         // draw this circle into the provided 2D rendering context
@@ -129,11 +128,10 @@ define(["util", "vec2", "Scene","TickMark"],
             }
             return false;
         };
-        ParametricCurve.prototype.generateTickMarks = function (){
-            var _line1 =this;
-            if(!this.tickMarks) this.tickMarks = new TickMark(function(){ return _line1.points});
-            else this.tickMarks =undefined;
-
+        ParametricCurve.prototype.generateTickMarks = function (isChecked){
+            var _line1 = this;
+            
+            this.tickMarks = isChecked ? new TickMark(function(){ return _line1.points}) : false;
         };
         // this module only exports the constructor for Circle objects
         return ParametricCurve;

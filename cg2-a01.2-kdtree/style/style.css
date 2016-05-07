@@ -50,6 +50,10 @@ h3 {
     margin: 10px 0;
 }
 
+#param_area #panel-fields .form-group{
+    display:none;
+}
+
 #param_area .form-group label {
     display:inline-block;
     width:100px;
