@@ -13,67 +13,67 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurve","BezierPolygon", "KdTree", "util", "kdutil"],
-    (function($, Line, Circle, Point, Star, ParametricCurve, BezierCurve,BezierPolygon, KdTree, Util, KdUtil) {
+define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierCurve", "BezierPolygon", "KdTree", "util", "kdutil"],
+    (function ($, Line, Circle, Point, Star, ParametricCurve, BezierCurve, BezierPolygon, KdTree, Util, KdUtil) {
         "use strict";
 
         /*
          * define callback functions to react to changes in the HTML page
          * and provide them with a closure defining context and scene
          */
-        var HtmlController = function(context,scene,sceneController) {
+        var HtmlController = function (context, scene, sceneController) {
 
             var kdTree;
             var pointList = [];
 
             // generate random X coordinate within the canvas
-            var randomX = function() {
-                return Math.floor(Math.random()*(context.canvas.width-10))+5;
+            var randomX = function () {
+                return Math.floor(Math.random() * (context.canvas.width - 10)) + 5;
             };
 
             // generate random Y coordinate within the canvas
-            var randomY = function() {
-                return Math.floor(Math.random()*(context.canvas.height-10))+5;
+            var randomY = function () {
+                return Math.floor(Math.random() * (context.canvas.height - 10)) + 5;
             };
 
             // generate random radius for circle
-            var randomCircleRadius = function() {
-                return Math.floor(Math.random()*(context.canvas.height)/3);
+            var randomCircleRadius = function () {
+                return Math.floor(Math.random() * (context.canvas.height) / 3);
             };
 
             // generate random radius for point
-            var randomPointRadius = function() {
-                return Math.floor(Math.random()*5);
+            var randomPointRadius = function () {
+                return Math.floor(Math.random() * 5);
             };
             // generate random color in hex notation
-            var randomColor = function() {
+            var randomColor = function () {
 
                 // convert a byte (0...255) to a 2-digit hex string
-                var toHex2 = function(byte) {
+                var toHex2 = function (byte) {
                     var s = byte.toString(16); // convert to hex string
-                    if(s.length == 1) s = "0"+s; // pad with leading 0
+                    if (s.length == 1) s = "0" + s; // pad with leading 0
                     return s;
                 };
 
-                var r = Math.floor(Math.random()*25.9)*10;
-                var g = Math.floor(Math.random()*25.9)*10;
-                var b = Math.floor(Math.random()*25.9)*10;
+                var r = Math.floor(Math.random() * 25.9) * 10;
+                var g = Math.floor(Math.random() * 25.9) * 10;
+                var b = Math.floor(Math.random() * 25.9) * 10;
 
                 // convert to hex notation
-                return "#"+toHex2(r)+toHex2(g)+toHex2(b);
+                return "#" + toHex2(r) + toHex2(g) + toHex2(b);
             };
 
             // public method: show parameters for selected object
-            this.showParamsForObj = function(obj) {
+            this.showParamsForObj = function (obj) {
 
-                if(!obj) {
+                if (!obj) {
                     $("#radius_div").hide();
                     return;
                 }
 
                 $("#obj_lineWidth").attr("value", obj.lineStyle.width);
                 $("#obj_color").attr("value", obj.lineStyle.color);
-                if(obj.radius == undefined) {
+                if (obj.radius == undefined) {
                     $("#radius_div").hide();
                 } else {
                     $("#radius_div").show();
@@ -83,17 +83,17 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             };
 
             // for all elements of class objParams
-            $(".objParam").change( (function(ev) {
+            $(".objParam").change((function (ev) {
 
                 var obj = sceneController.getSelectedObject();
-                if(!obj) {
+                if (!obj) {
                     window.console.log("ParamController: no object selected.");
                     return;
                 }
 
                 obj.lineStyle.width = parseInt($("#obj_lineWidth").attr("value"));
                 obj.lineStyle.color = $("#obj_color").attr("value");
-                if(obj.radius != undefined) {
+                if (obj.radius != undefined) {
                     obj.radius = parseInt($("#obj_radius").attr("value"));
                 }
 
@@ -104,17 +104,17 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             /*
              * event handler for "new line button".
              */
-            $("#btnNewLine").click( (function() {
+            $("#btnNewLine").click((function () {
 
                 // create the actual line and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: Math.floor(Math.random() * 3) + 1,
                     color: randomColor()
                 };
 
-                var line = new Line( [randomX(),randomY()],
-                    [randomX(),randomY()],
-                    style );
+                var line = new Line([randomX(), randomY()],
+                    [randomX(), randomY()],
+                    style);
                 scene.addObjects([line]);
 
                 // deselect all objects, then select the newly created object
@@ -126,17 +126,17 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             /*
              * event handler for "new Circle button".
              */
-            $("#btnNewCircle").click( (function() {
+            $("#btnNewCircle").click((function () {
 
                 // create the actual circle and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: Math.floor(Math.random() * 3) + 1,
                     color: randomColor()
                 };
 
-                var circle = new Circle( [randomX(),randomY()],
+                var circle = new Circle([randomX(), randomY()],
                     randomCircleRadius(),
-                    style );
+                    style);
                 scene.addObjects([circle]);
 
                 // deselect all objects, then select the newly created object
@@ -148,18 +148,18 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             /*
              * event handler for "new point button".
              */
-            $("#btnNewPoint").click( (function() {
+            $("#btnNewPoint").click((function () {
 
                 // create the actual point and add it to the scene
                 var style = {
                     width: 1,
                     color: randomColor(),
-                    fill:true
+                    fill: true
                 };
 
-                var point = new Point( [randomX(),randomY()],
+                var point = new Point([randomX(), randomY()],
                     randomPointRadius(),
-                    style );
+                    style);
                 scene.addObjects([point]);
 
 
@@ -171,20 +171,20 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             /*
              * event handler for "new star button".
              */
-            $("#btnNewStar").click( (function() {
+            $("#btnNewStar").click((function () {
 
                 // create the actual line and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: Math.floor(Math.random() * 3) + 1,
                     color: randomColor()
                 };
                 var radius = randomCircleRadius();
-                var innerRadius  = Math.floor(Math.random()*(radius-1));
-                var star = new Star( [randomX(),randomY()],
+                var innerRadius = Math.floor(Math.random() * (radius - 1));
+                var star = new Star([randomX(), randomY()],
                     radius,
-                    Math.floor(Math.random()*6)+4,
+                    Math.floor(Math.random() * 6) + 4,
                     innerRadius,
-                    style );
+                    style);
                 scene.addObjects([star]);
 
                 // deselect all objects, then select the newly created object
@@ -196,48 +196,48 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
              * event handler for "new ParametricCurve button".
              */
 
-            $("#btnParametricCurve").click( (function() {
+            $("#btnParametricCurve").click((function () {
                 // create the actual ParametricCurve and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: Math.floor(Math.random() * 3) + 1,
                     color: randomColor()
                 };
 
-                var curve = new ParametricCurve([randomX(),randomY()], $("#objXfunction").val(),$("#objYfunction").val(),
-                    $("#objTMin").val(),$("#objTMax").val(), $("#objSegments").val(),
-                    style );
-                if(curve.generatePoints()) {
+                var curve = new ParametricCurve([randomX(), randomY()], $("#objXfunction").val(), $("#objYfunction").val(),
+                    $("#objTMin").val(), $("#objTMax").val(), $("#objSegments").val(),
+                    style);
+                if (curve.generatePoints()) {
                     scene.addObjects([curve]);
                     // deselect all objects, then select the newly created object
                     sceneController.deselect();
                     sceneController.select(curve); // this will also redraw
-                }else{
+                } else {
                     alert("Eine ihrer Funktionen ist fehlerhaft, bitte geben sie sie neu ein.")
                 }
 
             }));
 
-            $("#btnBezierCurve").click( (function() {
+            $("#btnBezierCurve").click((function () {
                 // create the actual ParametricCurve and add it to the scene
                 var style = {
-                    width: Math.floor(Math.random()*3)+1,
+                    width: Math.floor(Math.random() * 3) + 1,
                     color: randomColor()
                 };
 
-                var curve = new BezierCurve([randomX(),randomY()],[randomX(),randomY()] ,[randomX(),randomY()],
-                    [randomX(),randomY()],$("#objBezierSegments").val(),
-                    style );
+                var curve = new BezierCurve([randomX(), randomY()], [randomX(), randomY()], [randomX(), randomY()],
+                    [randomX(), randomY()], $("#objBezierSegments").val(),
+                    style);
 
-                    scene.addObjects([curve]);
-                    // deselect all objects, then select the newly created object
-                    sceneController.deselect();
-                    sceneController.select(curve); // this will also redraw
+                scene.addObjects([curve]);
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+                sceneController.select(curve); // this will also redraw
             }));
 
             /*
              * event handler if an item was selected.
              */
-            sceneController.onSelection((function(){
+            sceneController.onSelection((function () {
 
                 var obj = sceneController.getSelectedObject();
 
@@ -247,7 +247,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
             /*
              * event handler if an item was changed.
              */
-            sceneController.onObjChange((function(){
+            sceneController.onObjChange((function () {
 
                 var obj = sceneController.getSelectedObject();
 
@@ -256,15 +256,15 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
 
 
             /*
-            * set value for parameter bar and remove prior listener
-            * and create a new listener
-            */
+             * set value for parameter bar and remove prior listener
+             * and create a new listener
+             */
             function createListener(input, objVal, func) {
 
                 var parent = input.parent().hide();
 
-                if(objVal) {
-                    input.val(objVal) ;
+                if (objVal) {
+                    input.val(objVal);
 
                     parent.show();
 
@@ -275,10 +275,10 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
 
             }
 
-            function createContinuanceListener(input, objVal, func){
-                if(objVal !== undefined) {
+            function createContinuanceListener(input, objVal, func) {
+                if (objVal !== undefined) {
 
-                    input.val(objVal) ;
+                    input.val(objVal);
 
                     input.off('change');
 
@@ -286,13 +286,13 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 }
             }
 
-            var showPanelItems = function(obj){
-                
+            var showPanelItems = function (obj) {
+
                 // color Listener
                 createListener(
                     $("#objColor"),
                     obj.lineStyle.color || false,
-                    function(){
+                    function () {
                         obj.lineStyle.color = $(this).val();
                         sceneController.deselect();
                         sceneController.select(obj);
@@ -303,7 +303,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 createListener(
                     $("#objWidth"),
                     obj.lineStyle.width || false,
-                    function(){
+                    function () {
                         obj.lineStyle.width = parseFloat($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
@@ -314,7 +314,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 createListener(
                     $("#objRadius"),
                     obj.radius || false,
-                    function(){
+                    function () {
                         obj.radius = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
@@ -325,7 +325,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 createListener(
                     $("#objInnerRadius"),
                     obj.innerRadius || false,
-                    function(){
+                    function () {
                         obj.innerRadius = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
@@ -336,7 +336,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 createListener(
                     $("#objArm"),
                     obj.armNumber || false,
-                    function(){
+                    function () {
                         obj.armNumber = parseInt($(this).val());
                         sceneController.deselect();
                         sceneController.select(obj);
@@ -346,19 +346,19 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                 createListener(
                     $("#objTickMarks"),
                     obj.curve || false,
-                    function(){
+                    function () {
                         obj.generateTickMarks($(this).is(':checked'));
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
                 );
 
-                if(obj.curve){
+                if (obj.curve) {
 
                     createContinuanceListener(
                         $("#objTMin"),
                         obj.tMin,
-                        function(){
+                        function () {
                             obj.tMin = parseInt($(this).val());
                             obj.generatePoints();
                             sceneController.deselect();
@@ -369,7 +369,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                     createContinuanceListener(
                         $("#objTMax"),
                         obj.tMax,
-                        function(){
+                        function () {
                             obj.tMax = parseInt($(this).val());
                             obj.generatePoints();
                             sceneController.deselect();
@@ -380,7 +380,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                     createContinuanceListener(
                         $("#objSegments"),
                         obj.segments,
-                        function(){
+                        function () {
                             obj.segments = $(this).val();
                             obj.generatePoints();
                             sceneController.deselect();
@@ -391,7 +391,7 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                     createContinuanceListener(
                         $("#objBezierSegments"),
                         obj.segments,
-                        function(){
+                        function () {
                             obj.segments = $(this).val();
                             obj.generatePoints();
                             sceneController.deselect();
@@ -399,125 +399,126 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
                         }
                     );
 
-                    createContinuanceListener(
-                        $("#objControlPoint00"),
-                        obj.p0[0],
-                        function(){
-                            obj.p0[0] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
+                    if (obj.p1) {
+
+                        createContinuanceListener(
+                            $("#objControlPoint00"),
+                            obj.p0[0],
+                            function () {
+                                obj.p0[0] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
+
+                        createContinuanceListener(
+                            $("#objControlPoint10"),
+                            obj.p1[0],
+                            function () {
+                                obj.p1[0] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
+
+                        createContinuanceListener(
+                            $("#objControlPoint20"),
+                            obj.p2[0],
+                            function () {
+                                obj.p2[0] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
+
+                        createContinuanceListener(
+                            $("#objControlPoint30"),
+                            obj.p3[0],
+                            function () {
+                                obj.p3[0] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
+
+                        createContinuanceListener(
+                            $("#objControlPoint01"),
+                            obj.p0[1],
+                            function () {
+                                obj.p0[1] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
 
 
-                    createContinuanceListener(
-                        $("#objControlPoint10"),
-                        obj.p1[0],
-                        function(){
-                            obj.p1[0] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
+                        createContinuanceListener(
+                            $("#objControlPoint11"),
+                            obj.p1[1],
+                            function () {
+                                obj.p1[1] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
 
-                    createContinuanceListener(
-                        $("#objControlPoint20"),
-                        obj.p2[0],
-                        function(){
-                            obj.p2[0] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
+                        createContinuanceListener(
+                            $("#objControlPoint21"),
+                            obj.p2[1],
+                            function () {
+                                obj.p2[1] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
 
-                    createContinuanceListener(
-                        $("#objControlPoint30"),
-                        obj.p3[0],
-                        function(){
-                            obj.p3[0] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objControlPoint01"),
-                        obj.p0[1],
-                        function(){
-                            obj.p0[1] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-
-                    createContinuanceListener(
-                        $("#objControlPoint11"),
-                        obj.p1[1],
-                        function(){
-                            obj.p1[1] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objControlPoint21"),
-                        obj.p2[1],
-                        function(){
-                            obj.p2[1] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objControlPoint31"),
-                        obj.p3[1],
-                        function(){
-                            obj.p3[1] = parseFloat($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
+                        createContinuanceListener(
+                            $("#objControlPoint31"),
+                            obj.p3[1],
+                            function () {
+                                obj.p3[1] = parseFloat($(this).val());
+                                obj.generatePoints();
+                                sceneController.deselect();
+                                sceneController.select(obj);
+                            }
+                        );
+                    }
 
                 }
             };
 
 
-
-            $("button.btnDelete").on('click', function(){
+            $("button.btnDelete").on('click', function () {
 
                 var obj = sceneController.getSelectedObject();
 
-                if(obj) {
+                if (obj) {
                     scene.removeObjects([obj]);
                     sceneController.deselect();
-                }else{
+                } else {
                     alert("No object selected!");
                 }
             });
 
-            $("#btnNewPointList").click( (function() {
+            $("#btnNewPointList").click((function () {
 
                 // create the actual pointlist and add it to the scene
                 var style = {
                     width: 1,
                     color: "#FF0000",
-                    fill:true
+                    fill: true
                 };
 
                 var numPoints = parseInt($("#numPoints").attr("value"));
 
-                for(var i=0; i<numPoints; ++i) {
+                for (var i = 0; i < numPoints; ++i) {
                     var point = new Point([randomX(), randomY()], 3,
                         style);
 
@@ -530,16 +531,16 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
 
             }));
 
-            $("#visKdTree").click( (function() {
+            $("#visKdTree").click((function () {
 
                 var showTree = $("#visKdTree").attr("checked");
-                if(showTree && kdTree) {
+                if (showTree && kdTree) {
                     KdUtil.visualizeKdTree(sceneController, scene, kdTree.root, 0, 0, 600, true);
                 }
 
             }));
 
-            $("#btnBuildKdTree").click( (function() {
+            $("#btnBuildKdTree").click((function () {
 
                 kdTree = new KdTree(pointList);
 
@@ -549,13 +550,13 @@ define(["jquery", "Line", "Circle","Point","Star", "ParametricCurve","BezierCurv
              * creates a random query point and
              * runs linear search and kd-nearest-neighbor search
              */
-            $("#btnQueryKdTree").click( (function() {
+            $("#btnQueryKdTree").click((function () {
 
                 // create the actual pointlist and add it to the scene
                 var style = {
                     width: 1,
                     color: "#FF0000",
-                    fill:true
+                    fill: true
                 };
 
                 var queryPoint = new Point([randomX(), randomY()], 2,
