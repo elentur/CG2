@@ -39,8 +39,8 @@ define(["util", "vec2", "Scene","TickMark"],
             this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
             this.fX = fX;
             this.fY = fY;
-            this.tMin = parseInt(tMin);
-            this.tMax = parseInt(tMax);
+            this.tMin = parseFloat(tMin);
+            this.tMax = parseFloat(tMax);
             this.segments = parseInt(segments);
             this.center= center;
             this.curve = true;
