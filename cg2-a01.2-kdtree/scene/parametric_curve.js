@@ -43,13 +43,14 @@ define(["util", "vec2", "Scene","TickMark"],
             this.tMax = parseFloat(tMax);
             this.segments = parseInt(segments);
             this.center= center;
-            this.curve = true;
+            this.tickMarks =false;
             this.points = [];
 
 
         };
 
         ParametricCurve.prototype.generatePoints = function(){
+            this.points=[];
             try {
                 var fX =  eval("(function(x){return " + this.fX + ";})");
                 var fY =  eval("(function(x){return " + this.fY + ";})");
@@ -133,6 +134,13 @@ define(["util", "vec2", "Scene","TickMark"],
             
             this.tickMarks = isChecked ? new TickMark(function(){ return _line1.points}) : false;
         };
+        //returns if the curve shows tickmarks or not
+        ParametricCurve.prototype.curve = function (){
+            var _line1 = this;
+            return function(){
+                return _line1.tickMarks};
+        };
+
         // this module only exports the constructor for Circle objects
         return ParametricCurve;
 

@@ -204,7 +204,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 };
 
                 var curve = new ParametricCurve([randomX(), randomY()], $("#objXfunction").val(), $("#objYfunction").val(),
-                    $("#objTMin").val(), $("#objTMax").val(), $("#objSegments").val(),
+                    Math.floor(Math.random()*(-20)), Math.floor(Math.random()*20), Math.floor(Math.random()*46)+5,
                     style);
                 if (curve.generatePoints()) {
                     scene.addObjects([curve]);
@@ -265,6 +265,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
                 if (objVal !== false) {
                     input.val(objVal);
+                    if(input.is(':checkbox'))input.prop("checked",objVal());
 
                     parent.show();
 
@@ -276,7 +277,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
             }
 
             var showPanelItems = function (obj) {
-
+                //if no object is given make all invisible with a null object
+                if(!obj){
+                    obj = new Line([0,0],[0,0], {width:null,color:null});
+                }
                 // color Listener
                 createListener(
                     $("#objColor"),
@@ -335,7 +339,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 // tickMarks checkbox Listener
                 createListener(
                     $("#objTickMarks"),
-                    obj.curve || false,
+                    typeof  obj.curve =='function'? obj.curve() : false,
                     function () {
                         obj.generateTickMarks($(this).is(':checked'));
                         sceneController.deselect();
@@ -356,7 +360,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
                 createListener(
                     $("#objTMax"),
-                    obj.tMax || false,
+                    obj.tMax!= undefined ? obj.tMax : false,
                     function () {
                         obj.tMax = parseInt($(this).val());
                         obj.generatePoints();
@@ -376,7 +380,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
-                createListener(
+             /*   createListener(
                     $("#objXfunction"),
                     obj.fX != undefined ?  obj.fX : false,
                     function () {
@@ -396,7 +400,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
-                );
+                );*/
 
                 createListener(
                     $("#objControlPoint00"),
@@ -497,6 +501,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 if (obj) {
                     scene.removeObjects([obj]);
                     sceneController.deselect();
+                    showPanelItems();
                 } else {
                     alert("No object selected!");
                 }
@@ -507,7 +512,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 // create the actual pointlist and add it to the scene
                 var style = {
                     width: 1,
-                    color: "#FF0000",
+                    color: "#0000FF",
                     fill: true
                 };
 
@@ -553,7 +558,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     color: "#FF0000",
                     fill: true
                 };
-
+                sceneController.deselect();
                 var queryPoint = new Point([randomX(), randomY()], 2,
                     style);
                 scene.addObjects([queryPoint]);

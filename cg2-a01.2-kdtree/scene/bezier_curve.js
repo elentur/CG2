@@ -43,7 +43,7 @@ define(["util", "vec2", "Scene", "BezierPolygon", "TickMark", "PointDragger"],
             this.p3 = p3;
             this.segments = parseInt(segments);
             this.points = [];
-            this.curve = true;
+            this.tickMarks =false;
             this.generatePoints();
 
         };
@@ -173,6 +173,13 @@ define(["util", "vec2", "Scene", "BezierPolygon", "TickMark", "PointDragger"],
 
             this.tickMarks = isChecked ? new TickMark(function(){ return _line1.points}) : false;
 
+        };
+
+        //returns if the curve shows tickmarks or not
+        BezierCurve.prototype.curve = function (){
+            var _line1 = this;
+            return function(){
+                return _line1.tickMarks};
         };
         // this module only exports the constructor for Circle objects
         return BezierCurve;
