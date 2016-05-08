@@ -5,10 +5,7 @@
  *
  * Module: BezierPolygon
  *
- * A StraighLine knows how to draw itself into a specified 2D context,
- * can tell whether a certain mouse position "hits" the object,
- * and implements the function createDraggers() to create a set of
- * draggers to manipulate itself.
+ * A BezierPolygon knows how to draw itself into a specified 2D context according to there control points .
  *
  */
 
@@ -20,12 +17,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         "use strict";
 
         /**
-         *  A simple straight line that can be dragged
-         *  around by its endpoints.
-         *  Parameters:
-         *  - point0 and point1: array objects representing [x,y] coordinates of start and end point
-         *  - lineStyle: object defining width and color attributes for line drawing,
-         *       begin of the form { width: 2, color: "#00FF00" }
+         *  A BezierPolygon is a polygon which is spanned between the control points .
          */
 
         var BezierPolygon = function (point0, point1, point2, point3, lineStyle) {
@@ -39,16 +31,16 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // draw style for drawing the line
             this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
 
-            // initial values in case either point is undefined
+            // initial the points according of the control points
             this.p0 = point0 || [10, 10];
             this.p1 = point1 || [50, 10];
             this.p2 = point2 || [10, 10];
             this.p3 = point3 || [50, 10];
         };
 
-        // draw this line into the provided 2D rendering context
+        // draw this BezierPolygon into the provided 2D rendering context
         BezierPolygon.prototype.draw = function (context) {
-            // draw actual line
+            // draw actual BezierPolygon
             context.beginPath();
 
             // set points to be drawn
@@ -66,20 +58,20 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         };
 
-        // test whether the mouse position is on this line segment
+        // it can't be hits
         BezierPolygon.prototype.isHit = function (context, pos) {
 
            return false;
 
         };
 
-        // return list of draggers to manipulate this line
+        // return a empty array
         BezierPolygon.prototype.createDraggers = function () {
             return [];
         };
 
 
-        // this module only exports the constructor for StraightLine objects
+        // this module only exports the constructor for BezierPolygon objects
         return BezierPolygon;
 
     })); // define
