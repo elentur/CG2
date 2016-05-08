@@ -4,12 +4,10 @@
  * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
  * changes by Marcus Bätz
  *
- * Module: circle
+ * Module: ParametricCurve
  *
- * A circle knows how to draw itself into a specified 2D context,
- * can tell whether a certain mouse position "hits" the object,
- * and implements the function createDraggers() to create a set of
- * draggers to manipulate itself.
+ * A ParametricCurve knows how to draw itself into a specified 2D context and
+ * can tell whether a certain mouse position "hits" the object.
  *
  */
 
@@ -21,13 +19,15 @@ define(["util", "vec2", "Scene","TickMark"],
         "use strict";
 
         /**
-         *  A circle that can be dragged
-         *  around by its center and is resizeable.
+         *  A ParametricCurve is a curve expressed by coordinates of the points as functions of a variable.
          *  Parameters:
-         *  - center : array object representing [x,y] coordinates of center of the circle
-         *  - radius : number value representing the radius of the circle
-         *  - lineStyle: object defining width and color attributes for line drawing,
-         *       begin of the form { width: 2, color: "#00FF00" }
+         *  - center : array object representing [x,y] coordinates of center of the curve
+         *  - fX : parametric equations of the x coordinate
+         *  - fY: parametric equations of the y coordinate
+         *  - t-min: min. parameter interval
+         *  - t-max: max. parameter interval
+         *  - segments: steps for the parameter interval
+         *  - points: Points for the line segments connecting
          */
 
         var ParametricCurve = function (center,fX, fY, tMin, tMax, segments, lineStyle) {
@@ -35,20 +35,27 @@ define(["util", "vec2", "Scene","TickMark"],
             console.log("creating ParametricCurve with [" +
                 fX + " for x," + fY + " for y] and t between " + tMin + " - " + tMax);
 
-            // draw style for drawing the line
+            // draw style for drawing the curve
             this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
+            // parametric equations
             this.fX = fX;
             this.fY = fY;
+            // parameter interval
             this.tMin = parseFloat(tMin);
             this.tMax = parseFloat(tMax);
+            // steps for the parameter interval
             this.segments = parseInt(segments);
+
+            // sets the center of the curve
             this.center= center;
-            this.curve = true;
+
             this.points = [];
 
-
+            // shows the listener that the object is a curve
+            this.curve = true;
         };
 
+        // Points for the connection of the lines
         ParametricCurve.prototype.generatePoints = function(){
             try {
                 var fX =  eval("(function(x){return " + this.fX + ";})");
@@ -63,11 +70,12 @@ define(["util", "vec2", "Scene","TickMark"],
             }
             return true;
         };
-        // draw this circle into the provided 2D rendering context
+        // draw this ParametricCurve into the provided 2D rendering context
         ParametricCurve.prototype.draw = function (context) {
-            // draw actual circle
+            // draw actual ParametricCurve
             context.beginPath();
-           // context.translate(this.center[0],this.center[1]);
+
+            // goes from point to point drawing lines
             for (var i = 1; i <  this.points.length; i++) {
                 // set points to be drawn
                 context.moveTo( this.points[i-1][0], this.points[i-1][1]);
@@ -76,13 +84,13 @@ define(["util", "vec2", "Scene","TickMark"],
             // set drawing style
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
-           // context.translate(-this.center[0],-this.center[1]);
+
             // actually start drawing
             context.stroke();
 
         };
 
-        // test whether the mouse position is on this circle segment
+        // test whether the mouse position is on this Curve segment
         ParametricCurve.prototype.isHit = function (context, pos) {
             var x1;
             var y1 ;
@@ -91,7 +99,7 @@ define(["util", "vec2", "Scene","TickMark"],
             var isOnLine =false;
 
             for (var i = 1; i < this.points.length; i++){
-                //set coordinates for one arm
+                //set coordinates for one line
                 //set coordinates for the line outwards
                 x1 = this.points[i-1][0];
                 y1 = this.points[i-1][1];
@@ -103,7 +111,7 @@ define(["util", "vec2", "Scene","TickMark"],
             return isOnLine;
         };
 
-        // return list of draggers to manipulate this circle
+        // return list of draggers to manipulate this Curve
         ParametricCurve.prototype.createDraggers = function () {
             var draggers = [];
             if(this.tickMarks) draggers.push(this.tickMarks);
@@ -111,6 +119,8 @@ define(["util", "vec2", "Scene","TickMark"],
 
 
         };
+
+        // tests  if the mouse is inside the line segment
         ParametricCurve.prototype.hitLine = function (pos,x1,y1,x2,y2){
             var t = vec2.projectPointOnLine(pos, [x1,y1], [x2,y2]);
             // console.log("t:", t);
@@ -128,12 +138,13 @@ define(["util", "vec2", "Scene","TickMark"],
             }
             return false;
         };
+        // sets the TickMarks on the curves
         ParametricCurve.prototype.generateTickMarks = function (isChecked){
             var _line1 = this;
             
-            this.tickMarks = isChecked ? new TickMark(function(){ return _line1.points}) : false;
+            this.tickMarks = isChecked ? new TickMark(function(){ return _line1.points}) : undefined;
         };
-        // this module only exports the constructor for Circle objects
+        // this module only exports the constructor for ParametricCurve objects
         return ParametricCurve;
 
     })); // define

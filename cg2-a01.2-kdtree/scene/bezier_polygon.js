@@ -3,7 +3,7 @@
  * (C)opyright Hartmut Schirmacher, hschirmacher.beuth-hochschule.de
  * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
  *
- * Module: straight_line
+ * Module: BezierPolygon
  *
  * A StraighLine knows how to draw itself into a specified 2D context,
  * can tell whether a certain mouse position "hits" the object,
