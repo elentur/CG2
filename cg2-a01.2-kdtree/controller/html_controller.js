@@ -225,7 +225,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 };
 
                 var curve = new BezierCurve([randomX(), randomY()], [randomX(), randomY()], [randomX(), randomY()],
-                    [randomX(), randomY()], $("#objBezierSegments").val(),
+                    [randomX(), randomY()], $("#objSegments").val(),
                     style);
 
                 scene.addObjects([curve]);
@@ -263,7 +263,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
                 var parent = input.parent().hide();
 
-                if (objVal) {
+                if (objVal !== false) {
                     input.val(objVal);
 
                     parent.show();
@@ -273,17 +273,6 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     input.on('change', func);
                 }
 
-            }
-
-            function createContinuanceListener(input, objVal, func) {
-                if (objVal !== undefined) {
-
-                    input.val(objVal);
-
-                    input.off('change');
-
-                    input.on('change', func);
-                }
             }
 
             var showPanelItems = function (obj) {
@@ -342,6 +331,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                         sceneController.select(obj);
                     }
                 );
+
                 // tickMarks checkbox Listener
                 createListener(
                     $("#objTickMarks"),
@@ -353,145 +343,150 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
-                if (obj.curve) {
-
-                    createContinuanceListener(
-                        $("#objTMin"),
-                        obj.tMin,
-                        function () {
-                            obj.tMin = parseInt($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objTMax"),
-                        obj.tMax,
-                        function () {
-                            obj.tMax = parseInt($(this).val());
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objSegments"),
-                        obj.segments,
-                        function () {
-                            obj.segments = $(this).val();
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    createContinuanceListener(
-                        $("#objBezierSegments"),
-                        obj.segments,
-                        function () {
-                            obj.segments = $(this).val();
-                            obj.generatePoints();
-                            sceneController.deselect();
-                            sceneController.select(obj);
-                        }
-                    );
-
-                    if (obj.p1) {
-
-                        createContinuanceListener(
-                            $("#objControlPoint00"),
-                            obj.p0[0],
-                            function () {
-                                obj.p0[0] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint10"),
-                            obj.p1[0],
-                            function () {
-                                obj.p1[0] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint20"),
-                            obj.p2[0],
-                            function () {
-                                obj.p2[0] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint30"),
-                            obj.p3[0],
-                            function () {
-                                obj.p3[0] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint01"),
-                            obj.p0[1],
-                            function () {
-                                obj.p0[1] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-
-                        createContinuanceListener(
-                            $("#objControlPoint11"),
-                            obj.p1[1],
-                            function () {
-                                obj.p1[1] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint21"),
-                            obj.p2[1],
-                            function () {
-                                obj.p2[1] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
-
-                        createContinuanceListener(
-                            $("#objControlPoint31"),
-                            obj.p3[1],
-                            function () {
-                                obj.p3[1] = parseFloat($(this).val());
-                                obj.generatePoints();
-                                sceneController.deselect();
-                                sceneController.select(obj);
-                            }
-                        );
+                createListener(
+                    $("#objTMin"),
+                    obj.tMin != undefined ? obj.tMin : false,
+                    function () {
+                        obj.tMin = parseInt($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
                     }
+                );
 
-                }
+                createListener(
+                    $("#objTMax"),
+                    obj.tMax || false,
+                    function () {
+                        obj.tMax = parseInt($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objSegments"),
+                    obj.segments || false,
+                    function () {
+                        obj.segments = $(this).val();
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objXfunction"),
+                    obj.fX != undefined ?  obj.fX : false,
+                    function () {
+                        obj.fX = $(this).val();
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objYfunction"),
+                    obj.fY != undefined ?  obj.fY : false,
+                    function () {
+                        obj.fY = $(this).val();
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint00"),
+                    (obj.curve && obj.p0) ? obj.p0[0] : false,
+                    function () {
+                        obj.p0[0] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint10"),
+                    (obj.curve && obj.p1) ? obj.p1[0] : false,
+                    function () {
+                        obj.p1[0] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint20"),
+                    (obj.curve && obj.p2) ? obj.p2[0] : false,
+                    function () {
+                        obj.p2[0] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint30"),
+                    (obj.curve && obj.p3) ? obj.p3[0] : false,
+                    function () {
+                        obj.p3[0] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint01"),
+                    (obj.curve && obj.p0) ? obj.p0[1] : false,
+                    function () {
+                        obj.p0[1] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+
+                createListener(
+                    $("#objControlPoint11"),
+                    (obj.curve && obj.p1) ? obj.p1[1] : false,
+                    function () {
+                        obj.p1[1] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint21"),
+                    (obj.curve && obj.p2) ? obj.p2[1] : false,
+                    function () {
+                        obj.p2[1] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                createListener(
+                    $("#objControlPoint31"),
+                    (obj.curve && obj.p3) ? obj.p3[1] : false,
+                    function () {
+                        obj.p3[1] = parseFloat($(this).val());
+                        obj.generatePoints();
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
             };
 
 

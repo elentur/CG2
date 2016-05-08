@@ -38,20 +38,37 @@
     <div id="param_area">
         <div class="w3c">
             <div id="tab1">
-                <a href="#tab1">Objects</a>
+                <a href="#tab1">Create Objects</a>
                 <div id="panel">
                     <h3>Create Object:</h3>
                     <div class="form-group">
                         <button id="btnNewLine" type="button">New Line</button>
+                    </div>
+                    <div class="form-group">
                         <button id="btnNewCircle" type="button">New Circle</button>
                     </div>
                     <div class="form-group">
                         <button id="btnNewStar" type="button">New Star</button>
+                    </div>
+                    <div class="form-group">
                         <button id="btnNewPoint" type="button">New Point</button>
                     </div>
+                    <div class="form-group">
+                        <button id="btnParametricCurve" type="button">Parametric Curve</button>
+                    </div>
+                    <div class="form-group">
+                        <button id="btnBezierCurve" type="button">Bezier Curve</button>
+                    </div>
+                </div>
+            </div>
+            <div id="tab2">
+                <a href="#tab2">Edit Objects</a>
+                <div class="curves">
 
                     <h3>Edit Object:</h3>
+
                     <div id="panel-fields">
+
                         <div class="form-group">
                             <label for="objColor">
                                 Color:
@@ -59,29 +76,92 @@
                             <input id="objColor" type="color" value="#000000">
                         </div>
                         <div class="form-group">
-                            <label  for="objWidth">
+                            <label for="objWidth">
                                 Line Width:
                             </label>
                             <input id="objWidth" type="number" step="0.5" min="1" max="100" value="0">
                         </div>
                         <div class="form-group">
-                            <label  for="objRadius">
+                            <label for="objRadius">
                                 Radius:
                             </label>
                             <input id="objRadius" type="number" min="1" value="0">
                         </div>
                         <div class="form-group">
-                            <label  for="objInnerRadius">
+                            <label for="objInnerRadius">
                                 Inner Radius:
                             </label>
                             <input id="objInnerRadius" type="number" min="1" value="0">
                         </div>
                         <div class="form-group">
-                            <label  for="objArm"> Arms: </label>
+                            <label for="objArm"> Arms: </label>
                             <input id="objArm" type="number" min="3" value="0">
                         </div>
+
                         <div class="form-group">
-                            <label  for="objTickMarks">
+                            <label for="objXfunction">
+                                X:
+                            </label>
+                            <input id="objXfunction" class="long-input" type="text" value="50*Math.sin(x)">
+                        </div>
+                        <div class="form-group">
+                            <label for="objYfunction">
+                                Y:
+                            </label>
+                            <input id="objYfunction" class="long-input" type="text" value="50*Math.cos(x)">
+                        </div>
+                        <div class="form-group">
+                            <label for="objTMin">
+                                t-min:
+                            </label>
+                            <input id="objTMin" type="number" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="objTMax">
+                                t-max:
+                            </label>
+                            <input id="objTMax" type="number" value="7">
+                        </div>
+                        <div class="form-group">
+                            <label for="objSegments">
+                                Segments:
+                            </label>
+                            <input id="objSegments" type="number" value="20">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="objControlPoint00">
+                                contr. point 1:
+                            </label>
+                            <input id="objControlPoint00" type="number" step="0.01" value="0">
+                            <input id="objControlPoint01" type="number" step="0.01" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="objControlPoint10">
+                                contr. point 2:
+                            </label>
+                            <input id="objControlPoint10" type="number" step="0.01" value="0">
+                            <input id="objControlPoint11" type="number" step="0.01" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="objControlPoint20">
+                                contr. point 3:
+                            </label>
+                            <input id="objControlPoint20" type="number" step="0.01" value="0">
+                            <input id="objControlPoint21" type="number" step="0.01" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="objControlPoint30">
+                                contr. point 4:
+                            </label>
+                            <input id="objControlPoint30" type="number" step="0.01" value="0">
+                            <input id="objControlPoint31" type="number" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="objTickMarks">
                                 show tick marks:
                             </label>
                             <input id="objTickMarks" type="checkbox" name="TickMarks" value="0">
@@ -91,100 +171,8 @@
 
                 </div>
             </div>
-            <div id="tab2">
-                <a href="#tab2">Parametric Curve</a>
-                <div class="curves">
-                    <div class="form-group">
-                        <button id="btnParametricCurve" type="button">Parametric Curve</button>
-                    </div>
-                    <h3>Edit Curve:</h3>
-                    <div class="form-group">
-                        <label for="objXfunction">
-                            X:
-                        </label>
-                        <input id="objXfunction" class="long-input" type="text" value="50*Math.sin(x)">
-                    </div>
-                    <div class="form-group">
-                        <label for="objYfunction">
-                            Y:
-                        </label>
-                        <input id="objYfunction" class="long-input" type="text" value="50*Math.cos(x)">
-                    </div>
-                    <div class="form-group">
-                        <label for="objTMin">
-                            t-min:
-                        </label>
-                        <input id="objTMin" type="number" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="objTMax">
-                            t-max:
-                        </label>
-                        <input id="objTMax" type="number" value="7">
-                    </div>
-                    <div class="form-group">
-                        <label for="objSegments">
-                            Segments:
-                        </label>
-                        <input id="objSegments" type="number" value="20">
-                    </div>
-
-                    <button class="btnDelete" type="button">delete Object</button>
-
-                </div>
-            </div>
             <div id="tab3">
-                <a href="#tab3">Bezier Curve</a>
-                <div class="curves">
-                    <div class="form-group">
-                        <button id="btnBezierCurve" type="button">Bezier Curve</button>
-                    </div>
-                    <h3>Edit Curve:</h3>
-                    <div class="form-group">
-                        <label for="objBezierSegments">
-                            Segments:
-                        </label>
-                        <input id="objBezierSegments" type="number" value="20">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="objControlPoint00">
-                            control point 1:
-                        </label>
-                        <input id="objControlPoint00" type="number" step="0.01" value="0">
-                        <input id="objControlPoint01" type="number" step="0.01" value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="objControlPoint10">
-                            control point 2:
-                        </label>
-                        <input id="objControlPoint10" type="number" step="0.01" value="0">
-                        <input id="objControlPoint11" type="number" step="0.01" value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="objControlPoint20">
-                            control point 3:
-                        </label>
-                        <input id="objControlPoint20" type="number" step="0.01" value="0">
-                        <input id="objControlPoint21" type="number" step="0.01" value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="objControlPoint30">
-                            control point 4:
-                        </label>
-                        <input id="objControlPoint30" type="number" step="0.01" value="0">
-                        <input id="objControlPoint31" type="number" step="0.01" value="0">
-                    </div>
-
-                    <button class="btnDelete" type="button">delete Object</button>
-
-                </div>
-            </div>
-            <div id="tab4">
-                <a href="#tab4">KD-Tree</a>
+                <a href="#tab3">KD-Tree</a>
                 <div id="kd-tree">
 
                     <div class="form-group">
