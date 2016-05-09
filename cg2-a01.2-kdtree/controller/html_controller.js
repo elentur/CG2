@@ -380,28 +380,6 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
-             /*   createListener(
-                    $("#objXfunction"),
-                    obj.fX != undefined ?  obj.fX : false,
-                    function () {
-                        obj.fX = $(this).val();
-                        obj.generatePoints();
-                        sceneController.deselect();
-                        sceneController.select(obj);
-                    }
-                );
-
-                createListener(
-                    $("#objYfunction"),
-                    obj.fY != undefined ?  obj.fY : false,
-                    function () {
-                        obj.fY = $(this).val();
-                        obj.generatePoints();
-                        sceneController.deselect();
-                        sceneController.select(obj);
-                    }
-                );*/
-
                 createListener(
                     $("#objControlPoint00"),
                     (obj.curve && obj.p0) ? obj.p0[0] : false,
