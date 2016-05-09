@@ -192,10 +192,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 sceneController.select(star); // this will also redraw
 
             }));
+
             /*
              * event handler for "new ParametricCurve button".
              */
-
             $("#btnParametricCurve").click((function () {
                 // create the actual ParametricCurve and add it to the scene
                 var style = {
@@ -203,9 +203,15 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     color: randomColor()
                 };
 
-                var curve = new ParametricCurve([randomX(), randomY()], $("#objXfunction").val(), $("#objYfunction").val(),
-                    Math.floor(Math.random()*(-20)), Math.floor(Math.random()*20), Math.floor(Math.random()*46)+5,
-                    style);
+                var curve = new ParametricCurve(
+                    [randomX(), randomY()], 
+                    $("#objXfunction").val(), 
+                    $("#objYfunction").val(),
+                    Math.floor(Math.random()*(-20)), 
+                    Math.floor(Math.random()*20), 
+                    Math.floor(Math.random()*46)+5,
+                    style
+                );
                 if (curve.generatePoints()) {
                     scene.addObjects([curve]);
                     // deselect all objects, then select the newly created object
@@ -217,6 +223,9 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
             }));
 
+            /**
+             * Creates a Bezier Curve with 4 random Controlpoints and a number of segments from the segments field
+             */
             $("#btnBezierCurve").click((function () {
                 // create the actual ParametricCurve and add it to the scene
                 var style = {
@@ -224,9 +233,14 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     color: randomColor()
                 };
 
-                var curve = new BezierCurve([randomX(), randomY()], [randomX(), randomY()], [randomX(), randomY()],
-                    [randomX(), randomY()], $("#objSegments").val(),
-                    style);
+                var curve = new BezierCurve(
+                    [randomX(), randomY()], // ControlPoint 1
+                    [randomX(), randomY()], // ControlPoint 2
+                    [randomX(), randomY()], // ControlPoint 3
+                    [randomX(), randomY()], // ControlPoint 4
+                    $("#objSegments").val(), // Segments
+                    style
+                );
 
                 scene.addObjects([curve]);
                 // deselect all objects, then select the newly created object
@@ -260,22 +274,19 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
              * and create a new listener
              */
             function createListener(input, objVal, func) {
-
-                var parent = input.parent().hide();
-
-                if (objVal !== false) {
-                    input.val(objVal);
-                    if(input.is(':checkbox'))input.prop("checked",objVal());
-
-                    parent.show();
-
-                    input.off('change');
-
-                    input.on('change', func);
+                var parent = input.parent().hide(); // hides the label and input field
+                if (objVal !== false) { // if the object contains the field
+                    input.is(":checkbox") ? input.prop('checked', objVal !== undefined) : input.val(objVal); // sets the object value in the inputfield
+                    input.off('change'); // remove old listener
+                    input.on('change', func); // add a new listener
+                    parent.show(); // show the input field and label
                 }
-
             }
 
+            /**
+             * Cobntrols the panel fields and add a listener each input
+             * @param obj
+             */
             var showPanelItems = function (obj) {
                 //if no object is given make all invisible with a null object
                 if(!obj){
@@ -339,7 +350,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 // tickMarks checkbox Listener
                 createListener(
                     $("#objTickMarks"),
-                    typeof  obj.curve =='function'? obj.curve() : false,
+                    obj.curve ? obj.tickMarks : false,
                     function () {
                         obj.generateTickMarks($(this).is(':checked'));
                         sceneController.deselect();
@@ -347,6 +358,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // t-min Listener
                 createListener(
                     $("#objTMin"),
                     obj.tMin != undefined ? obj.tMin : false,
@@ -358,6 +370,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // t-max Listener
                 createListener(
                     $("#objTMax"),
                     obj.tMax!= undefined ? obj.tMax : false,
@@ -369,6 +382,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // Segment Listener
                 createListener(
                     $("#objSegments"),
                     obj.segments || false,
@@ -380,6 +394,34 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // X-Function Listener
+                createListener(
+                    $("#objXfunction"),
+                    obj.fX != undefined ?  obj.fX : false,
+                    function () {
+                        obj.points = []; // reset all points
+                        obj.fX = $(this).val();
+                        obj.generatePoints(); // generate them new
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                // Y-Function Listener
+                createListener(
+                    $("#objYfunction"),
+                    obj.fY != undefined ?  obj.fY : false,
+                    function () {
+                        obj.points = []; // reset all points
+                        obj.fY = $(this).val();
+                        obj.generatePoints(); // generate them new
+                        console.log(obj.points);
+                        sceneController.deselect();
+                        sceneController.select(obj);
+                    }
+                );
+
+                // ControlPoint[0][0] Listener
                 createListener(
                     $("#objControlPoint00"),
                     (obj.curve && obj.p0) ? obj.p0[0] : false,
@@ -391,6 +433,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[1][0] Listener
                 createListener(
                     $("#objControlPoint10"),
                     (obj.curve && obj.p1) ? obj.p1[0] : false,
@@ -402,6 +445,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[2][0] Listener
                 createListener(
                     $("#objControlPoint20"),
                     (obj.curve && obj.p2) ? obj.p2[0] : false,
@@ -413,6 +457,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[3][0] Listener
                 createListener(
                     $("#objControlPoint30"),
                     (obj.curve && obj.p3) ? obj.p3[0] : false,
@@ -424,6 +469,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[0][1] Listener
                 createListener(
                     $("#objControlPoint01"),
                     (obj.curve && obj.p0) ? obj.p0[1] : false,
@@ -435,7 +481,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
-
+                // ControlPoint[1][1] Listener
                 createListener(
                     $("#objControlPoint11"),
                     (obj.curve && obj.p1) ? obj.p1[1] : false,
@@ -447,6 +493,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[2][1] Listener
                 createListener(
                     $("#objControlPoint21"),
                     (obj.curve && obj.p2) ? obj.p2[1] : false,
@@ -458,6 +505,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     }
                 );
 
+                // ControlPoint[3][1] Listener
                 createListener(
                     $("#objControlPoint31"),
                     (obj.curve && obj.p3) ? obj.p3[1] : false,
@@ -471,7 +519,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
             };
 
-
+            // Button to removes a selected object
             $("button.btnDelete").on('click', function () {
 
                 var obj = sceneController.getSelectedObject();
@@ -485,6 +533,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 }
             });
 
+            // button to create the Point List
             $("#btnNewPointList").click((function () {
 
                 // create the actual pointlist and add it to the scene
@@ -509,6 +558,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
             }));
 
+            // Button to show the KD-Tree
             $("#visKdTree").click((function () {
 
                 var showTree = $("#visKdTree").attr("checked");
@@ -518,6 +568,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
 
             }));
 
+            // Button to build the KD-Tree
             $("#btnBuildKdTree").click((function () {
 
                 kdTree = new KdTree(pointList);

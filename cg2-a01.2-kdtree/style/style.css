@@ -65,7 +65,7 @@ h3 {
 }
 
 #param_area .form-group input[type='checkbox']{
-   /* width:0;*/
+    width:14px;
 }
 
 #param_area .form-group input.long-input {
