@@ -401,7 +401,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     function () {
                         obj.points = []; // reset all points
                         obj.fX = $(this).val();
-                        obj.generatePoints(); // generate them new
+                        if (!obj.generatePoints()) {
+                            alert("Eine ihrer Funktionen ist fehlerhaft, bitte geben sie sie neu ein.")
+                        }
+                      //  obj.generatePoints(); // generate them new
                         sceneController.deselect();
                         sceneController.select(obj);
                     }
@@ -414,7 +417,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                     function () {
                         obj.points = []; // reset all points
                         obj.fY = $(this).val();
-                        obj.generatePoints(); // generate them new
+                        if (!obj.generatePoints()) {
+                            alert("Eine ihrer Funktionen ist fehlerhaft, bitte geben sie sie neu ein.")
+                        }
+                       // obj.generatePoints(); // generate them new
                         console.log(obj.points);
                         sceneController.deselect();
                         sceneController.select(obj);
