@@ -31,6 +31,9 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             scope.camera = new THREE.PerspectiveCamera( 66, width / height, 0.1, 2000 );
             scope.camera.position.z = 1000;
             scope.scene = new THREE.Scene();
+            var light = new THREE.PointLight();
+            light.position.set( 1000, 100, 1000 );
+            scope.scene.add(light);
 
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
@@ -58,20 +61,23 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh.rotation.y += -0.05;
                     // Cursor up
                 }
-            };
+            }
 
             this.addBufferGeometry = function(bufferGeometry) {
 
                 scope.currentMesh = bufferGeometry.getMesh();
                 scope.scene.add( scope.currentMesh );
 
-            }
+            };
+            this.add =function(mesh){
+                scope.currentMesh = mesh;
+                scope.scene.add(scope.currentMesh);
+            };
 
             /*
              * drawing the scene
              */
             this.draw = function() {
-
                 requestAnimFrame( scope.draw );
 
                 scope.renderer.render(scope.scene, scope.camera);

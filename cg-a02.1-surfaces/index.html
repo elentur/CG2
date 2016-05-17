@@ -30,6 +30,9 @@
 
     <div id="param_area" >
 
+        <button id="btnCube"   type="button"   >Cube</button>
+        <button id="btnSphere"   type="button"   >Sphere</button>
+        <button id="btnTorusKnot"   type="button"   >Torus Knot</button>
         <button id="btnRandom"   type="button"   >Random</button>
         <button id="btnBand" type="button"   >Band</button>
         <button id="btnEllipsoid" type="button"   >Ellipsoid</button>
@@ -37,7 +40,62 @@
 
         <!-- add more here... -->
         <h3>Selected Object:</h3>
-        <table id="random">
+        <table id="cube" class ="options">
+            <tr>
+                <td>Height:</td>
+                <td><input id="cubeHeight" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>Width:</td>
+                <td><input id="cubeWidth" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>Depth:</td>
+                <td><input id="cubeDepth" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td><button id="btnNewCube"   type="button"   >Create Cube</button></td>
+            </tr>
+        </table>
+        <table id="sphere" class ="options">
+            <tr>
+                <td>Radius:</td>
+                <td><input id="sphereRadius" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>WidthSegments:</td>
+                <td><input id="sphereWidth" class="objParam" type="number" min="1" max="10000" value="10">
+            </tr>
+            <tr>
+                <td>HeightSegments:</td>
+                <td><input id="sphereHeight" class="objParam" type="number" min="1" max="10000" value="10">
+            </tr>
+            <tr>
+                <td><button id="btnNewSphere"   type="button"   >Create Sphere</button></td>
+            </tr>
+        </table>
+        <table id="torusKnot" class ="options">
+            <tr>
+                <td>Radius:</td>
+                <td><input id="torusKnotRadius" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>Diameter:</td>
+                <td><input id="torusKnotDiameter" class="objParam" type="number" min="1" max="10000" value="50">
+            </tr>
+            <tr>
+                <td>Tubular Segments:</td>
+                <td><input id="torusKnotTubularSegments" class="objParam" type="number" min="1" max="10000" value="100">
+            </tr>
+            <tr>
+                <td>Radius Segments:</td>
+                <td><input id="torusKnotRadiusSegments" class="objParam" type="number" min="1" max="10000" value="10">
+            </tr>
+            <tr>
+                <td><button id="btnNewTorusKnot"   type="button"   >Create Torus Knot</button></td>
+            </tr>
+        </table>
+        <table id="random" class ="options">
             <tr>
                 <td>Number of Items:</td>
                 <td><input id="numItems" class="objParam" type="number" min="1" max="10000" value="1000">
@@ -46,7 +104,7 @@
                 <td><button id="btnNewRandom"   type="button"   >Create Random</button></td>
             </tr>
         </table>
-        <table id="band">
+        <table id="band" class ="options">
             <tr>
                 <td>Number of Segments:</td>
                 <td><input id="numSegments" class="objParam" type="number" min="1" max="10000" value="1000">
