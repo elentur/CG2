@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band"],
-    (function($,BufferGeometry, Random, Band) {
+define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
+    (function($,BufferGeometry, Random, Band,Parametric,Torus) {
         "use strict";
 
         /*
@@ -50,6 +50,16 @@ define(["jquery", "BufferGeometry", "random", "band"],
             $("#btnBand").click( (function() {
                 hideAll();
                 $("#band").show();
+            }));
+
+            $("#btnParametric").click( (function() {
+                hideAll();
+                $("#parametric").show();
+            }));
+
+            $("#btnTorus").click( (function() {
+                hideAll();
+                $("#torus").show();
             }));
 
             $("#btnNewCube").click( (function() {
@@ -104,6 +114,72 @@ define(["jquery", "BufferGeometry", "random", "band"],
                 scene.addBufferGeometry(bufferGeometryRandom);
             }));
 
+
+            $("#btnNewParametric").click( (function() {
+
+                var config = {
+                    a : 500,
+                    b : 300,
+                    c : 200,
+                    heightSeg : 200,
+                    widthSeg : 200
+                };
+
+                var posFunc ={
+                    x : "(a*Math.cos(u))*Math.cos(v)",
+                    y : "(b*Math.cos(u))*Math.sin(v)",
+                    z : "c*Math.sin(u)",
+                    uMin : -Math.PI/2,
+                    uMax : Math.PI/2,
+                    vMin : -Math.PI,
+                    vMax : Math.PI
+                };
+                var parametric = new Parametric(posFunc,config);
+                var bufferGeometryParametric = new BufferGeometry();
+                //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+                bufferGeometryParametric.addAttribute("position", parametric.getPositions());
+                bufferGeometryParametric.addAttribute("color", parametric.getColors());
+
+                scene.addBufferGeometry(bufferGeometryParametric);
+
+               // var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+               // material.wireframe =false;
+                //var torus = new THREE.Mesh( bufferGeometryParametric.getMesh(), material );
+                //scene.add(bufferGeometryParametric.getMesh());
+
+            }));
+            $("#btnNewTorus").click( (function() {
+
+                var config = {
+                    tubeSegments : 50,
+                    radialSegments : 50,
+                    outerRadius : 500,
+                    innerRadius : 50
+                };
+
+                var posFunc ={
+                    x : "(R+r*Math.cos(v))*Math.cos(u)",
+                    y : "(R+r*Math.cos(v))*Math.sin(u)",
+                    z : "r*Math.sin(v)",
+                    uMin : 0,
+                    uMax : 2* Math.PI,
+                    vMin : 0,
+                    vMax : 2*Math.PI
+                };
+                var torus = new Torus(posFunc,config);
+                var bufferGeometryTorus = new BufferGeometry();
+                //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+                bufferGeometryTorus.addAttribute("position", torus.getPositions());
+                bufferGeometryTorus.addAttribute("color", torus.getColors());
+
+                scene.addBufferGeometry(bufferGeometryTorus);
+
+                // var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+                // material.wireframe =false;
+                //var torus = new THREE.Mesh( bufferGeometryParametric.getMesh(), material );
+                //scene.add(bufferGeometryParametric.getMesh());
+
+            }));
 
             $("#btnNewBand").click( (function() {
 
