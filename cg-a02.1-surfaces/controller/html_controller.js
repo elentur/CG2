@@ -42,7 +42,6 @@ define(["jquery", "BufferGeometry", "random", "band"],
                 var bufferGeometryRandom = new BufferGeometry();
                 bufferGeometryRandom.addAttribute("position", random.getPositions());
                 bufferGeometryRandom.addAttribute("color", random.getColors());
-
                 scene.addBufferGeometry(bufferGeometryRandom);
             }));
 
