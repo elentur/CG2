@@ -58,14 +58,21 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh.rotation.y += -0.05;
                     // Cursor up
                 }
-            };
+            }
 
             this.addBufferGeometry = function(bufferGeometry) {
 
                 scope.currentMesh = bufferGeometry.getMesh();
                 scope.scene.add( scope.currentMesh );
 
-            }
+            };
+
+            this.add = function(geometry) {
+
+                scope.currentMesh = geometry;
+                scope.scene.add(scope.currentMesh);
+
+            };
 
             /*
              * drawing the scene
