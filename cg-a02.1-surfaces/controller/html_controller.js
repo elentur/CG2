@@ -88,50 +88,56 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric"],
                 scene.addBufferGeometry(bufferGeometryParametricSurface);
             });
 
-            $('#btnNewCube').on('click', function () {
+            $('#btnNewCylinder').on('click', function () {
 
-                var width = parseInt($("#cubeWidth").val());
-                var height = parseInt($("#cubeHeight").val());
-                var depth = parseInt($("#cubeDepth").val());
+                var values = {};
 
-                var geometry = new THREE.BoxGeometry(width, height, depth);
+                $('#cylinder').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.CylinderGeometry(values[0],values[1],values[2],values[3]);
                 var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
                 material.wireframe = true;
-                var cube = new THREE.Mesh(geometry, material);
+                var cylinder = new THREE.Mesh(geometry, material);
 
-                scene.add(cube);
+                scene.add(cylinder);
             });
 
-            $('#btnNewSphere').on('click', function () {
+            $('#btnNewDodecahedron').on('click', function () {
 
-                var width = parseInt($("#sphereWidth").val());
-                var height = parseInt($("#sphereHeight").val());
-                var radius = parseInt($("#sphereRadius").val());
+                var values = {};
 
-                var geometry = new THREE.SphereGeometry(radius,width, height);
+                $('#dodecahedron').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.DodecahedronGeometry(values[0],values[1]);
                 var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
                 material.wireframe = true;
-                var sphere = new THREE.Mesh(geometry, material);
+                var dodecahedron = new THREE.Mesh(geometry, material);
 
-                scene.add(sphere);
+                scene.add(dodecahedron);
 
             });
 
-            $('#btnNewKnot').on('click', function () {
+            $('#btnNewTetrahedron').on('click', function () {
 
-                var radius = parseInt($("#knotRadius").val());
-                var tube = parseInt($("#knotTube").val());
-                var tubularSegments = parseInt($("#knotTubularSegments").val());
-                var radialSegments = parseInt($("#knotRadialSegments").val());
+                var values = {};
 
-                var geometry = new THREE.TorusKnotGeometry(radius,tube,tubularSegments,radialSegments);
+                $('#tetrahedron').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.TetrahedronGeometry(values[0],values[1]);
                 var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-
                 material.wireframe = true;
-                var torusKnot = new THREE.Mesh( geometry, material );
+                var tetrahedron = new THREE.Mesh(geometry, material);
 
-                scene.add( torusKnot );
+                scene.add(tetrahedron);
+
             });
+
 
 
         };

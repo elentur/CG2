@@ -35,9 +35,9 @@
         <button id="btnEllipsoid" title="ellipsoid" type="button">Ellipsoid</button>
         <button id="btnParametric" title="parametric" type="button">Parametric</button>
 
-        <button id="btnCube" title="cube" type="button">Cube</button>
-        <button id="btnSphere" title="sphere" type="button">Sphere</button>
-        <button id="btnKnot" title="knot" type="button">Knot</button>
+        <button id="btnCylinder" title="cylinder" type="button">Cylinder</button>
+        <button id="btnDodecahedron" title="dodecahedron" type="button">Dodecahedron</button>
+        <button id="btnTetrahedron" title="tetrahedron" type="button">Tetrahedron</button>
 
         <!-- add more here... -->
         <h3>Selected Object:</h3>
@@ -81,71 +81,61 @@
             </tr>
         </table>
 
-        <table id="cube" class="parameters">
+        <table id="cylinder" class="parameters">
             <tr>
-                <td>Width</td>
-                <td><input id="cubeWidth" class="objParam" type="number" min="1" max="10000" value="500">
+                <td>RadiusTop</td>
+                <td><input id="cylinderRadiusTop" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>RadiusBotto</td>
+                <td><input id="cylinderRadiusBottom" class="objParam" type="number" min="1" max="10000" value="500">
             </tr>
             <tr>
                 <td>Height</td>
-                <td><input id="cubeHeight" class="objParam" type="number" min="1" max="10000" value="500">
+                <td><input id="cylinderHeight" class="objParam" type="number" min="1" max="10000" value="500">
             </tr>
             <tr>
-                <td>Depth</td>
-                <td><input id="cubeDepth" class="objParam" type="number" min="1" max="10000" value="500">
+                <td>RadiusSegments</td>
+                <td><input id="cylinderRadiusSegments" class="objParam" type="number" min="1" max="10000" value="9">
             </tr>
             <tr>
                 <td>
-                    <button id="btnNewCube" type="button">Create Cube</button>
+                    <button id="btnNewCylinder" type="button">Create Cylinder</button>
                 </td>
             </tr>
         </table>
 
-        <table id="sphere" class="parameters">
-            <tr>
-                <td>Width</td>
-                <td><input id="sphereWidth" class="objParam" type="number" min="1" max="10000" value="50">
-            </tr>
-            <tr>
-                <td>Height</td>
-                <td><input id="sphereHeight" class="objParam" type="number" min="1" max="10000" value="50">
-            </tr>
+        <table id="dodecahedron" class="parameters">
             <tr>
                 <td>Radius</td>
-                <td><input id="sphereRadius" class="objParam" type="number" min="1" max="10000" value="500">
+                <td><input class="objParam" type="number" min="1" max="10000" value="200">
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input class="objParam" type="number" min="1" max="5" value="0">
             </tr>
             <tr>
                 <td>
-                    <button id="btnNewSphere" type="button">Create Sphere</button>
+                    <button id="btnNewDodecahedron" type="button">Create Dodecahedron</button>
                 </td>
             </tr>
         </table>
 
-        <table id="knot" class="parameters">
-
+        <table id="tetrahedron" class="parameters">
             <tr>
-                <td>radius</td>
-                <td><input id="knotRadius" class="objParam" type="number" min="1" max="10000" value="500">
+                <td>Radius</td>
+                <td><input class="objParam" type="number" min="1" max="10000" value="200">
             </tr>
             <tr>
-                <td>tube</td>
-                <td><input id="knotTube" class="objParam" type="number" min="1" max="10000" value="100">
-            </tr>
-            <tr>
-                <td>tubularSegments</td>
-                <td><input id="knotTubularSegments" class="objParam" type="number" min="1" max="10000" value="100">
-            </tr>
-            <tr>
-                <td>radialSegments</td>
-                <td><input id="knotRadialSegments" class="objParam" type="number" min="1" max="10000" value="16">
+                <td>Details</td>
+                <td><input class="objParam" type="number" min="1" max="10" value="0">
             </tr>
             <tr>
                 <td>
-                    <button id="btnNewKnot" type="button">Create Knot</button>
+                    <button id="btnNewTetrahedron" type="button">Create Tetrahedron</button>
                 </td>
             </tr>
         </table>
-
     </div>
 
 
