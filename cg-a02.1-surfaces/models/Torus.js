@@ -12,7 +12,7 @@ define(["three"],
 
         "use strict";
 
-        var ParametricSurface = function (posFunc, config) {
+        var Torus = function (posFunc, config) {
 
             this.positions = new Float32Array(config.radialSegments*config.tubeSegments *3);
             this.colors = new Float32Array(config.radialSegments*config.tubeSegments *3);
@@ -52,6 +52,6 @@ define(["three"],
 
         };
 
-        return ParametricSurface;
+        return Torus;
     }));
 
