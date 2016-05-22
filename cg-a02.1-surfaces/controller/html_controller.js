@@ -91,19 +91,25 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "hyperbolic"
             $('#btnNewHyperbolic').on('click', function () {
 
                 var config = {
-                    c : 200,
-                    uSeg : 10,
-                    vSeg : 10,
+                    c : 80,
+                    uSeg : 200,
+                    vSeg : 200,
                     uMin : -200.0,
                     uMax : 200.0,
                     vMin : 0,
                     vMax : 2*Math.PI
                 };
                 
-                var posFunc ={
+               /* var posFunc ={
                     x : "u*Math.cos(v)",
                     y : "u*Math.sin(v)",
                     z : "c*v"
+                };*/
+
+                var posFunc ={
+                    x : "sinh(v)*Math.cos(c*u)/(1+cosh(u)*cosh(v))",
+                    y : "sinh(v)*Math.sin(c*u)/(1+cosh(u)*cosh(v))",
+                    z : "cosh(v)*sinh(u)/(1+cosh(u)*cosh(v))"
                 };
 
                 var hyperbolic = new Hyperbolic(posFunc, config);

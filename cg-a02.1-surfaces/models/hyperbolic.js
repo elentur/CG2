@@ -42,15 +42,20 @@ define(["three"],
                     var u = config.uMin + (i / config.uSeg) * (config.uMax - config.uMin);
                     var v = config.vMin + (j / config.vSeg) * (config.vMax - config.vMin);
 
-                    console.log(u);
+                    //console.log(fX(u,v,config.c));
+                    //console.log(fY(u,v,config.c));
+                    console.log(fZ(u,v,config.c));
+
+                    console.log(cosh(v)*sinh(u));
+                    console.log((1+cosh(u)*cosh(v)));
 
                     this.positions[counter] = fX(u,v,config.c);
                     this.positions[counter+1] = fY(u,v,config.c);
-                    this.positions[counter+3] = fZ(u,v,config.c);
+                    this.positions[counter+2] = fZ(u,v,config.c);
 
                     this.colors[counter] = color.r;
                     this.colors[counter+1] = color.g;
-                    this.colors[counter+3] = color.b;
+                    this.colors[counter+2] = color.b;
 
                     counter += 3;
                 }
@@ -67,6 +72,13 @@ define(["three"],
 
         };
 
+        function sinh (arg) {
+            return (Math.exp(arg) - Math.exp(-arg)) / 2;
+        }
+
+        function cosh(arg){
+            return (Math.exp(arg) + Math.exp(-arg)) / 2;
+        }
         return Hyperbolic;
     }));
 
