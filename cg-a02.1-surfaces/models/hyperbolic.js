@@ -30,7 +30,7 @@ define(["three"],
 
             // the color obj what gives us the color
             var color = new THREE.Color();
-
+            color.setRGB( 0,1,0 );
             // counter for the array
             var counter = 0;
             
