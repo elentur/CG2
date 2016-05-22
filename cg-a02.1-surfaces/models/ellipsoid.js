@@ -12,7 +12,7 @@ define(["three"],
 
         "use strict";
 
-        var ParametricSurface = function (posFunc, config) {
+        var Ellipsoid = function (posFunc, config) {
 
             this.positions = new Float32Array(config.widthSeg*config.heightSeg *3);
             this.colors = new Float32Array(config.widthSeg*config.heightSeg *3);
@@ -51,6 +51,6 @@ define(["three"],
 
         };
 
-        return ParametricSurface;
+        return Ellipsoid;
     }));
 
