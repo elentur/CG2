@@ -33,7 +33,7 @@ define(["three"],
 
             // counter for the array
             var counter = 0;
-
+            
             // loop for all u-Seg and v-Seg
             for(var i = 0; i < config.uSeg; i++){
 
@@ -41,6 +41,8 @@ define(["three"],
 
                     var u = config.uMin + (i / config.uSeg) * (config.uMax - config.uMin);
                     var v = config.vMin + (j / config.vSeg) * (config.vMax - config.vMin);
+
+                    console.log(u);
 
                     this.positions[counter] = fX(u,v,config.c);
                     this.positions[counter+1] = fY(u,v,config.c);

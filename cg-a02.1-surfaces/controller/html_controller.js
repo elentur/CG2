@@ -91,11 +91,11 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "hyperbolic"
             $('#btnNewHyperbolic').on('click', function () {
 
                 var config = {
-                    c : 2000,
-                    uSeg : 20,
-                    vSeg : 20,
-                    uMin : -2.0,
-                    uMax : 2.0,
+                    c : 200,
+                    uSeg : 10,
+                    vSeg : 10,
+                    uMin : -200.0,
+                    uMax : 200.0,
                     vMin : 0,
                     vMax : 2*Math.PI
                 };
