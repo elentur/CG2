@@ -24,7 +24,7 @@ requirejs.config({
         "scene" : "./scene/scene",
         "random" : "./models/random",
         "band" : "./models/band",
-        "parametric" : "./models/parametric",
+        "ellipsoid" : "./models/ellipsoid",
         "torus" : "./models/torus",
         "util"  : "./utils/util",
         "shaders" : "./shaders",

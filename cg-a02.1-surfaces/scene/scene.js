@@ -60,7 +60,47 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     console.log("cursor right");
                     scope.currentMesh.rotation.y += -0.05;
                     // Cursor up
+                } else if(keyCode =17){
+                    depth=true;
                 }
+            }
+
+            document.addEventListener("keyup", function(event){
+                if(event.which ==17){
+                    depth=false;
+                }
+            }, false);
+            var x1;
+            var y1;
+            var depth =false;
+            document.addEventListener("mousedown", onDocumentMouseDown, false);
+            function onDocumentMouseDown(event){
+                x1=event.x;
+                y1=event.y
+            }
+            document.addEventListener("mousemove", onDocumentMouseMove, false);
+
+
+            function onDocumentMouseMove(event){
+               if(event.which==1&& scope.currentMesh) {
+                   var tolerance=10;
+                   var x =0;
+                   if(event.x<x1-tolerance) x=-1;
+                   else if(event.x> x1+tolerance) x=1;
+                   var y =0;
+                   if(event.y<y1-tolerance) y=1;
+                   else if(event.y> y1+tolerance) y=-1;
+                   if(depth){
+                       scope.currentMesh.position.z +=-(y*50);
+                   }else{
+                      scope.currentMesh.position.y +=y*50;
+                       scope.currentMesh.position.x +=x*50;
+                   }
+
+                   if(x!=0)x1=event.x;
+                   if(y!=0)y1=event.y;
+                }
+
             }
 
             this.addBufferGeometry = function(bufferGeometry) {
@@ -83,6 +123,10 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.renderer.render(scope.scene, scope.camera);
 
             };
+
+            this.getCurrentmesh = function(){
+                return scope.currentMesh;
+            }
         };
 
 

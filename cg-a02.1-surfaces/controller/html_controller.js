@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
-    (function($,BufferGeometry, Random, Band,Parametric,Torus) {
+define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
+    (function($,BufferGeometry, Random, Band,Ellipsoid,Torus) {
         "use strict";
 
         /*
@@ -24,6 +24,7 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
 
             var hideAll =function(){ $.each($(".options"), function() {
                 $(this).hide();
+                $("#animate").show();
             })};
             hideAll();
             $("#btnCube").click( (function() {
@@ -52,9 +53,9 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
                 $("#band").show();
             }));
 
-            $("#btnParametric").click( (function() {
+            $("#btnEllipsoid").click( (function() {
                 hideAll();
-                $("#parametric").show();
+                $("#ellipsoid").show();
             }));
 
             $("#btnTorus").click( (function() {
@@ -115,14 +116,14 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
             }));
 
 
-            $("#btnNewParametric").click( (function() {
+            $("#btnNewEllipsoid").click( (function() {
 
                 var config = {
-                    a : 500,
-                    b : 300,
-                    c : 200,
-                    heightSeg : 200,
-                    widthSeg : 200
+                    a : parseInt($("#ellipsoidWidth").attr("value")),
+                    b : parseInt($("#ellipsoidHeight").attr("value")),
+                    c : parseInt($("#ellipsoidDepth").attr("value")),
+                    heightSeg : parseInt($("#ellipsoidHeightSegments").attr("value")),
+                    widthSeg : parseInt($("#ellipsoidWidthSegments").attr("value"))
                 };
 
                 var posFunc ={
@@ -134,11 +135,11 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
                     vMin : -Math.PI,
                     vMax : Math.PI
                 };
-                var parametric = new Parametric(posFunc,config);
+                var ellipsoid = new Ellipsoid(posFunc,config);
                 var bufferGeometryParametric = new BufferGeometry();
                 //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-                bufferGeometryParametric.addAttribute("position", parametric.getPositions());
-                bufferGeometryParametric.addAttribute("color", parametric.getColors());
+                bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
+                bufferGeometryParametric.addAttribute("color", ellipsoid.getColors());
 
                 scene.addBufferGeometry(bufferGeometryParametric);
 
@@ -151,10 +152,10 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
             $("#btnNewTorus").click( (function() {
 
                 var config = {
-                    tubeSegments : 50,
-                    radialSegments : 50,
-                    outerRadius : 500,
-                    innerRadius : 50
+                    tubeSegments :  parseInt($("#torusTubularSegments").attr("value")),
+                    radialSegments : parseInt($("#torusRadiusSegments").attr("value")),
+                    outerRadius : parseInt($("#torusRadius").attr("value")),
+                    innerRadius : parseInt($("#torusDiameter").attr("value"))
                 };
 
                 var posFunc ={
@@ -174,10 +175,7 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
 
                 scene.addBufferGeometry(bufferGeometryTorus);
 
-                // var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-                // material.wireframe =false;
-                //var torus = new THREE.Mesh( bufferGeometryParametric.getMesh(), material );
-                //scene.add(bufferGeometryParametric.getMesh());
+
 
             }));
 
@@ -196,6 +194,26 @@ define(["jquery", "BufferGeometry", "random", "band","parametric","torus"],
                 bufferGeometryBand.addAttribute("color", band.getColors());
 
                 scene.addBufferGeometry(bufferGeometryBand);
+
+
+            }));
+            var interval;
+            $("#chkRotate").click( (function() {
+                   var mesh =scene.getCurrentmesh();
+                if(mesh) {
+
+                    if ($("#chkRotate").prop('checked')==true) {
+
+                        var x = Math.random() * 0.05;
+                        var y = Math.random() * 0.05;
+                       interval= setInterval(function () {
+                            mesh.rotation.x += x;
+                            mesh.rotation.y += y;
+                        }, 20)
+                    }else{
+                        clearInterval(interval);
+                    }
+                }
             }));
 
 
