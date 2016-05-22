@@ -25,6 +25,7 @@ requirejs.config({
         "random" : "./models/random",
         "band" : "./models/band",
         "parametric" : "./models/parametric",
+        "hyperbolic" : "./models/hyperbolic",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
         "BufferGeometry" : "./scene/buffer_geometry",

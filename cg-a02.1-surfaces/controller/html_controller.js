@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "parametric"],
-    function ($, BufferGeometry, Random, Band, ParametricSurface) {
+define(["jquery", "BufferGeometry", "random", "band", "parametric", "hyperbolic"],
+    function ($, BufferGeometry, Random, Band, ParametricSurface, Hyperbolic) {
         "use strict";
 
         /*
@@ -88,6 +88,33 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric"],
                 scene.addBufferGeometry(bufferGeometryParametricSurface);
             });
 
+            $('#btnNewHyperbolic').on('click', function () {
+
+                var config = {
+                    c : 2000,
+                    uSeg : 20,
+                    vSeg : 20,
+                    uMin : -2.0,
+                    uMax : 2.0,
+                    vMin : 0,
+                    vMax : 2*Math.PI
+                };
+                
+                var posFunc ={
+                    x : "u*Math.cos(v)",
+                    y : "u*Math.sin(v)",
+                    z : "c*v"
+                };
+
+                var hyperbolic = new Hyperbolic(posFunc, config);
+                var bufferGeometryHyperbolicHelicoid = new BufferGeometry();
+                bufferGeometryHyperbolicHelicoid.addAttribute("position", hyperbolic.getPositions());
+                bufferGeometryHyperbolicHelicoid.addAttribute("color", hyperbolic.getColors());
+
+                scene.addBufferGeometry(bufferGeometryHyperbolicHelicoid);
+
+            });
+
             $('#btnNewCylinder').on('click', function () {
 
                 var values = {};
@@ -137,9 +164,6 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric"],
                 scene.add(tetrahedron);
 
             });
-
-
-
         };
 
         // return the constructor function
