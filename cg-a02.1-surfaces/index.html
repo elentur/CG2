@@ -36,8 +36,12 @@
         <button id="btnRandom"   type="button"   >Random</button>
         <button id="btnBand" type="button"   >Band</button>
         <button id="btnEllipsoid" type="button"   >Ellipsoid</button>
-        <button id="btnParametric" type="button"   >Parametric</button>
-        <button id="btnTorus" type="button"   >Torus</button>
+        <button id="btnTorus" type="button">Torus</button>
+        <button id="btnHyperbolic" title="hyperbolic" type="button">Hyperbolic</button>
+
+        <button id="btnCylinder" title="cylinder" type="button">Cylinder</button>
+        <button id="btnDodecahedron" title="dodecahedron" type="button">Dodecahedron</button>
+        <button id="btnTetrahedron" title="tetrahedron" type="button">Tetrahedron</button>
 
         <!-- add more here... -->
         <h3>Selected Object:</h3>
@@ -172,7 +176,71 @@
             <tr>
                 <td><input id="chkRotate"   type="checkbox"   >Rotate Surface</input></td>
             </tr>
+        </table>
+        <table id="hyperbolic" class="parameters">
+            <tr>
+                <td>
+                    <button id="btnNewHyperbolic" type="button">Create Hyperbolic</button>
+                </td>
+            </tr>
+        </table>
 
+
+        <table id="cylinder" class="parameters">
+            <tr>
+                <td>RadiusTop</td>
+                <td><input id="cylinderRadiusTop" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>RadiusBotto</td>
+                <td><input id="cylinderRadiusBottom" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>Height</td>
+                <td><input id="cylinderHeight" class="objParam" type="number" min="1" max="10000" value="500">
+            </tr>
+            <tr>
+                <td>RadiusSegments</td>
+                <td><input id="cylinderRadiusSegments" class="objParam" type="number" min="1" max="10000" value="9">
+            </tr>
+            <tr>
+                <td>
+                    <button id="btnNewCylinder" type="button">Create Cylinder</button>
+                </td>
+            </tr>
+        </table>
+
+        <table id="dodecahedron" class="parameters">
+            <tr>
+                <td>Radius</td>
+                <td><input class="objParam" type="number" min="1" max="10000" value="200">
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input class="objParam" type="number" min="1" max="5" value="0">
+            </tr>
+            <tr>
+                <td>
+                    <button id="btnNewDodecahedron" type="button">Create Dodecahedron</button>
+                </td>
+            </tr>
+        </table>
+
+        <table id="tetrahedron" class="parameters">
+            <tr>
+                <td>Radius</td>
+                <td><input class="objParam" type="number" min="1" max="10000" value="200">
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input class="objParam" type="number" min="1" max="10" value="0">
+            </tr>
+            <tr>
+                <td>
+                    <button id="btnNewTetrahedron" type="button">Create Tetrahedron</button>
+                </td>
+            </tr>
+        </table>
     </div>
 
 

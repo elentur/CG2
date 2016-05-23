@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
-    (function($,BufferGeometry, Random, Band,Ellipsoid,Torus) {
+define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus", "hyperbolic"],
+    (function($,BufferGeometry, Random, Band,Ellipsoid,Torus,Hyperbolic) {
         "use strict";
 
         /*
@@ -22,45 +22,12 @@ define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
         var HtmlController = function(scene) {
 
 
-            var hideAll =function(){ $.each($(".options"), function() {
-                $(this).hide();
-                $("#animate").show();
-            })};
-            hideAll();
-            $("#btnCube").click( (function() {
-                hideAll();
-                $("#cube").show();
+            $(".options").hide();
+            $("#animate").show();
 
-            }));
-            $("#btnSphere").click( (function() {
-                hideAll();
-                $("#sphere").show();
-
-            }));
-            $("#btnTorusKnot").click( (function() {
-                hideAll();
-                $("#torusKnot").show();
-
-            }));
-            $("#btnRandom").click( (function() {
-                hideAll();
-                $("#random").show();
-
-            }));
-
-            $("#btnBand").click( (function() {
-                hideAll();
-                $("#band").show();
-            }));
-
-            $("#btnEllipsoid").click( (function() {
-                hideAll();
-                $("#ellipsoid").show();
-            }));
-
-            $("#btnTorus").click( (function() {
-                hideAll();
-                $("#torus").show();
+            $("button[title]").click((function () {
+                $(".parameters").hide();
+                $("#" + $(this).attr('title')).show();
             }));
 
             $("#btnNewCube").click( (function() {
@@ -102,7 +69,55 @@ define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
 
                 scene.add(torusKnot);
             }));
+            $('#btnNewCylinder').on('click', function () {
 
+                var values = {};
+
+                $('#cylinder').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.CylinderGeometry(values[0],values[1],values[2],values[3]);
+                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+                material.wireframe = true;
+                var cylinder = new THREE.Mesh(geometry, material);
+
+                scene.add(cylinder);
+            });
+
+            $('#btnNewDodecahedron').on('click', function () {
+
+                var values = {};
+
+                $('#dodecahedron').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.DodecahedronGeometry(values[0],values[1]);
+                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+                material.wireframe = true;
+                var dodecahedron = new THREE.Mesh(geometry, material);
+
+                scene.add(dodecahedron);
+
+            });
+
+            $('#btnNewTetrahedron').on('click', function () {
+
+                var values = {};
+
+                $('#tetrahedron').find('input').each(function(i,elm){
+                    values[i] = parseInt($(elm).val());
+                });
+
+                var geometry = new THREE.TetrahedronGeometry(values[0],values[1]);
+                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+                material.wireframe = true;
+                var tetrahedron = new THREE.Mesh(geometry, material);
+
+                scene.add(tetrahedron);
+
+            });
 
             $("#btnNewRandom").click( (function() {
 
@@ -167,6 +182,7 @@ define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
                     vMin : 0,
                     vMax : 2*Math.PI
                 };
+
                 var torus = new Torus(posFunc,config);
                 var bufferGeometryTorus = new BufferGeometry();
                 //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
@@ -178,6 +194,33 @@ define(["jquery", "BufferGeometry", "random", "band","ellipsoid","torus"],
 
 
             }));
+
+            $('#btnNewHyperbolic').on('click', function () {
+
+                var config = {
+                    c : 200,
+                    uSeg : 10,
+                    vSeg : 10,
+                    uMin : -200.0,
+                    uMax : 200.0,
+                    vMin : 0,
+                    vMax : 2*Math.PI
+                };
+
+                var posFunc ={
+                    x : "u*Math.cos(v)",
+                    y : "u*Math.sin(v)",
+                    z : "c*v"
+                };
+
+                var hyperbolic = new Hyperbolic(posFunc, config);
+                var bufferGeometryHyperbolicHelicoid = new BufferGeometry();
+                bufferGeometryHyperbolicHelicoid.addAttribute("position", hyperbolic.getPositions());
+                bufferGeometryHyperbolicHelicoid.addAttribute("color", hyperbolic.getColors());
+
+                scene.addBufferGeometry(bufferGeometryHyperbolicHelicoid);
+
+            });
 
             $("#btnNewBand").click( (function() {
 
