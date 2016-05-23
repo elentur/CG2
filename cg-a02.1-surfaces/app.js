@@ -26,7 +26,7 @@ requirejs.config({
         "band" : "./models/band",
         "ellipsoid" : "./models/ellipsoid",
         "torus" : "./models/torus",
-        "hyperbolic" : "./models/hyperbolic",
+        "helicoid" : "./models/helicoid",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
         "BufferGeometry" : "./scene/buffer_geometry",

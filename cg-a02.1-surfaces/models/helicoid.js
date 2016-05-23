@@ -14,7 +14,7 @@ define(["three"],
 
         "use strict";
 
-        var Hyperbolic = function (posFunc,config) {
+        var Helicoid = function (posFunc,config) {
 
             // the length of our position array
             this.positions = new Float32Array( config.uSeg * config.vSeg * 3);
@@ -67,6 +67,6 @@ define(["three"],
 
         };
 
-        return Hyperbolic;
+        return Helicoid;
     }));
 
