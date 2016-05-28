@@ -79,8 +79,8 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
                 });
 
                 var geometry = new THREE.CylinderGeometry(values[0], values[1], values[2], values[3]);
-                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-                material.wireframe = true;
+                var material = new THREE.MeshPhongMaterial({color: 0xcb1200});
+                //material.wireframe = true;
                 var cylinder = new THREE.Mesh(geometry, material);
 
                 scene.add(cylinder);
