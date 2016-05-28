@@ -26,6 +26,8 @@ requirejs.config({
         "band" : "./models/band",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
+        "MTLLoader" : "./loaders/MTLLoader",
+        "OBJLoader" : "./loaders/OBJLoader",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"
 

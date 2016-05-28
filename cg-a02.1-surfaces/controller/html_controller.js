@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band"],
-    (function($,BufferGeometry, Random, Band) {
+define(["jquery", "BufferGeometry", "random", "band","MTLLoader","OBJLoader"],
+    (function($,BufferGeometry, Random, Band, MTLLoader,OBJLoader ) {
         "use strict";
 
         /*
