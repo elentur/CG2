@@ -23,6 +23,7 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
 
 
             $(".options").hide();
+            $("#ellipsoid").show();
 
 
             $("button[title]").click((function () {
@@ -124,6 +125,7 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
 
                 var numPoints = parseInt($("#numItems").attr("value"));
                 var random = new Random(numPoints);
+                
                 var bufferGeometryRandom = new BufferGeometry();
                 bufferGeometryRandom.addAttribute("position", random.getPositions());
                 bufferGeometryRandom.addAttribute("color", random.getColors());
@@ -152,11 +154,17 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
                     vMax: Math.PI
                 };
                 var ellipsoid = new Ellipsoid(posFunc, config);
+                
                 var bufferGeometryParametric = new BufferGeometry();
+                
                 //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+                
                 bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
+                
                 bufferGeometryParametric.addAttribute("color", ellipsoid.getColors());
-
+                
+                bufferGeometryParametric.setIndex(new THREE.BufferAttribute( ellipsoid.getIndex(), 0 )  );
+                
                 scene.addBufferGeometry(bufferGeometryParametric);
 
                 // var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
@@ -240,10 +248,14 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
                 bufferGeometryBand.addAttribute("position", band.getPositions());
                 bufferGeometryBand.addAttribute("color", band.getColors());
 
+                console.log(band.getIndex());
+
+                bufferGeometryBand.setIndex(band.getIndex());
+
                 scene.addBufferGeometry(bufferGeometryBand);
 
-
             }));
+
             var interval;
             $("#chkRotate").click((function () {
                 var mesh = scene.getCurrentmesh();

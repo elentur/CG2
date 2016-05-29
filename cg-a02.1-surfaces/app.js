@@ -19,7 +19,7 @@ requirejs.config({
             //If the load via CDN fails, load locally
             '../lib/jquery-1.7.2.min'],
 
-        "three" : "../lib/three.min",
+        "three" : "../lib/three",
 
         "scene" : "./scene/scene",
         "random" : "./models/random",
@@ -29,10 +29,10 @@ requirejs.config({
         "helicoid" : "./models/helicoid",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
-        "MTLLoader" : "./loaders/MTLLoader",
-        "OBJLoader" : "./loaders/OBJLoader",
         "BufferGeometry" : "./scene/buffer_geometry",
-        "HtmlController": "./controller/html_controller"
+        "HtmlController": "./controller/html_controller",
+        "MTLLoader" : "./loaders/MTLLoader",
+        "OBJLoader" : "./loaders/OBJLoader"
 
     },
     shim: {
@@ -57,8 +57,6 @@ define(["jquery", "three", "scene", "HtmlController"],
     (function($, THREE, Scene, HtmlController) {
 
         "use strict";
-
-
         /*
          * main program, to be called once the document has loaded
          * and the DOM has been constructed

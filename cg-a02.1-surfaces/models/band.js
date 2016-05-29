@@ -28,7 +28,11 @@ define(["three"],
             this.positions = new Float32Array( 2*segments * 3);
             this.colors = new Float32Array( 2*segments * 3 );
 
+            this.vertexIndices = new Uint32Array(2*segments);
+
             var color = new THREE.Color();
+
+            color.setRGB( 1,0,0 );
 
             for(var i=0; i<this.positions.length; i+=6) {
 
@@ -51,8 +55,6 @@ define(["three"],
                 this.positions[ i + 5 ] = z;
 
 
-                color.setRGB( 1,0,0 );
-
                 this.colors[ i ]     = color.r;
                 this.colors[ i + 1 ] = color.g;
                 this.colors[ i + 2 ] = color.b;
@@ -62,7 +64,21 @@ define(["three"],
                 this.colors[ i + 5 ] = color.b;
             }
 
+            var indices = [];
 
+            for ( var i = 1; i <= segments; i ++ ) {
+
+                indices.push( i, i + 1, 0 );
+
+            }
+
+            this.vertexIndices = new THREE.BufferAttribute( new Uint16Array( indices ), 1 );
+
+            
+            this.getIndex = function() {
+                return this.vertexIndices;
+            };
+            
             this.getPositions = function() {
                 return this.positions;
             };
