@@ -24,6 +24,7 @@ define(["three"],
         var BufferGeometry = function (isWireframe, isSolid, isPoint) {
 
             this.mesh     = undefined;
+            this.material = undefined;
             this.geometry = new THREE.BufferGeometry();
 
             if(isWireframe && isSolid){
@@ -66,7 +67,17 @@ define(["three"],
                     vertexColors: THREE.VertexColors
                 } );
             }
-            
+
+            // Default Wert
+            if(!this.material){
+                this.material = new THREE.MeshBasicMaterial({
+                    color: 0xff0000,
+                    side: THREE.DoubleSide,
+                    wireframe: false
+                });
+                console.warn("no material added, default value set!");
+            }
+
             /**
              * Adds a vertex attribute, we assume each element has three components, e.g.
              * [position_x0, position_y0, position_z0, position_x1, position_y1, position_z1,...]
