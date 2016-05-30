@@ -28,8 +28,8 @@ requirejs.config({
         "torus" : "./models/torus",
         "helicoid" : "./models/helicoid",
         "util"  : "./utils/util",
+        "vec2" : "./math/vec2",
         "shaders" : "./shaders",
-        "MTLLoader" : "./loaders/MTLLoader",
         "OBJLoader" : "./loaders/OBJLoader",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"

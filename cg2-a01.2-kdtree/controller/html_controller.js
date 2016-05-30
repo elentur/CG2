@@ -13,8 +13,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierCurve", "BezierPolygon", "KdTree", "util", "kdutil"],
-    (function ($, Line, Circle, Point, Star, ParametricCurve, BezierCurve, BezierPolygon, KdTree, Util, KdUtil) {
+define(["jquery", "vec2","Line", "Circle", "Point", "Star", "ParametricCurve", "BezierCurve", "BezierPolygon", "KdTree", "util", "kdutil"],
+    (function ($, Vec2,Line, Circle, Point, Star, ParametricCurve, BezierCurve, BezierPolygon, KdTree, Util, KdUtil) {
         "use strict";
 
         /*
@@ -246,6 +246,63 @@ define(["jquery", "Line", "Circle", "Point", "Star", "ParametricCurve", "BezierC
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
                 sceneController.select(curve); // this will also redraw
+            }));
+            $("#btnCircleTangent").click((function () {
+                var radius = 25;
+                var center = [ 250,200];
+                var point = [400,300];
+                var tangentPoints = function(radius, center, point){
+
+
+                    var center2 = Vec2.add(point,Vec2.mult(Vec2.sub(center,point),0.5));
+
+                    var radius2 = Vec2.length(Vec2.sub(center2,center));
+                    var x = center2[0]-center[0];
+                    var y = center2[1]-center[1];
+                    var z = (radius*radius) -(x*x) -(y*y)-(radius2*radius2);
+                    var t =Math.asin(Math.sqrt((z*z) -(4*(radius2*radius2)*(y*y)))/
+                        Math.sqrt(4*(radius2*radius2*(x*x)) -(4*(radius2*radius2)*(y*y))));
+
+                    var p3 = [radius*Math.sin(t)+center[0],radius*Math.cos(t)+center[1]];
+                    var p4 =  [radius*Math.sin(Math.PI-t)+center[0],radius*Math.cos(Math.PI-t)+center[1]];
+                    console.log(p3 + " " + p4);
+                    return {p3: p3, p4:p4}
+                };
+                var points = tangentPoints(radius,center, point);
+
+                var style = {
+                    width: Math.floor(Math.random() * 3) + 1,
+                    color: randomColor()
+                };
+
+                var circle = new Circle(center,
+                    radius,
+                    style);
+                scene.addObjects([circle]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+                sceneController.select(circle);
+
+
+                var line = new Line(point,
+                    points.p3,
+                    style);
+                scene.addObjects([line]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+                sceneController.select(line);
+                var line = new Line(point,
+                    points.p4,
+                    style);
+                scene.addObjects([line]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+                sceneController.select(line);
+                sceneController.deselect();
+
             }));
 
             /*

@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "helicoid","MTLLoader","OBJLoader"],
-    (function ($, BufferGeometry, Random, Band, Ellipsoid, Torus, Helicoid, MTLLoader,OBJLoader) {
+define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus", "helicoid","OBJLoader"],
+    (function ($, BufferGeometry,Vec2, Random, Band, Ellipsoid, Torus, Helicoid, OBJLoader) {
         "use strict";
 
         /*
@@ -153,6 +153,7 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
                 };
                 var ellipsoid = new Ellipsoid(posFunc, config);
                 var bufferGeometryParametric = new BufferGeometry();
+                bufferGeometryParametric.setIndex(ellipsoid.getFaces());
                 //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
                 bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
                 bufferGeometryParametric.addAttribute("color", ellipsoid.getColors());
@@ -187,10 +188,26 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
                 var torus = new Torus(posFunc, config);
                 var bufferGeometryTorus = new BufferGeometry();
                 //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-                bufferGeometryTorus.addAttribute("position", torus.getPositions());
-                bufferGeometryTorus.addAttribute("color", torus.getColors());
 
+                bufferGeometryTorus.setIndex(torus.getFaces());
+                bufferGeometryTorus.addAttribute("position", torus.getPositions());
+               // bufferGeometryTorus.addAttribute("color", torus.getColors());
+               // bufferGeometryTorus.addAttribute("index", torus.getFaces());
                 scene.addBufferGeometry(bufferGeometryTorus);
+               // var geometry = new  THREE.BufferGeometry();
+              //  geometry.setIndex( new THREE.BufferAttribute( torus.getFaces(), 1 ) );
+             /*   geometry.addAttribute( 'position', new THREE.BufferAttribute( torus.getPositions(), 3 ) );
+                geometry.addAttribute( 'color', new THREE.BufferAttribute( torus.getColors, 3, true ) );
+                geometry.computeBoundingSphere();
+                var material = new THREE.MeshPhongMaterial( {
+                    color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
+                    side: THREE.DoubleSide, vertexColors: THREE.VertexColors
+                } );*/
+
+                // var mesh = new THREE.Mesh( geometry, material );
+               // scene.addBufferGeometry(mesh);
+               // var mesh = new THREE.Mesh( geometry, material );
+               // scene.add( mesh );//    scene.addBufferGeometry(bufferGeometryTorus);
 
 
             }));
@@ -244,6 +261,23 @@ define(["jquery", "BufferGeometry", "random", "band", "ellipsoid", "torus", "hel
 
 
             }));
+            $("#btnNewObject").click((function () {
+                var loader = new OBJLoader();
+
+                // load a resource
+                loader.load(
+                    // resource URL
+                    'obj/dromedar.obj',
+                    // Function when resource is loaded
+                    function ( object ) {
+                        scene.add( object );
+                    }
+                );
+
+
+            }));
+
+
             var interval;
             $("#chkRotate").click((function () {
                 var mesh = scene.getCurrentmesh();

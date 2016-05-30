@@ -31,9 +31,13 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             scope.camera = new THREE.PerspectiveCamera(66, width / height, 0.1, 2000);
             scope.camera.position.z = 1000;
             scope.scene = new THREE.Scene();
-            var light = new THREE.PointLight();
-            light.position.set(1000, 100, 1000);
-            scope.scene.add(light);
+            scope.scene.add( new THREE.AmbientLight( 0x444444 ) );
+            var light1 = new THREE.DirectionalLight( 0xffffff, 0.5 );
+            light1.position.set( 1, 1, 1 );
+            scope.scene.add( light1 );
+            var light2 = new THREE.DirectionalLight( 0xffffff, 1.5 );
+            light2.position.set( 0, -1, 0 );
+            scope.scene.add( light2 );
 
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
