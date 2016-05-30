@@ -21,6 +21,9 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
          */
         var HtmlController = function (scene) {
 
+            var isWireframe = function(){ return $('#chkWireframe').is(':input:checked'); };
+            var isSolid = function(){ return $('#chkSolid').is(':input:checked'); };
+            var isPoints = function(){ return $('#chkPoints').is(':input:checked'); };
 
             $(".options").hide();
 
@@ -152,20 +155,17 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                     vMax: Math.PI
                 };
                 var ellipsoid = new Ellipsoid(posFunc, config);
-                var bufferGeometryParametric = new BufferGeometry();
+                var bufferGeometryParametric = new BufferGeometry(isWireframe(), isSolid(), isPoints());
+                
                 bufferGeometryParametric.setIndex(ellipsoid.getFaces());
-                //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+
                 bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
                 bufferGeometryParametric.addAttribute("color", ellipsoid.getColors());
 
                 scene.addBufferGeometry(bufferGeometryParametric);
 
-                // var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-                // material.wireframe =false;
-                //var torus = new THREE.Mesh( bufferGeometryParametric.getMesh(), material );
-                //scene.add(bufferGeometryParametric.getMesh());
-
             }));
+
             $("#btnNewTorus").click((function () {
 
                 var config = {
@@ -184,31 +184,15 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                     vMin: 0,
                     vMax: 2 * Math.PI
                 };
-
+                
                 var torus = new Torus(posFunc, config);
-                var bufferGeometryTorus = new BufferGeometry();
-                //bufferGeometryParametric.material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+
+                var bufferGeometryTorus = new BufferGeometry(isWireframe(), isSolid(), isPoints());
 
                 bufferGeometryTorus.setIndex(torus.getFaces());
                 bufferGeometryTorus.addAttribute("position", torus.getPositions());
-               // bufferGeometryTorus.addAttribute("color", torus.getColors());
-               // bufferGeometryTorus.addAttribute("index", torus.getFaces());
+
                 scene.addBufferGeometry(bufferGeometryTorus);
-               // var geometry = new  THREE.BufferGeometry();
-              //  geometry.setIndex( new THREE.BufferAttribute( torus.getFaces(), 1 ) );
-             /*   geometry.addAttribute( 'position', new THREE.BufferAttribute( torus.getPositions(), 3 ) );
-                geometry.addAttribute( 'color', new THREE.BufferAttribute( torus.getColors, 3, true ) );
-                geometry.computeBoundingSphere();
-                var material = new THREE.MeshPhongMaterial( {
-                    color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
-                    side: THREE.DoubleSide, vertexColors: THREE.VertexColors
-                } );*/
-
-                // var mesh = new THREE.Mesh( geometry, material );
-               // scene.addBufferGeometry(mesh);
-               // var mesh = new THREE.Mesh( geometry, material );
-               // scene.add( mesh );//    scene.addBufferGeometry(bufferGeometryTorus);
-
 
             }));
 

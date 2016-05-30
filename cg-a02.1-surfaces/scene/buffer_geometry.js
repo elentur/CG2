@@ -21,21 +21,52 @@ define(["three"],
 
         "use strict";
 
-        var BufferGeometry = function () {
+        var BufferGeometry = function (isWireframe, isSolid, isPoint) {
 
             this.mesh     = undefined;
             this.geometry = new THREE.BufferGeometry();
-            this.material = new THREE.MeshBasicMaterial({
-                color: 0x00ff00, side: THREE.DoubleSide });
-            /*this.material = new THREE.MeshPhongMaterial( {
-                color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
-                side: THREE.DoubleSide, vertexColors: THREE.VertexColors
-            } );*/
-            /*this.material = new THREE.PointsMaterial( {
-                color: 0xaaaaaa,
-                size:10,vertexColors: THREE.VertexColors
-            } );*/
 
+            if(isWireframe && isSolid){
+
+                this.material = [
+                    new THREE.MeshBasicMaterial({
+                        color: 0x000000,
+                        side: THREE.DoubleSide,
+                        wireframe: true
+                    }),
+                    new THREE.MeshBasicMaterial({
+                        color: 0x00ff00,
+                        side: THREE.DoubleSide,
+                        wireframe: false
+                    })
+                ];
+            }else {
+
+                if (isWireframe) {
+                    this.material = new THREE.MeshBasicMaterial({
+                        color: 0x000000,
+                        side: THREE.DoubleSide,
+                        wireframe: true
+                    });
+                }
+
+                if (isSolid) {
+                    this.material = new THREE.MeshBasicMaterial({
+                        color: 0x00ff00,
+                        side: THREE.DoubleSide,
+                        wireframe: isWireframe
+                    });
+                }
+            }
+
+            if(isPoint){
+                this.material = new THREE.PointsMaterial( {
+                    color: 0x00ff00,
+                    size:10,
+                    vertexColors: THREE.VertexColors
+                } );
+            }
+            
             /**
              * Adds a vertex attribute, we assume each element has three components, e.g.
              * [position_x0, position_y0, position_z0, position_x1, position_y1, position_z1,...]
@@ -45,13 +76,19 @@ define(["three"],
              * @param buffer
              */
             this.addAttribute = function(name, buffer) {
+
                 this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, 3 ) );
                 this.geometry.computeBoundingSphere();
 
-
-
-                //this.mesh = new THREE.Points( this.geometry, this.material);
-                this.mesh = new THREE.Mesh( this.geometry, this.material);
+                if(isWireframe && isSolid){
+                    this.mesh =  THREE.SceneUtils.createMultiMaterialObject(this.geometry, this.material);
+                }else{
+                    if(isPoint){
+                        this.mesh = new THREE.Points( this.geometry, this.material);
+                    }else{
+                        this.mesh = new THREE.Mesh( this.geometry, this.material);
+                    }
+                }
             };
 
             this.getMesh = function() {
