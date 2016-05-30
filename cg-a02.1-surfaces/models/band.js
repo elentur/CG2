@@ -27,8 +27,7 @@ define(["three"],
 
             this.positions = new Float32Array( 2*segments * 3);
             this.colors = new Float32Array( 2*segments * 3 );
-            
-            
+
             var color = new THREE.Color();
 
             for(var i=0; i<this.positions.length; i+=6) {

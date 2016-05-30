@@ -39,8 +39,10 @@
         <div class="w3c">
             <div id="tab1">
                 <a href="#tab1">Create Objects</a>
+
                 <div id="panel">
                     <h3>Create Object:</h3>
+
                     <div class="form-group">
                         <button id="btnNewLine" type="button">New Line</button>
                     </div>
@@ -59,10 +61,15 @@
                     <div class="form-group">
                         <button id="btnBezierCurve" type="button">Bezier Curve</button>
                     </div>
+
+                    <div class="form-group">
+                        <button id="btnCircleTangent" title="circleTangent" type="button">Circle Tangents</button>
+                    </div>
                 </div>
             </div>
             <div id="tab2">
                 <a href="#tab2">Edit Objects</a>
+
                 <div class="curves">
 
                     <h3>Edit Object:</h3>
@@ -97,18 +104,17 @@
                             <label for="objArm"> Arms: </label>
                             <input id="objArm" type="number" min="3" value="0">
                         </div>
-
                         <div class="form-group">
                             <label for="objXfunction">
                                 X:
                             </label>
-                            <input id="objXfunction" class="long-input" type="text" value="50*Math.sin(x)">
+                            <input id="objXfunction" class="input" type="text" value="10*x">
                         </div>
                         <div class="form-group">
                             <label for="objYfunction">
                                 Y:
                             </label>
-                            <input id="objYfunction" class="long-input" type="text" value="50*Math.cos(x)">
+                            <input id="objYfunction" class="input" type="text" value="x*x">
                         </div>
                         <div class="form-group">
                             <label for="objTMin">
@@ -173,6 +179,7 @@
             </div>
             <div id="tab3">
                 <a href="#tab3">KD-Tree</a>
+
                 <div id="kd-tree">
 
                     <div class="form-group">
@@ -198,6 +205,8 @@
 
                 </div>
             </div>
+
+
         </div>
     </div>
 

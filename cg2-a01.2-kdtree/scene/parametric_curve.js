@@ -57,9 +57,12 @@ define(["util", "vec2", "Scene","TickMark"],
 
         // Points for the connection of the lines
         ParametricCurve.prototype.generatePoints = function(){
+            this.points=[];
             try {
                 var fX =  eval("(function(x){return " + this.fX + ";})");
                 var fY =  eval("(function(x){return " + this.fY + ";})");
+
+
                 for (var i = 0; i < this.segments; i++) {
                     var t1 = this.tMin + (i / this.segments) * (this.tMax - this.tMin);
 

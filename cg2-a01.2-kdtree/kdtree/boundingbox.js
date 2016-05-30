@@ -69,6 +69,7 @@ define([],
                 }
 
                 context.lineWidth = 1;
+                context.strokeStyle = '#0000FF';
 
                 context.stroke();
 

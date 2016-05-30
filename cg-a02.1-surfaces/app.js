@@ -24,10 +24,13 @@ requirejs.config({
         "scene" : "./scene/scene",
         "random" : "./models/random",
         "band" : "./models/band",
-        "parametric" : "./models/parametric",
-        "hyperbolic" : "./models/hyperbolic",
+        "ellipsoid" : "./models/ellipsoid",
+        "torus" : "./models/torus",
+        "helicoid" : "./models/helicoid",
         "util"  : "./utils/util",
+        "vec2" : "./math/vec2",
         "shaders" : "./shaders",
+        "OBJLoader" : "./loaders/OBJLoader",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"
 
