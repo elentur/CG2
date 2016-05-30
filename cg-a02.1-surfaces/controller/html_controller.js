@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus", "helicoid","OBJLoader"],
-    (function ($, BufferGeometry,Vec2, Random, Band, Ellipsoid, Torus, Helicoid, OBJLoader) {
+define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "torus", "helicoid", "myObject"],
+    (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid, Torus, Helicoid, MyObject) {
         "use strict";
 
         /*
@@ -115,8 +115,8 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                 var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
                 material.wireframe = true;
                 var tetrahedron = new THREE.Mesh(geometry, material);
-
-                scene.add(tetrahedron);
+                tetrahedron.material =
+                    scene.add(tetrahedron);
 
             });
 
@@ -191,23 +191,23 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
 
                 bufferGeometryTorus.setIndex(torus.getFaces());
                 bufferGeometryTorus.addAttribute("position", torus.getPositions());
-               // bufferGeometryTorus.addAttribute("color", torus.getColors());
-               // bufferGeometryTorus.addAttribute("index", torus.getFaces());
+                // bufferGeometryTorus.addAttribute("color", torus.getColors());
+                // bufferGeometryTorus.addAttribute("index", torus.getFaces());
                 scene.addBufferGeometry(bufferGeometryTorus);
-               // var geometry = new  THREE.BufferGeometry();
-              //  geometry.setIndex( new THREE.BufferAttribute( torus.getFaces(), 1 ) );
-             /*   geometry.addAttribute( 'position', new THREE.BufferAttribute( torus.getPositions(), 3 ) );
-                geometry.addAttribute( 'color', new THREE.BufferAttribute( torus.getColors, 3, true ) );
-                geometry.computeBoundingSphere();
-                var material = new THREE.MeshPhongMaterial( {
-                    color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
-                    side: THREE.DoubleSide, vertexColors: THREE.VertexColors
-                } );*/
+                // var geometry = new  THREE.BufferGeometry();
+                //  geometry.setIndex( new THREE.BufferAttribute( torus.getFaces(), 1 ) );
+                /*   geometry.addAttribute( 'position', new THREE.BufferAttribute( torus.getPositions(), 3 ) );
+                 geometry.addAttribute( 'color', new THREE.BufferAttribute( torus.getColors, 3, true ) );
+                 geometry.computeBoundingSphere();
+                 var material = new THREE.MeshPhongMaterial( {
+                 color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
+                 side: THREE.DoubleSide, vertexColors: THREE.VertexColors
+                 } );*/
 
                 // var mesh = new THREE.Mesh( geometry, material );
-               // scene.addBufferGeometry(mesh);
-               // var mesh = new THREE.Mesh( geometry, material );
-               // scene.add( mesh );//    scene.addBufferGeometry(bufferGeometryTorus);
+                // scene.addBufferGeometry(mesh);
+                // var mesh = new THREE.Mesh( geometry, material );
+                // scene.add( mesh );//    scene.addBufferGeometry(bufferGeometryTorus);
 
 
             }));
@@ -262,18 +262,9 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
 
             }));
             $("#btnNewObject").click((function () {
-                var loader = new OBJLoader();
 
-                // load a resource
-                loader.load(
-                    // resource URL
-                    'obj/dromedar.obj',
-                    // Function when resource is loaded
-                    function ( object ) {
-                        scene.add( object );
-                    }
-                );
-
+                var myObject = new MyObject( $("#path").attr("value"));
+                scene.add(myObject.getMesh());
 
             }));
 

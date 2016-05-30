@@ -31,6 +31,7 @@ requirejs.config({
         "vec2" : "./math/vec2",
         "shaders" : "./shaders",
         "OBJLoader" : "./loaders/OBJLoader",
+        "myObject" : "./models/myObject",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"
 
