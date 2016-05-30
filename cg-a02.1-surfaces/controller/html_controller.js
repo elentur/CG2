@@ -27,11 +27,16 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
 
             $(".options").hide();
 
-
             $("button[title]").click((function () {
                 $(".options").hide();
                 $("#animate").show();
-                $("#" + $(this).attr('title')).show();
+
+                var title = $(this).attr('title')
+                $("#" + title).show();
+                if(title == "ellipsoid" || title == "torus"){
+                    $("#apendix").show();
+                }
+
             }));
 
             $("#btnNewCube").click((function () {
@@ -156,7 +161,7 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                 };
                 var ellipsoid = new Ellipsoid(posFunc, config);
                 var bufferGeometryParametric = new BufferGeometry(isWireframe(), isSolid(), isPoints());
-                
+
                 bufferGeometryParametric.setIndex(ellipsoid.getFaces());
 
                 bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
