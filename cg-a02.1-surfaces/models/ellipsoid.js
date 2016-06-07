@@ -15,8 +15,10 @@ define(["three"],
         var Ellipsoid = function (posFunc, config) {
 
             var vectorCount =(config.widthSeg+1) *( config.heightSeg+1);
+            
             this.positions = new Float32Array(vectorCount* 3);
             this.colors = new Float32Array(vectorCount * 3);
+            
             var indexCount = config.heightSeg * config.widthSeg * 2 * 3;
 
             // buffers
@@ -26,11 +28,13 @@ define(["three"],
             var fX = eval("(function(u,v,a,b,c){return " + posFunc.x + ";})");
             var fY = eval("(function(u,v,a,b,c){return " + posFunc.y + ";})");
             var fZ = eval("(function(u,v,a,b,c){return " + posFunc.z + ";})");
+            
             var color = new THREE.Color();
-            color.setRGB(0, 1, 0);
+            
             var interval = 0;
+            
             for (var i = 0; i <= config.heightSeg; i++) {
-                for (var j = 0; j <= config.widthSeg; j ++) {
+                for (var j = 0; j <= config.widthSeg; j++) {
                     var u = posFunc.uMin + (i / (config.heightSeg)) * (posFunc.uMax - posFunc.uMin);
                     var v = posFunc.vMin + (j / (config.widthSeg)) * (posFunc.vMax - posFunc.vMin);
 
@@ -46,7 +50,9 @@ define(["three"],
 
                 }
             }
+            
             interval = 0;
+            
             for (i = 1; i <= config.heightSeg; i++) {
                 for (j = 1; j <= config.widthSeg; j++) {
 
@@ -67,8 +73,6 @@ define(["three"],
                     interval+=6;
                 }
             }
-            console.log(this.faces);
-
 
             this.getPositions = function () {
                 return this.positions;
@@ -77,6 +81,7 @@ define(["three"],
             this.getColors = function () {
                 return this.colors;
             };
+            
             this.getFaces = function () {
                 return this.faces;
             };

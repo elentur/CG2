@@ -13,6 +13,7 @@ define(["three"],
         "use strict";
 
         var Torus = function (posFunc, config) {
+
             var vertexCount = (config.radialSegments+1)*(config.tubeSegments+1);
 
             this.positions = new Float32Array( vertexCount*3);
@@ -26,9 +27,13 @@ define(["three"],
             var fX =  eval("(function(u,v,r,R){return " + posFunc.x + ";})");
             var fY =  eval("(function(u,v,r,R){return " + posFunc.y + ";})");
             var fZ =  eval("(function(u,v,r,R){return " + posFunc.z + ";})");
+            
             var color = new THREE.Color();
+            
             color.setRGB( 0,1,0 );
+            
             var interval =0;
+            
             for (var i = 0; i <= config.radialSegments; i++) {
                 for (var j = 0; j <= config.tubeSegments; j++) {
                     var u = posFunc.uMin + (i / (config.radialSegments)) * (posFunc.uMax - posFunc.uMin);
@@ -50,22 +55,7 @@ define(["three"],
             for ( j = 1; j <= config.radialSegments; j ++ ) {
 
                 for ( i = 1; i <= config.tubeSegments; i ++ ) {
-
-                    /*var t = config.radialSegments*config.tubeSegments;
-                    var p1 = i * (config.radialSegments) + j ;
-                    var p2 = i * (config.radialSegments) + j + 1;
-                    var p3 = (i + 1) * (config.radialSegments) + j +1;
-                    var p4 = (i + 1) * (config.radialSegments) + j;
-                    p3 = p3%t;
-                    p4= p4%t;
-                    this.faces[interval] = p1;
-                    this.faces[interval + 1] = p3;
-                    this.faces[interval + 2] = p2;
-
-                    this.faces[interval + 3] = p3;
-                    this.faces[interval + 4] = p1;
-                    this.faces[interval + 5] = p4;*/
-
+                    
                     var a = ( config.tubeSegments + 1 ) * j + i - 1;
                     var b = ( config.tubeSegments + 1 ) * ( j - 1 ) + i - 1;
                     var c = ( config.tubeSegments + 1 ) * ( j - 1 ) + i;
