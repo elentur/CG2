@@ -250,22 +250,40 @@ define(["jquery", "vec2","Line", "Circle", "Point", "Star", "ParametricCurve", "
             $("#btnCircleTangent").click((function () {
                 var radius = 25;
                 var center = [ 250,200];
-                var point = [400,300];
+                var point = [310,300];
                 var tangentPoints = function(radius, center, point){
 
 
                     var center2 = Vec2.add(point,Vec2.mult(Vec2.sub(center,point),0.5));
 
                     var radius2 = Vec2.length(Vec2.sub(center2,center));
-                    var x = center2[0]-center[0];
-                    var y = center2[1]-center[1];
-                    var z = (radius*radius) -(x*x) -(y*y)-(radius2*radius2);
-                    var t =Math.asin(Math.sqrt((z*z) -(4*(radius2*radius2)*(y*y)))/
-                        Math.sqrt(4*(radius2*radius2*(x*x)) -(4*(radius2*radius2)*(y*y))));
-
-                    var p3 = [radius*Math.sin(t)+center[0],radius*Math.cos(t)+center[1]];
-                    var p4 =  [radius*Math.sin(Math.PI-t)+center[0],radius*Math.cos(Math.PI-t)+center[1]];
-                    console.log(p3 + " " + p4);
+                    var AB0 = center2[0] - center[0];
+                    var AB1 = center2[1] - center[1];
+                    var c = Math.sqrt( AB0 * AB0 + AB1 * AB1 );
+                    if (c == 0) {
+                        return [];
+                    }
+                    var x = (radius*radius + c*c - radius2*radius2) / (2*c);
+                    var y = radius*radius - x*x;
+                    if (y < 0) {
+                        return [];
+                    }
+                    if (y > 0) y = Math.sqrt( y );
+                    var ex0 = AB0 / c;
+                    var ex1 = AB1 / c;
+                    var ey0 = -ex1;
+                    var ey1 =  ex0;
+                    var Q1x = center[0] + x * ex0;
+                    var Q1y = center[1] + x * ex1;
+                    if (y == 0) {
+                        return [ [ Q1x, Q1y ] ];
+                    }
+                    var Q2x = Q1x - y * ey0;
+                    var Q2y = Q1y - y * ey1;
+                    Q1x += y * ey0;
+                    Q1y += y * ey1;
+                    var p3= [ Q1x, Q1y ];
+                    var p4 =[ Q2x, Q2y ];
                     return {p3: p3, p4:p4}
                 };
                 var points = tangentPoints(radius,center, point);

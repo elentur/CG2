@@ -52,7 +52,7 @@ define(["three"],
                 }
 
                 if (isSolid) {
-                    this.material = new THREE.MeshBasicMaterial({
+                    this.material = new THREE.MeshLambertMaterial({
                         color: 0x00ff00,
                         side: THREE.DoubleSide,
                         wireframe: isWireframe
@@ -86,9 +86,9 @@ define(["three"],
              * @param name vertex attributes name, e.g. position, color, normal
              * @param buffer
              */
-            this.addAttribute = function(name, buffer) {
+            this.addAttribute = function(name, buffer, size) {
 
-                this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, 3 ) );
+                this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, size||3 ) );
                 this.geometry.computeBoundingSphere();
 
                 if(isWireframe && isSolid){

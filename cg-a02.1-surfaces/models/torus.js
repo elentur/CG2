@@ -18,6 +18,7 @@ define(["three"],
 
             this.positions = new Float32Array( vertexCount*3);
             this.colors = new Float32Array(vertexCount *3);
+            this.normals = new Float32Array( vertexCount * 3 );
             var indexCount = config.radialSegments * config.tubeSegments * 2 * 3;
 
             // buffers
@@ -33,19 +34,34 @@ define(["three"],
             color.setRGB( 0,1,0 );
             
             var interval =0;
-            
+            var vector = new THREE.Vector3();
+            var center = new THREE.Vector3();
+            var normal = new THREE.Vector3();
             for (var i = 0; i <= config.radialSegments; i++) {
                 for (var j = 0; j <= config.tubeSegments; j++) {
                     var u = posFunc.uMin + (i / (config.radialSegments)) * (posFunc.uMax - posFunc.uMin);
                     var v = posFunc.vMin + (j / (config.tubeSegments)) * (posFunc.vMax - posFunc.vMin);
                     //console.log("u: " + u + " v: " + v);
-                    this.positions[interval] =fX(u,v,config.innerRadius,config.outerRadius);
-                    this.positions[interval+1] = fY(u,v,config.innerRadius,config.outerRadius);
-                    this.positions[interval+2] = fZ(u,v,config.innerRadius,config.outerRadius);
+                    vector.x=fX(u,v,config.innerRadius,config.outerRadius);
+                        vector.y=fY(u,v,config.innerRadius,config.outerRadius);
+                    vector.z =fZ(u,v,config.innerRadius,config.outerRadius);
+                    this.positions[interval] =vector.x;
+                    this.positions[interval+1] = vector.y;
+                    this.positions[interval+2] = vector.z;
 
+                    center.x = config.outerRadius * Math.cos( u );
+                    center.y = config.outerRadius * Math.sin( u );
+
+                    normal.subVectors( vector, center ).normalize();
+                    normal.multiplyScalar(-1);
+                    this.normals[ interval ] = normal.x;
+                    this.normals[ interval + 1 ] = normal.y;
+                    this.normals[ interval + 2 ] = normal.z;
                     this.colors[interval] = color.r;
                     this.colors[interval+1] = color.g;
                     this.colors[interval+2] = color.b;
+
+
                     interval+=3;
 
                 }
@@ -78,6 +94,9 @@ define(["three"],
 
             this.getPositions = function() {
                 return this.positions;
+            };
+            this.getNormals = function() {
+                return this.normals;
             };
 
             this.getColors = function() {

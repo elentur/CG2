@@ -196,6 +196,8 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
                 bufferGeometryTorus.setIndex(torus.getFaces());
                 bufferGeometryTorus.addAttribute("position", torus.getPositions());
+                bufferGeometryTorus.addAttribute("normal", torus.getNormals());
+                bufferGeometryTorus.addAttribute("uv", torus.getUVs(),2);
 
                 scene.addBufferGeometry(bufferGeometryTorus);
 
@@ -242,9 +244,11 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
 
                 var band = new Band(config);
-                var bufferGeometryBand = new BufferGeometry();
+                var bufferGeometryBand = new BufferGeometry(false, true, false);
+                bufferGeometryBand.setIndex(band.getFaces());
                 bufferGeometryBand.addAttribute("position", band.getPositions());
-                bufferGeometryBand.addAttribute("color", band.getColors());
+                //bufferGeometryBand.addAttribute("color", band.getColors());
+                bufferGeometryBand.addAttribute("normal", band.getNormals());
 
                 scene.addBufferGeometry(bufferGeometryBand);
 

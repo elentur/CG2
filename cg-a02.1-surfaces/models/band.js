@@ -25,43 +25,78 @@ define(["three"],
             var radius = config.radius || 300;
             var height = config.height || 100;
 
-            this.positions = new Float32Array( 2*segments * 3);
-            this.colors = new Float32Array( 2*segments * 3 );
+            var vertexCount =(segments+1)*2;
+
+            this.positions = new Float32Array(vertexCount* 3);
+            this.colors = new Float32Array(vertexCount * 3);
+            this.normals = new Float32Array( vertexCount * 3 );
+
+            var indexCount = segments * 1 * 2 * 3;
+
+            console.log(indexCount);
+            console.log(this.positions.length);
+            // buffers
+
+            this.faces = new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount );
+
+            var fX = eval("(function(u,r){return r * Math.cos(u);})");
+            var fY = eval("(function(u,r){return r * Math.sin(u);})");
+            var fZ = eval("(function(v){return v;})");
 
             var color = new THREE.Color();
 
-            for(var i=0; i<this.positions.length; i+=6) {
+            var interval = 0;
 
-                // X and Z coordinates are on a circle around the origin
-                var t = (i/segments)*Math.PI*2;
-                var x = Math.sin(t) * radius;
-                var z = Math.cos(t) * radius;
-                // Y coordinates are simply -height/2 and +height/2
-                var y0 = height/2;
-                var y1 = -height/2;
+            for (var i = 0; i <= 1; i++) {
+                for (var j = 0; j <= segments; j++) {
+                    var v = 0 + (i / 1) * (height -0);
+                    var u = -Math.PI + (j / segments) * (Math.PI + Math.PI);
 
-                // add two points for each position on the circle
-                // IMPORTANT: push each float value separately!
-                this.positions[ i ]     = x;
-                this.positions[ i + 1 ] = y0;
-                this.positions[ i + 2 ] = z;
-
-                this.positions[ i + 3 ] = x;
-                this.positions[ i + 4 ] = y1;
-                this.positions[ i + 5 ] = z;
+                    this.positions[interval] = fX(u, radius);
+                    this.positions[interval + 1] = fY(u, radius);
+                    this.positions[interval + 2] = fZ(v);
 
 
-                color.setRGB( 1,0,0 );
+                    this.colors[interval] = color.r;
+                    this.colors[interval + 1] = color.g;
+                    this.colors[interval + 2] = color.b;
 
-                this.colors[ i ]     = color.r;
-                this.colors[ i + 1 ] = color.g;
-                this.colors[ i + 2 ] = color.b;
+                    var normal = new THREE.Vector3();
+                    normal.x = Math.sin( v* (2*Math.PI)  );
+                    normal.z = Math.cos( v * (2*Math.PI)  );
+                    normal.y = 0;
+                    this.normals[interval] = normal.x;
+                    this.normals[interval+1] = normal.y;
+                    this.normals[interval+2] =normal.z;
 
-                this.colors[ i + 3 ] = color.r;
-                this.colors[ i + 4 ] = color.g;
-                this.colors[ i + 5 ] = color.b;
+
+                    interval += 3;
+
+                }
             }
 
+            interval = 0;
+
+            for (i = 1; i <= segments; i++) {
+                for (j = 1; j <= 1; j++) {
+
+                    var a = ( segments + 1 ) * j + i - 1;
+                    var b = (segments + 1 ) * ( j - 1 ) + i - 1;
+                    var c = ( segments + 1 ) * ( j - 1 ) + i;
+                    var d = ( segments + 1 ) * j + i;
+
+                    // face one
+                    this.faces[ interval ] = a;
+                    this.faces[ interval + 1 ] = b;
+                    this.faces[ interval + 2 ] = d;
+
+                    // face two
+                    this.faces[ interval + 3 ] = b;
+                    this.faces[ interval + 4 ] = c;
+                    this.faces[ interval + 5 ] = d;
+                    interval+=6;
+                }
+            }
 
             this.getPositions = function() {
                 return this.positions;
@@ -70,7 +105,13 @@ define(["three"],
             this.getColors = function() {
                 return this.colors;
             };
+            this.getFaces = function () {
+                return this.faces;
+            };
 
+            this.getNormals = function() {
+                return this.normals;
+            };
         };
 
         return Band;
