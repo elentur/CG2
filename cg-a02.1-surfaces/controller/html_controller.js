@@ -244,7 +244,7 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
 
                 var band = new Band(config);
-                var bufferGeometryBand = new BufferGeometry(false, true, false);
+                var bufferGeometryBand = new BufferGeometry(true, false, false);
                 bufferGeometryBand.setIndex(band.getFaces());
                 bufferGeometryBand.addAttribute("position", band.getPositions());
                 //bufferGeometryBand.addAttribute("color", band.getColors());
