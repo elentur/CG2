@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus", "helicoid","OBJLoader"],
-    (function ($, BufferGeometry,Vec2, Random, Band, Ellipsoid, Torus, Helicoid, OBJLoader) {
+define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "torus", "helicoid", "OBJLoader"],
+    (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid, Torus, Helicoid, OBJLoader) {
         "use strict";
 
         /*
@@ -21,9 +21,17 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
          */
         var HtmlController = function (scene) {
 
-            var isWireframe = function(){ return $('#chkWireframe').is(':input:checked'); };
-            var isSolid = function(){ return $('#chkSolid').is(':input:checked'); };
-            var isPoints = function(){ return $('#chkPoints').is(':input:checked'); };
+            var getType = function () {
+                return $("#type").val();
+            };
+
+            var getMaterial = function () {
+                return $("#material").val();
+            };
+
+            var getColor = function () {
+                return $("#color").val();
+            };
 
             $(".options").hide();
 
@@ -33,7 +41,7 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
 
                 var title = $(this).attr('title')
                 $("#" + title).show();
-                if(title == "ellipsoid" || title == "torus"){
+                if (title == "ellipsoid" || title == "torus") {
                     $("#apendix").show();
                 }
 
@@ -171,6 +179,49 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
 
             }));
 
+            var setMaterial = function () {
+
+                var t = getType();
+                var m = getMaterial();
+                var c = parseInt(getColor().replace(/^#/, ''), 16);
+
+                console.log(c);
+
+                var material;
+
+                if (t == 3) {
+                    material = new THREE.PointsMaterial({
+                        color: c,
+                        size: 10,
+                        vertexColors: THREE.VertexColors,
+                        point: true
+                    });
+                } else {
+                    if (m == 0) {
+                        material = new THREE.MeshBasicMaterial({
+                            color: c,
+                            side: THREE.DoubleSide,
+                            wireframe: t != 1
+                        })
+                    } else if (m == 1) {
+                        material = new THREE.MeshLambertMaterial({
+                            color: c,
+                            side: THREE.DoubleSide,
+                            wireframe: t != 1
+                        })
+                    } else if (m == 2) {
+                        material = new THREE.MeshPhongMaterial({
+                            color: c,
+                            side: THREE.DoubleSide,
+                            wireframe: t != 1
+                        })
+                    }
+                }
+
+                return material;
+
+            };
+
             $("#btnNewTorus").click((function () {
 
                 var config = {
@@ -189,10 +240,15 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                     vMin: 0,
                     vMax: 2 * Math.PI
                 };
-                
+
+
+                var material = setMaterial();
+
+                console.log(material);
+
                 var torus = new Torus(posFunc, config);
 
-                var bufferGeometryTorus = new BufferGeometry(isWireframe(), isSolid(), isPoints());
+                var bufferGeometryTorus = new BufferGeometry(material);
 
                 bufferGeometryTorus.setIndex(torus.getFaces());
                 bufferGeometryTorus.addAttribute("position", torus.getPositions());
@@ -258,8 +314,8 @@ define(["jquery", "BufferGeometry","vec2", "random", "band", "ellipsoid", "torus
                     // resource URL
                     'obj/dromedar.obj',
                     // Function when resource is loaded
-                    function ( object ) {
-                        scene.add( object );
+                    function (object) {
+                        scene.add(object);
                     }
                 );
 

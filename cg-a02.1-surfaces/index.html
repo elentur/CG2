@@ -271,14 +271,25 @@
         <table id="apendix" class="options">
             <tr>
                 <td>
-                    <label>
-                        Wireframe: <input id="chkWireframe" type="checkbox">
+                    <label>Type:
+                        <select id="type">
+                            <option value="0">Wireframe</option>
+                            <option value="1">Solid</option>
+                            <option value="2">Solid & Wireframe</option>
+                            <option value="3">Points</option>
+                        </select>
                     </label>
-                    <label>
-                        Solid: <input id="chkSolid" type="checkbox" checked>
+
+                    <label>Material:
+                        <select id="material">
+                            <option value="0">Basic</option>
+                            <option value="1">Lambert</option>
+                            <option value="2">Phong</option>
+                        </select>
                     </label>
-                    <label>
-                        Points: <input id="chkPoints" type="checkbox">
+
+                    <label>Color:
+                        <input id="color" type="color">
                     </label>
                 </td>
             </tr>
