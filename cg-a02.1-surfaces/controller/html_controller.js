@@ -11,8 +11,10 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "torus", "helicoid", "myObject"],
-    (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid, Torus, Helicoid, MyObject) {
+define(["jquery", "BufferGeometry", "vec2", "random",
+    "band", "ellipsoid", "torus", "helicoid", "myObject","material", "robot"],
+    (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid,
+               Torus, Helicoid, MyObject,Material, Robot) {
         "use strict";
 
         /*
@@ -21,9 +23,7 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
          */
         var HtmlController = function (scene) {
 
-            var isWireframe = function(){ return $('#chkWireframe').is(':input:checked'); };
-            var isSolid = function(){ return $('#chkSolid').is(':input:checked'); };
-            var isPoints = function(){ return $('#chkPoints').is(':input:checked'); };
+
 
             $(".options").hide();
 
@@ -33,98 +33,100 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
                 var title = $(this).attr('title')
                 $("#" + title).show();
-                if(title == "ellipsoid" || title == "torus"){
+               // if (title == "ellipsoid" || title == "torus"|| title == "random"|| title == "band") {
                     $("#apendix").show();
-                }
+                //}
 
             }));
-
+            var getType = function () {
+                return $("#type").val();
+            };
             $("#btnNewCube").click((function () {
+                if(getType!=3) {
+                    var height = parseInt($("#cubeHeight").attr("value"));
+                    var width = parseInt($("#cubeWidth").attr("value"));
+                    var depth = parseInt($("#cubeDepth").attr("value"));
+                    var geometry = new THREE.BoxGeometry(height, width, depth);
+                    var material = new Material().getMaterial();
+                    var cube = new THREE.Mesh(geometry, material);
 
-                var height = parseInt($("#cubeHeight").attr("value"));
-                var width = parseInt($("#cubeWidth").attr("value"));
-                var depth = parseInt($("#cubeDepth").attr("value"));
-                var geometry = new THREE.BoxGeometry(height, width, depth);
-                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-                material.wireframe = true;
-                var cube = new THREE.Mesh(geometry, material);
-
-                scene.add(cube);
+                    scene.add(cube);
+                }
             }));
 
             $("#btnNewSphere").click((function () {
+                if(getType!=3) {
+                    var radius = parseInt($("#sphereRadius").attr("value"));
+                    var width = parseInt($("#SphereWidtht").attr("value"));
+                    var height = parseInt($("#sphereHeight").attr("value"));
+                    var geometry = new THREE.SphereGeometry(radius, width, height);
+                    var material = new Material().getMaterial();
+                    var sphere = new THREE.Mesh(geometry, material);
 
-                var radius = parseInt($("#sphereRadius").attr("value"));
-                var width = parseInt($("#SphereWidtht").attr("value"));
-                var height = parseInt($("#sphereHeight").attr("value"));
-                var geometry = new THREE.SphereGeometry(radius, width, height);
-                var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
-                material.wireframe = true;
-                var sphere = new THREE.Mesh(geometry, material);
-
-                scene.add(sphere);
+                    scene.add(sphere);
+                }
             }));
 
             $("#btnNewTorusKnot").click((function () {
+                if(getType!=3) {
+                    var radius = parseInt($("#torusKnotRadius").attr("value"));
+                    var diameter = parseInt($("#torusKnotDiameter").attr("value"));
+                    var heightSeg = parseInt($("#torusKnotTubularSegments").attr("value"));
+                    var radialSeg = parseInt($("#torusKnotRadiusSegments").attr("value"));
+                    var geometry = new THREE.TorusKnotGeometry(radius, diameter, heightSeg, radialSeg);
+                    var material = new Material().getMaterial();
+                    var torusKnot = new THREE.Mesh(geometry, material);
 
-                var radius = parseInt($("#torusKnotRadius").attr("value"));
-                var diameter = parseInt($("#torusKnotDiameter").attr("value"));
-                var heightSeg = parseInt($("#torusKnotTubularSegments").attr("value"));
-                var radialSeg = parseInt($("#torusKnotRadiusSegments").attr("value"));
-                var geometry = new THREE.TorusKnotGeometry(radius, diameter, heightSeg, radialSeg);
-                var material = new THREE.MeshLambertMaterial({color: 0x00ff00});
-                material.wireframe = false;
-                var torusKnot = new THREE.Mesh(geometry, material);
-
-                scene.add(torusKnot);
+                    scene.add(torusKnot);
+                }
             }));
             $('#btnNewCylinder').on('click', function () {
+                if(getType!=3) {
+                    var values = {};
 
-                var values = {};
+                    $('#cylinder').find('input').each(function (i, elm) {
+                        values[i] = parseInt($(elm).val());
+                    });
 
-                $('#cylinder').find('input').each(function (i, elm) {
-                    values[i] = parseInt($(elm).val());
-                });
+                    var geometry = new THREE.CylinderGeometry(values[0], values[1], values[2], values[3]);
+                    var material =new Material().getMaterial();
+                    var cylinder = new THREE.Mesh(geometry, material);
 
-                var geometry = new THREE.CylinderGeometry(values[0], values[1], values[2], values[3]);
-                var material = new THREE.MeshPhongMaterial({color: 0xcb1200});
-                //material.wireframe = true;
-                var cylinder = new THREE.Mesh(geometry, material);
-
-                scene.add(cylinder);
+                    scene.add(cylinder);
+                }
             });
 
             $('#btnNewDodecahedron').on('click', function () {
+                if(getType!=3) {
+                    var values = {};
 
-                var values = {};
+                    $('#dodecahedron').find('input').each(function (i, elm) {
+                        values[i] = parseInt($(elm).val());
+                    });
 
-                $('#dodecahedron').find('input').each(function (i, elm) {
-                    values[i] = parseInt($(elm).val());
-                });
+                    var geometry = new THREE.DodecahedronGeometry(values[0], values[1]);
+                    var material =new Material().getMaterial();
+                    var dodecahedron = new THREE.Mesh(geometry, material);
 
-                var geometry = new THREE.DodecahedronGeometry(values[0], values[1]);
-                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-                material.wireframe = true;
-                var dodecahedron = new THREE.Mesh(geometry, material);
-
-                scene.add(dodecahedron);
+                    scene.add(dodecahedron);
+                }
 
             });
 
             $('#btnNewTetrahedron').on('click', function () {
+                if(getType!=3) {
+                    var values = {};
 
-                var values = {};
+                    $('#tetrahedron').find('input').each(function (i, elm) {
+                        values[i] = parseInt($(elm).val());
+                    });
 
-                $('#tetrahedron').find('input').each(function (i, elm) {
-                    values[i] = parseInt($(elm).val());
-                });
+                    var geometry = new THREE.TetrahedronGeometry(values[0], values[1]);
+                    var material = new Material().getMaterial();
+                    var tetrahedron = new THREE.Mesh(geometry, material);
 
-                var geometry = new THREE.TetrahedronGeometry(values[0], values[1]);
-                var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-                material.wireframe = true;
-                var tetrahedron = new THREE.Mesh(geometry, material);
-                tetrahedron.material =
                     scene.add(tetrahedron);
+                }
 
             });
 
@@ -132,7 +134,7 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
                 var numPoints = parseInt($("#numItems").attr("value"));
                 var random = new Random(numPoints);
-                var bufferGeometryRandom = new BufferGeometry();
+                var bufferGeometryRandom = new BufferGeometry(new Material().getMaterial());
                 bufferGeometryRandom.addAttribute("position", random.getPositions());
                 bufferGeometryRandom.addAttribute("color", random.getColors());
 
@@ -160,16 +162,20 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
                     vMax: Math.PI
                 };
                 var ellipsoid = new Ellipsoid(posFunc, config);
-                var bufferGeometryParametric = new BufferGeometry(isWireframe(), isSolid(), isPoints());
+                var bufferGeometryParametric = new BufferGeometry(new Material().getMaterial());
 
                 bufferGeometryParametric.setIndex(ellipsoid.getFaces());
-
                 bufferGeometryParametric.addAttribute("position", ellipsoid.getPositions());
                 bufferGeometryParametric.addAttribute("color", ellipsoid.getColors());
 
                 scene.addBufferGeometry(bufferGeometryParametric);
 
             }));
+
+            $("#btnNewRobot").click((function () {
+                scene.add(new Robot().getMesh());
+            }));
+
 
             $("#btnNewTorus").click((function () {
 
@@ -190,14 +196,16 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
                     vMax: 2 * Math.PI
                 };
 
+
+
+
                 var torus = new Torus(posFunc, config);
 
-                var bufferGeometryTorus = new BufferGeometry(isWireframe(), isSolid(), isPoints());
+                var bufferGeometryTorus = new BufferGeometry(new Material().getMaterial());
 
                 bufferGeometryTorus.setIndex(torus.getFaces());
                 bufferGeometryTorus.addAttribute("position", torus.getPositions());
                 bufferGeometryTorus.addAttribute("normal", torus.getNormals());
-                bufferGeometryTorus.addAttribute("uv", torus.getUVs(),2);
 
                 scene.addBufferGeometry(bufferGeometryTorus);
 
@@ -226,7 +234,7 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
                 };
 
                 var helicoid = new Helicoid(posFunc, config);
-                var bufferGeometryHelicoid = new BufferGeometry();
+                var bufferGeometryHelicoid = new BufferGeometry(getMaterial());
                 bufferGeometryHelicoid.addAttribute("position", helicoid.getPositions());
                 bufferGeometryHelicoid.addAttribute("color", helicoid.getColors());
 
@@ -244,10 +252,9 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
 
 
                 var band = new Band(config);
-                var bufferGeometryBand = new BufferGeometry(true, false, false);
+                var bufferGeometryBand = new BufferGeometry(new Material().getMaterial());
                 bufferGeometryBand.setIndex(band.getFaces());
                 bufferGeometryBand.addAttribute("position", band.getPositions());
-                //bufferGeometryBand.addAttribute("color", band.getColors());
                 bufferGeometryBand.addAttribute("normal", band.getNormals());
 
                 scene.addBufferGeometry(bufferGeometryBand);
@@ -256,8 +263,11 @@ define(["jquery", "BufferGeometry", "vec2", "random", "band", "ellipsoid", "toru
             }));
             $("#btnNewObject").click((function () {
 
-                var myObject = new MyObject( $("#path").attr("value"));
+                var myObject = new MyObject($("#path").attr("value"));
+
+
                 scene.add(myObject.getMesh());
+
 
             }));
 

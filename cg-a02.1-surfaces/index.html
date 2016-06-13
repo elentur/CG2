@@ -43,6 +43,7 @@
         <button id="btnDodecahedron" title="dodecahedron" type="button">Dodecahedron</button>
         <button id="btnTetrahedron" title="tetrahedron" type="button">Tetrahedron</button>
         <button id="btnObjectLoader" title="objectLoader" type="button">Object Loader</button>
+        <button id="btnRobot" title="robot" type="button">Robot</button>
 
         <!-- add more here... -->
         <h3>Selected Object:</h3>
@@ -62,6 +63,13 @@
             <tr>
                 <td>
                     <button id="btnNewCube" type="button">Create Cube</button>
+                </td>
+            </tr>
+        </table>#
+        <table id="robot" class="options">
+            <tr>
+                <td>
+                    <button id="btnNewRobot" type="button">Create Robot</button>
                 </td>
             </tr>
         </table>
@@ -271,14 +279,25 @@
         <table id="apendix" class="options">
             <tr>
                 <td>
-                    <label>
-                        Wireframe: <input id="chkWireframe" type="checkbox">
+                    <label>Type:
+                        <select id="type">
+                            <option value="0">Wireframe</option>
+                            <option value="1">Solid</option>
+                            <option value="2">Solid & Wireframe</option>
+                            <option value="3">Points</option>
+                        </select>
                     </label>
-                    <label>
-                        Solid: <input id="chkSolid" type="checkbox" checked>
+
+                    <label>Material:
+                        <select id="material">
+                            <option value="0">Basic</option>
+                            <option value="1">Lambert</option>
+                            <option value="2">Phong</option>
+                        </select>
                     </label>
-                    <label>
-                        Points: <input id="chkPoints" type="checkbox">
+
+                    <label>Color:
+                        <input id="color" type="color">
                     </label>
                 </td>
             </tr>

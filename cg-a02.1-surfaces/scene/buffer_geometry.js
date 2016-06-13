@@ -17,59 +17,18 @@
 
 /* requireJS module definition */
 define(["three"],
-    (function(THREE) {
+    function (THREE) {
 
         "use strict";
 
-        var BufferGeometry = function (isWireframe, isSolid, isPoint) {
+        var BufferGeometry = function (material) {
 
-            this.mesh     = undefined;
-            this.material = undefined;
+            this.mesh = undefined;
+            this.material = material;
             this.geometry = new THREE.BufferGeometry();
 
-            if(isWireframe && isSolid){
-
-                this.material = [
-                    new THREE.MeshBasicMaterial({
-                        color: 0x000000,
-                        side: THREE.DoubleSide,
-                        wireframe: true
-                    }),
-                    new THREE.MeshBasicMaterial({
-                        color: 0x00ff00,
-                        side: THREE.DoubleSide,
-                        wireframe: false
-                    })
-                ];
-            }else {
-
-                if (isWireframe) {
-                    this.material = new THREE.MeshBasicMaterial({
-                        color: 0x000000,
-                        side: THREE.DoubleSide,
-                        wireframe: true
-                    });
-                }
-
-                if (isSolid) {
-                    this.material = new THREE.MeshLambertMaterial({
-                        color: 0x00ff00,
-                        side: THREE.DoubleSide,
-                        wireframe: isWireframe
-                    });
-                }
-            }
-
-            if(isPoint){
-                this.material = new THREE.PointsMaterial( {
-                    color: 0x00ff00,
-                    size:10,
-                    vertexColors: THREE.VertexColors
-                } );
-            }
-
             // Default Wert
-            if(!this.material){
+            if (!this.material) {
                 this.material = new THREE.MeshBasicMaterial({
                     color: 0xff0000,
                     side: THREE.DoubleSide,
@@ -77,6 +36,7 @@ define(["three"],
                 });
                 console.warn("no material added, default value set!");
             }
+
 
             /**
              * Adds a vertex attribute, we assume each element has three components, e.g.
@@ -86,30 +46,34 @@ define(["three"],
              * @param name vertex attributes name, e.g. position, color, normal
              * @param buffer
              */
-            this.addAttribute = function(name, buffer, size) {
+            this.addAttribute = function (name, buffer) {
 
-                this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, size||3 ) );
+                this.geometry.addAttribute(name, new THREE.BufferAttribute(buffer, 3));
                 this.geometry.computeBoundingSphere();
 
-                if(isWireframe && isSolid){
-                    this.mesh =  THREE.SceneUtils.createMultiMaterialObject(this.geometry, this.material);
-                }else{
-                    if(isPoint){
-                        this.mesh = new THREE.Points( this.geometry, this.material);
-                    }else{
-                        this.mesh = new THREE.Mesh( this.geometry, this.material);
-                    }
+                if ($('#type').val() == 3) {
+                    this.mesh = new THREE.Points(this.geometry, this.material);
+                } else if ($("#type").val() == 2) {
+                    var material2 = new THREE.MeshPhongMaterial({
+                        color: 0x000000,
+                        side: THREE.DoubleSide,
+                        wireframe: true
+                    });
+                    this.mesh = THREE.SceneUtils.createMultiMaterialObject(this.geometry, [this.material, material2])
+                } else {
+                    this.mesh = new THREE.Mesh(this.geometry, this.material);
                 }
+
             };
 
-            this.getMesh = function() {
+            this.getMesh = function () {
                 return this.mesh;
             };
 
             this.setIndex = function (buffer) {
-                this.geometry.setIndex(new THREE.BufferAttribute( buffer, 1 ));
+                this.geometry.setIndex(new THREE.BufferAttribute(buffer, 1));
             }
         };
 
         return BufferGeometry;
-    }));
+    });

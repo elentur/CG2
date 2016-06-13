@@ -1,8 +1,8 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-define(["jquery"],
-		(function ($) {
+define(["jquery","three"],
+		(function ($,THREE) {
 
 			THREE.OBJLoader = function (manager) {
 

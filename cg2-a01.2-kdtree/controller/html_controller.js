@@ -249,8 +249,8 @@ define(["jquery", "vec2","Line", "Circle", "Point", "Star", "ParametricCurve", "
             }));
             $("#btnCircleTangent").click((function () {
                 var radius = 25;
-                var center = [ 250,200];
-                var point = [310,300];
+                var center = [ 200,200];
+                var point = [300,400];
                 var tangentPoints = function(radius, center, point){
 
 
@@ -284,6 +284,7 @@ define(["jquery", "vec2","Line", "Circle", "Point", "Star", "ParametricCurve", "
                     Q1y += y * ey1;
                     var p3= [ Q1x, Q1y ];
                     var p4 =[ Q2x, Q2y ];
+                    console.log("p3: " +p3 + " p4: " +p4);
                     return {p3: p3, p4:p4}
                 };
                 var points = tangentPoints(radius,center, point);

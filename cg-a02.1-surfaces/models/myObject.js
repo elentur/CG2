@@ -9,8 +9,8 @@
  */
 
 /* requireJS module definition */
-define(["three", "OBJLoader"],
-    (function(THREE, OBJLoader) {
+define(["three", "OBJLoader", "material"],
+    (function(THREE, OBJLoader, Material) {
 
         "use strict";
 
@@ -24,17 +24,14 @@ define(["three", "OBJLoader"],
 
             var loader = new OBJLoader();
 
-            function createObject( objFile ) {
+            function createObject( path ) {
                 var container = new THREE.Object3D();
-                loader.load( objFile , function ( object ) {
+                loader.load( path , function ( object ) {
                     object.scale.x = 100;
                     object.scale.y = 100;
                     object.scale.z = 100;
                     for (var i in object.children) {
-                        object.children[i].material = new THREE.MeshLambertMaterial({
-                            color: 0x00ff00,
-                            side: THREE.DoubleSide
-                        });
+                        object.children[i].material = new Material().getMaterial();
                     }
                     container.add( object );
                 });
