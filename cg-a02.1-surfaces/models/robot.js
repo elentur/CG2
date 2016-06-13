@@ -20,160 +20,181 @@ define(["three", "material"],
          * @constructor
          */
         var Robot = function () {
-            // debugger;
-            this.root = new THREE.Object3D();
 
             var torsoSize = [300, 300, 500];
             var headSize = torsoSize[0];
+
+            this.root = new THREE.Object3D();
+
             //skeleton
+            this.torso = new THREE.Object3D();
+            this.torso.name = "torso";
+            this.root.add(this.torso);
 
-            // eye
-            this.eye = new THREE.Object3D();
-            this.eye.name = "eye";
-            this.eye.translateY(headSize);
 
-            // head
             this.head = new THREE.Object3D();
             this.head.name = "head";
-            this.head.translateY(torsoSize[2] * 0.5);
-            this.head.rotateZ(-Math.PI/4);
-            this.head.rotateX(Math.PI/4);
+            this.torso.add(this.head);
+
+            this.eye = new THREE.Object3D();
+            this.eye.name = "eye";
             this.head.add(this.eye);
 
-            // union
             this.union = new THREE.Object3D();
             this.union.name = "union";
-            this.union.translateX(torsoSize[1] * 0.99);
-            this.union.rotateZ(Math.PI/2);
 
-            // shoulder
             this.shoulder = new THREE.Object3D();
             this.shoulder.name = "shoulder";
-            this.shoulder.translateX(torsoSize[1] * 1.2);
-            this.shoulder.rotateZ(Math.PI/2);
 
-            // leg
             this.leg = new THREE.Object3D();
             this.leg.name = "leg";
 
-            // join
             this.joint = new THREE.Object3D();
-            this.joint.name = "joint";
-            // this.joint.translateY(torsoSize[2]*0.2);
-            this.joint.rotateX(-Math.PI/2);
+            this.joint.name = "join";
 
-            // foot
             this.foot = new THREE.Object3D();
             this.foot.name = "foot";
-            this.foot.translateY(-torsoSize[2]*0.2);
+            this.joint.add(this.foot);
 
-
-            // foot join
             this.footJoint = new THREE.Object3D();
             this.footJoint.name = "footJoint";
             this.footJoint.add(this.joint);
             this.footJoint.add(this.foot);
-            this.footJoint.rotateY(Math.PI/2);
-
-
-            // torso
-            this.torso = new THREE.Object3D();
-            this.torso.name = "torso";
-            this.torso.translateY(-torsoSize[2] * 0.5 * 0.9);
-            this.torso.add(this.head);
-
-            //this.foot.translateY(headSize);
-
+            this.leg.add(this.footJoint);
 
             //Skin
-            this.eyeSkin = new THREE.Mesh(new THREE.CylinderGeometry(
-                headSize * 0.1,
-                headSize * 0.1,
-                headSize * 0.2,
-                32), new THREE.MeshNormalMaterial());
 
-            this.headSkin = new THREE.Mesh(new THREE.SphereGeometry(headSize, 32, 32), new THREE.MeshNormalMaterial());
+            this.material = new THREE.MeshNormalMaterial();
+            //this.material = new Material().getMaterial();
 
             this.torsoSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0],
                 torsoSize[1],
                 torsoSize[2],
-                32), new Material().getMaterial());
+                32), this.material);
+            this.torso.add(this.torsoSkin);
 
-            this.footSkin = new THREE.Mesh(new THREE.CylinderGeometry(
-                torsoSize[0]*0.25,
-                torsoSize[0]*0.5,
-                torsoSize[2]*0.3,
-                4), new THREE.MeshNormalMaterial());
+            this.headSkin = new THREE.Mesh(new THREE.SphereGeometry(headSize, 32, 32), this.material);
+            this.head.add(this.headSkin);
 
-            this.footSkin.geometry.rotateY(Math.PI/4);
-            this.footSkin.geometry.scale(2,1,1);
+            this.eyeSkin = new THREE.Mesh(new THREE.CylinderGeometry(
+                headSize * 0.1,
+                headSize * 0.1,
+                headSize * 0.2,
+                32), this.material);
+            this.eye.add(this.eyeSkin);
+
+            this.unionSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
+                torsoSize[0]*0.28,
+                torsoSize[0]*0.28,
+                torsoSize[2]*0.2,
+                32), this.material);
+            this.union.add(this.unionSkinn);
+
+            this.shoulderSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
+                torsoSize[0]*0.3,
+                torsoSize[0]*0.3,
+                torsoSize[2]*0.2,
+                32), this.material);
+            this.shoulder.add(this.shoulderSkinn);
+
+            this.legSkin = new THREE.Mesh(new THREE.BoxGeometry(
+                torsoSize[0]*0.3,
+                torsoSize[2],
+                torsoSize[2]*0.4), this.material);
+            this.leg.add(this.legSkin);
 
             this.jointSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0]*0.3,
                 torsoSize[0]*0.3,
                 torsoSize[2]*0.15,
-                32), new THREE.MeshNormalMaterial());
-
-            this.legSkin = new THREE.Mesh(new THREE.BoxGeometry(
-                torsoSize[0]*0.5,
-                torsoSize[0]*0.2,
-                torsoSize[2]*0.4), new THREE.MeshNormalMaterial());
-
-
-            this.unionSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
-                torsoSize[0]*0.1,
-                torsoSize[0]*0.1,
-                torsoSize[2]*0.1,
-                32), new THREE.MeshNormalMaterial());
-
-            this.shoulderSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
-                torsoSize[0]*0.2,
-                torsoSize[0]*0.2,
-                torsoSize[2]*0.15,
-                32), new THREE.MeshNormalMaterial());
-
-            this.rLeg = this.leg.clone();
-            this.rLeg.translateX(torsoSize[0] * 100);
-            this.root.add(this.rLeg);
-
-
-            this.union.add(this.unionSkinn);
-            this.shoulder.add(this.shoulderSkinn);
-            this.root.add(this.union);
-            this.root.add(this.shoulder);
-
-
-            this.torso.add(this.torsoSkin);
-            this.head.add(this.headSkin);
-            this.eye.add(this.eyeSkin);
-            this.foot.add(this.footSkin);
+                32),this.material);
             this.joint.add(this.jointSkin);
-            this.leg.add(this.legSkin);
 
-            this.middleLeg = this.leg.clone();
-            this.middleLeg.translateY(-torsoSize[2]*0.5);
-            this.middleLeg.translateZ(torsoSize[0]*0.5);
+            this.footSkin = new THREE.Mesh(new THREE.CylinderGeometry(
+                torsoSize[0]*0.25,
+                torsoSize[0]*0.5,
+                torsoSize[2]*0.3,
+                4), this.material);
+            this.foot.add(this.footSkin);
 
-            this.footJointMiddle = this.footJoint.clone();
-            this.footJointMiddle.translateY(-torsoSize[2]*0.6);
-            this.footJointMiddle.translateX(-torsoSize[0]*0.5);
+            this.footSkin.geometry.rotateY(Math.PI/4);
+            this.footSkin.geometry.scale(2,1,1);
 
 
-            this.torso.add(this.middleLeg);
-            this.torso.add(this.footJointMiddle);
-            this.torso.add(this.middleLeg);
-
-            this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 2), new THREE.MeshNormalMaterial());
-            this.plane.rotation.x = -Math.PI / 2;
-            this.root.add(this.torso);
+            // orientating
             this.root.translateY(torsoSize[2]*0.5);
 
-            //this.root.add(this.footJointMiddle);
-            //this.root.add(this.plane);
+            this.torso.translateY(-torsoSize[2] * 0.5 * 0.9);
 
-            //this.root.add(this.foot);
-            //this.root.add(this.joint);
+            this.head.translateY(torsoSize[2] * 0.5);
+            this.head.rotateZ(-Math.PI/4);
+            this.head.rotateX(Math.PI/4);
+
+            this.eye.translateY(headSize);
+
+            this.joint.rotateX(-Math.PI/2);
+
+            this.foot.translateY(-torsoSize[2]*0.2);
+
+            this.footJoint.rotateY(Math.PI/2);
+            this.footJoint.translateY(-torsoSize[2]*0.55);
+            this.footJoint.rotateZ(-Math.PI/16);
+
+
+
+            this.union.translateX(torsoSize[0]*0.2);
+            this.union.rotateZ(-Math.PI/2);
+
+            this.shoulder.rotateZ(-Math.PI/2);
+
+            // creating groups
+
+            this.mLeg = new THREE.Object3D();
+            this.mLeg.name = "middleLeg";
+            this.torso.add(this.mLeg);
+            this.mLeg.add(this.leg.clone());
+
+            this.mLeg.translateY(-torsoSize[2]*0.1);
+            this.mLeg.translateZ(torsoSize[0]*0.5);
+
+
+            this.lLeg = new THREE.Object3D();
+            this.lLeg.name = "leftLeg";
+
+            this.torso.add(this.lLeg);
+            this.lLeg.add(this.union.clone());
+            this.lLeg.add(this.shoulder.clone());
+
+            var arm = this.leg.clone();
+            arm.translateY(-torsoSize[2]*0.45);
+            this.lLeg.add(arm);
+
+            this.lLeg.translateX(-torsoSize[0] * 1.2);
+            this.lLeg.translateY(torsoSize[2] * 0.5);
+
+            this.lLeg.rotateX(Math.PI/16);
+
+
+
+            this.rLeg = new THREE.Object3D();
+            this.rLeg.name = "rightLeg";
+
+            this.torso.add(this.rLeg);
+            this.rLeg.add(this.union.clone());
+            this.rLeg.add(this.shoulder.clone());
+
+            arm = this.leg.clone();
+            arm.translateY(-torsoSize[2]*0.45);
+            this.rLeg.add(arm);
+
+            this.rLeg.translateX(torsoSize[0] * 1.2);
+            this.rLeg.translateY(torsoSize[2] * 0.5);
+            this.rLeg.rotateY(Math.PI);
+
+            this.rLeg.rotateX(-Math.PI/16);
+
+
             this.getMesh = function () {
                 return this.root;
             }
