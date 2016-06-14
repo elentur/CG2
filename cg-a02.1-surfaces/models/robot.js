@@ -171,7 +171,7 @@ define(["three", "material"],
             this.lLeg.add(arm);
 
             this.lLeg.translateX(-torsoSize[0] * 1.2);
-            this.lLeg.translateY(torsoSize[2] * 0.5);
+            this.lLeg.translateY(torsoSize[2] * 0.3);
 
             this.lLeg.rotateX(Math.PI/16);
 
@@ -189,7 +189,7 @@ define(["three", "material"],
             this.rLeg.add(arm);
 
             this.rLeg.translateX(torsoSize[0] * 1.2);
-            this.rLeg.translateY(torsoSize[2] * 0.5);
+            this.rLeg.translateY(torsoSize[2] * 0.3);
             this.rLeg.rotateY(Math.PI);
 
             this.rLeg.rotateX(-Math.PI/16);
