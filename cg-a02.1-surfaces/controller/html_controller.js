@@ -174,6 +174,7 @@ define(["jquery", "BufferGeometry", "vec2", "random",
 
             $("#btnNewRobot").click((function () {
                 scene.add(new Robot().getMesh());
+                scene.animate = true;
             }));
 
 

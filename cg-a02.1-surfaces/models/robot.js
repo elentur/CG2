@@ -50,7 +50,7 @@ define(["three", "material"],
             this.leg.name = "leg";
 
             this.joint = new THREE.Object3D();
-            this.joint.name = "join";
+            this.joint.name = "joint";
 
             this.foot = new THREE.Object3D();
             this.foot.name = "foot";
@@ -126,12 +126,13 @@ define(["three", "material"],
             this.root.translateY(torsoSize[2]*0.5);
 
             this.torso.translateY(-torsoSize[2] * 0.5 * 0.9);
+            //this.torso.rotateX(-Math.PI/16);
 
             this.head.translateY(torsoSize[2] * 0.5);
-            this.head.rotateZ(-Math.PI/4);
-            this.head.rotateX(Math.PI/4);
 
-            this.eye.translateY(headSize);
+            this.eye.translateY(headSize * 0.3);
+            this.eye.translateZ(headSize);
+            this.eye.rotateX(Math.PI/2.5);
 
             this.joint.rotateX(-Math.PI/2);
 
@@ -139,7 +140,6 @@ define(["three", "material"],
 
             this.footJoint.rotateY(Math.PI/2);
             this.footJoint.translateY(-torsoSize[2]*0.55);
-            this.footJoint.rotateZ(-Math.PI/16);
 
 
 
@@ -158,6 +158,10 @@ define(["three", "material"],
             this.mLeg.translateY(-torsoSize[2]*0.1);
             this.mLeg.translateZ(torsoSize[0]*0.5);
 
+            var mFootJoint = this.mLeg.getObjectByName("footJoint");
+
+            mFootJoint.rotateZ(Math.PI/16);
+
 
             this.lLeg = new THREE.Object3D();
             this.lLeg.name = "leftLeg";
@@ -173,7 +177,11 @@ define(["three", "material"],
             this.lLeg.translateX(-torsoSize[0] * 1.2);
             this.lLeg.translateY(torsoSize[2] * 0.3);
 
-            this.lLeg.rotateX(Math.PI/16);
+            this.lLeg.rotateX(Math.PI/8);
+
+            var lFootJoint = this.lLeg.getObjectByName("footJoint");
+
+            lFootJoint.rotateZ(-Math.PI/16);
 
 
 
@@ -192,7 +200,11 @@ define(["three", "material"],
             this.rLeg.translateY(torsoSize[2] * 0.3);
             this.rLeg.rotateY(Math.PI);
 
-            this.rLeg.rotateX(-Math.PI/16);
+            this.rLeg.rotateX(-Math.PI/8);
+
+            var rFootJoint = this.rLeg.getObjectByName("footJoint");
+
+            rFootJoint.rotateZ(Math.PI/16);
 
 
             this.getMesh = function () {
