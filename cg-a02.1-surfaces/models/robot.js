@@ -25,6 +25,7 @@ define(["three", "material"],
             var headSize = torsoSize[0];
 
             this.root = new THREE.Object3D();
+            this.root.name = "root";
 
             //skeleton
             this.torso = new THREE.Object3D();
@@ -124,9 +125,10 @@ define(["three", "material"],
 
             // orientating
             this.root.translateY(torsoSize[2]*0.5);
+            this.root.translateZ(-torsoSize[2]*1.8);
 
             this.torso.translateY(-torsoSize[2] * 0.5 * 0.9);
-            //this.torso.rotateX(-Math.PI/16);
+            this.torso.rotateX(-Math.PI/16);
 
             this.head.translateY(torsoSize[2] * 0.5);
 

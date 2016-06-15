@@ -39,7 +39,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             light2.position.set(0, -1, 0);
             scope.scene.add(light2);
 
-            this.animate = false;
+            scope.animate = false;
 
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
@@ -134,8 +134,8 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 requestAnimFrame(scope.draw);
 
                 scope.renderer.render(scope.scene, scope.camera);
-
-                scope.animateRobot();
+                scope.timeJourney();
+                scope.animation();
 
             };
 
@@ -143,43 +143,119 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 return scope.currentMesh;
             };
 
+
+            /**
+             * Time Journey
+             *
+             */
+
+            scope.clock = new THREE.Clock();
+            scope.clock.start();
+            scope.jSection = "";
+
+            this.timeJourney = function() {
+
+                if (!scope.animate) return;
+
+                if(scope.clock.getElapsedTime() > 5){
+                    scope.clock.stop();
+                    scope.clock = new THREE.Clock();
+                    scope.clock.start();
+                    scope.jSection = "";
+                }else if(scope.clock.getElapsedTime() > 4){
+                    scope.jSection = "end";
+                }else if(scope.clock.getElapsedTime() > 3){
+                    scope.jSection = "3sec";
+                }else if(scope.clock.getElapsedTime() > 2){
+                    scope.jSection = "2sec";
+                }else if(scope.clock.getElapsedTime() > 1){
+                    scope.jSection = "1sec";
+                }else{
+                    scope.jSection = "start";
+                }
+            };
+
+            this.animation = (function () {
+
+
+                if (!scope.animate) return;
+
+                console.log(scope.jSection);
+
+                if(scope.jSection == "start"){
+                    scope.animateHead();
+                }
+
+                if(scope.jSection == "1sec"){
+                    scope.animateHead();
+                    scope.driveFront();
+                }
+
+                if(scope.jSection == "2sec"){
+                    scope.animateHead();
+                }
+
+                if(scope.jSection == "3sec"){
+                    scope.animateHead();
+                    scope.driveFront();
+                    scope.rotateRandom();
+
+                }
+
+                if(scope.jSection == "end"){
+                    scope.animateHead();
+                    scope.driveBack();
+                }
+
+            });
+
             var randomHead = 0;
             var rest = 0;
             var sign = -1;
 
-
-            this.animateRobot = (function () {
-
-                if (!scope.animate) return;
-
-                var nodeHead = scope.scene.getObjectByName("head", true);
+            this.animateHead = function(){
 
                 if (randomHead == 0) {
-                    randomHead = Math.random() * Math.PI / 2 - Math.PI / 4 - rest;
+                    randomHead = Math.random() * Math.PI / 2 - Math.PI / 4 + rest;
                     sign = Math.abs(randomHead) / randomHead;
                 }
 
+                var nodeHead = scope.scene.getObjectByName("head", true);
                 if (nodeHead) {
-                    var val = -0.01 * sign;
+                    var val = -0.015 * sign;
 
                     nodeHead.rotateY(val);
 
                     randomHead += val;
-                    rest -= val;
+                    rest += val;
 
                     if ((Math.abs(randomHead) / randomHead) != sign) {
                         randomHead = 0;
                     }
                 }
+            };
 
-                var nodeTorso = scope.scene.getObjectByName("torso", true);
-
-                if (nodeTorso) {
-
-                    //nodeTorso.rotateX(-Math.PI / 16);
+            this.driveFront = function(){
+                var root = scope.scene.getObjectByName("root", true);
+                if (root) {
+                    root.translateZ(5);
                 }
+            };
 
-            });
+            this.rotateRandom = function() {
+                var root = scope.scene.getObjectByName("root", true);
+                if (root) {
+                    root.rotateY(Math.PI / 128 * sign);
+                }
+            };
+
+            this.driveBack = function() {
+                var root = scope.scene.getObjectByName("root", true);
+                if (root) {
+                    root.translateZ(-5);
+                }
+            };
+
         };
 
 
