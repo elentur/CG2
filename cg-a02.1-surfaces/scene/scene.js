@@ -180,15 +180,14 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                 if (!scope.animate) return;
 
-                console.log(scope.jSection);
-
                 if(scope.jSection == "start"){
                     scope.animateHead();
+                    scope.goUp();
                 }
 
                 if(scope.jSection == "1sec"){
                     scope.animateHead();
-                    scope.driveFront();
+                    //scope.driveFront();
                 }
 
                 if(scope.jSection == "2sec"){
@@ -197,14 +196,14 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                 if(scope.jSection == "3sec"){
                     scope.animateHead();
-                    scope.driveFront();
-                    scope.rotateRandom();
+                    //scope.driveFront();
+                    //scope.rotateRandom();
 
                 }
 
                 if(scope.jSection == "end"){
                     scope.animateHead();
-                    scope.driveBack();
+                    //scope.driveBack();
                 }
 
             });
@@ -254,6 +253,35 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 if (root) {
                     root.translateZ(-5);
                 }
+            };
+
+
+            var maxRotateLeg = Math.PI/8;
+            var rotate = 0;
+            var rotateStep = Math.PI / 128;
+
+            this.goUp = function(){
+                var rLeg = scope.scene.getObjectByName("rightLeg", true);
+                var lLeg = scope.scene.getObjectByName("leftLeg", true);
+
+
+                console.log(maxRotateLeg);
+                console.log(rotate);
+                console.log(rLeg);
+
+                if(rLeg && lLeg){
+                    if(rotate <= maxRotateLeg) {
+                        rLeg.rotateX(rotateStep);
+                        lLeg.rotateX(rotateStep * -1);
+
+                        rotate += rotateStep;
+                    }
+                }
+
+            };
+
+            this.goDown = function(){
+
             };
 
         };

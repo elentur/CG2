@@ -76,9 +76,6 @@ define(["three", "material"],
 
             this.materialWhite = new Material(config).getMaterial();
 
-
-            console.log(this.material);
-
             this.torsoSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0],
                 torsoSize[1],
@@ -154,15 +151,13 @@ define(["three", "material"],
             this.footJoint.rotateY(Math.PI/2);
             this.footJoint.translateY(-torsoSize[2]*0.55);
 
-
-
             this.union.translateX(torsoSize[0]*0.2);
             this.union.rotateZ(-Math.PI/2);
 
             this.shoulder.rotateZ(-Math.PI/2);
+            
 
             // creating groups
-
             this.mLeg = new THREE.Object3D();
             this.mLeg.name = "middleLeg";
             this.torso.add(this.mLeg);
@@ -195,9 +190,7 @@ define(["three", "material"],
             var lFootJoint = this.lLeg.getObjectByName("footJoint");
 
             lFootJoint.rotateZ(-Math.PI/16);
-
-
-
+            
             this.rLeg = new THREE.Object3D();
             this.rLeg.name = "rightLeg";
 
@@ -214,6 +207,9 @@ define(["three", "material"],
             this.rLeg.rotateY(Math.PI);
 
             this.rLeg.rotateX(-Math.PI/8);
+
+
+            console.log(this.rLeg);
 
             var rFootJoint = this.rLeg.getObjectByName("footJoint");
 
