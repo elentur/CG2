@@ -173,7 +173,10 @@ define(["jquery", "BufferGeometry", "vec2", "random",
             }));
 
             $("#btnNewRobot").click((function () {
-                scene.add(new Robot().getMesh());
+                var robot = new Robot();
+                scene.torsoSize = robot.torsoSize;
+                scene.add(robot.getMesh());
+
                 scene.animate = true;
             }));
 
