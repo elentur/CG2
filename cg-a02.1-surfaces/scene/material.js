@@ -10,7 +10,7 @@
 
 /* requireJS module definition */
 define(["three"],
-    (function(THREE) {
+    (function (THREE) {
 
         "use strict";
 
@@ -21,7 +21,8 @@ define(["three"],
          */
         var Material = function (config) {
 
-          this.material = undefined;
+            this.material = undefined;
+
             var getType = function () {
                 return $("#type").val();
             };
@@ -34,46 +35,41 @@ define(["three"],
                 return $("#color").val();
             };
 
-                var t = getType();
-                var m = getMaterial();
-                var c = parseInt(getColor().replace(/^#/, ''), 16);
+            var t = config ? config.typeID : getType();
+            var m = config ? config.meterialID : getMaterial();
+            var c = config ? parseInt(config.colorHTML.replace(/^#/, ''), 16) : parseInt(getColor().replace(/^#/, ''), 16);
 
-                console.log(c);
-
-
-                if (t == 3) {
-                    this.material = new THREE.PointsMaterial({
+            if (t == 3) {
+                this.material = new THREE.PointsMaterial({
+                    color: c,
+                    size: 10
+                });
+            } else {
+                if (m == 0) {
+                    this.material = new THREE.MeshBasicMaterial({
                         color: c,
-                        size: 10
-                    });
-                } else {
-                    if (m == 0) {
-                        this.material = new THREE.MeshBasicMaterial({
-                            color: c,
-                            side: THREE.DoubleSide,
-                            wireframe: t == 0
-                        })
-                    } else if (m == 1) {
-                        this.material = new THREE.MeshLambertMaterial({
-                            color: c,
-                            side: THREE.DoubleSide,
-                            wireframe: t == 0
-                        })
-                    } else if (m == 2) {
-                        this.material = new THREE.MeshPhongMaterial({
-                            color: c,
-                            side: THREE.DoubleSide,
-                            wireframe: t == 0
-                        })
-                    }
-
+                        side: THREE.DoubleSide,
+                        wireframe: t == 0
+                    })
+                } else if (m == 1) {
+                    this.material = new THREE.MeshLambertMaterial({
+                        color: c,
+                        side: THREE.DoubleSide,
+                        wireframe: t == 0
+                    })
+                } else if (m == 2) {
+                    this.material = new THREE.MeshPhongMaterial({
+                        color: c,
+                        side: THREE.DoubleSide,
+                        wireframe: t == 0
+                    })
                 }
 
+            }
 
-            this.getMaterial = function() {
+            this.getMaterial = function () {
                 return this.material;
             };
-
         };
 
         return Material;

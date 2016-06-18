@@ -64,59 +64,70 @@ define(["three", "material"],
             this.leg.add(this.footJoint);
 
             //Skin
+            
+            var config = {};
+            config.colorHTML = "#273961";
+            config.meterialID = 2;
+            config.typeID = 1;
 
-            this.material = new THREE.MeshNormalMaterial();
-            //this.material = new Material().getMaterial();
+            this.materialBlue = new Material(config).getMaterial()
+
+            config.colorHTML = "#DFE4E8";
+
+            this.materialWhite = new Material(config).getMaterial();
+
+
+            console.log(this.material);
 
             this.torsoSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0],
                 torsoSize[1],
                 torsoSize[2],
-                32), this.material);
+                32), this.materialWhite);
             this.torso.add(this.torsoSkin);
 
-            this.headSkin = new THREE.Mesh(new THREE.SphereGeometry(headSize, 32, 32), this.material);
+            this.headSkin = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.99, 32, 32), this.materialBlue);
             this.head.add(this.headSkin);
 
             this.eyeSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 headSize * 0.1,
                 headSize * 0.1,
                 headSize * 0.2,
-                32), this.material);
+                32), this.materialWhite);
             this.eye.add(this.eyeSkin);
 
             this.unionSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0]*0.28,
                 torsoSize[0]*0.28,
                 torsoSize[2]*0.2,
-                32), this.material);
+                32), this.materialWhite);
             this.union.add(this.unionSkinn);
 
             this.shoulderSkinn = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0]*0.3,
                 torsoSize[0]*0.3,
                 torsoSize[2]*0.2,
-                32), this.material);
+                32), this.materialBlue);
             this.shoulder.add(this.shoulderSkinn);
 
             this.legSkin = new THREE.Mesh(new THREE.BoxGeometry(
                 torsoSize[0]*0.3,
                 torsoSize[2],
-                torsoSize[2]*0.4), this.material);
+                torsoSize[2]*0.4), this.materialWhite);
             this.leg.add(this.legSkin);
 
             this.jointSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0]*0.3,
                 torsoSize[0]*0.3,
                 torsoSize[2]*0.15,
-                32),this.material);
+                32),this.materialBlue);
             this.joint.add(this.jointSkin);
 
             this.footSkin = new THREE.Mesh(new THREE.CylinderGeometry(
                 torsoSize[0]*0.25,
                 torsoSize[0]*0.5,
                 torsoSize[2]*0.3,
-                4), this.material);
+                4), this.materialWhite);
             this.foot.add(this.footSkin);
 
             this.footSkin.geometry.rotateY(Math.PI/4);
