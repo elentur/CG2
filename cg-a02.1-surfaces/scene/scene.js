@@ -177,20 +177,23 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                     var robot = scope.scene.getObjectByName("robot", true);
 
+                    // adaptation of the volume to the distance of the robot
                     var volume = 1 - robot.position.distanceTo(scope.camera.position) / 5000;
 
                     if (volume < 0) volume = 0;
 
+                    // adding the new volume to the sounds
                     for (var i = 0; i < scope.soundBuffer.length; i++) {
                         scope.soundBuffer[i].setVolume(volume);
                     }
 
+                    //?????
                     scope.soundBuffer[scope.soundBuffer.length - 2].setVolume(volume * 0.3);
 
                     scope.playAudio();
 
                     scope.animateHead();
-
+                    
                     scope.animationTimer++;
 
                     if (scope.animationTimer > 60 && scope.animateionEvent == "start") {
@@ -200,6 +203,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                         scope.rotateTorso();
                     }
+
                     if (scope.animateionEvent == "move") {
                         scope.moveRobot();
                     }
