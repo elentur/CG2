@@ -26,13 +26,12 @@ define(["three", "material"],
             var headSize = torsoSize[0]*0.99;
 
             this.root = new THREE.Object3D();
-            this.root.name = "root";
+            this.root.name = "robot";
 
             //skeleton
             this.torso = new THREE.Object3D();
             this.torso.name = "torso";
             this.root.add(this.torso);
-            this.root.name = "robot";
 
             this.head = new THREE.Object3D();
             this.head.name = "head";
@@ -132,14 +131,11 @@ define(["three", "material"],
             this.footSkin.geometry.rotateY(Math.PI/4);
             this.footSkin.geometry.scale(2,1,1);
 
-
             // orientating
             this.root.translateY(torsoSize[2]*0.5);
             this.root.translateZ(-torsoSize[2]*1.8);
 
             this.torso.translateY(-torsoSize[2] * 0.5 * 0.9);
-            //this.torso.rotateX(-Math.PI/16);
-
             this.head.translateY(torsoSize[2] * 0.5);
 
             this.eye.translateY(headSize * 0.3);
@@ -160,19 +156,16 @@ define(["three", "material"],
             
 
             // creating groups
+
+            // middle leg
             this.mLeg = new THREE.Object3D();
             this.mLeg.name = "middleLeg";
             this.torso.add(this.mLeg);
+            
             this.mLeg.add(this.leg.clone());
             this.mLeg.translateY(torsoSize[2]*0.4);
-            //this.mLeg.translateY(-torsoSize[2]*0.1);
-            //this.mLeg.translateZ(torsoSize[0]*0.5);
 
-            var mFootJoint = this.mLeg.getObjectByName("footJoint");
-
-           //mFootJoint.rotateZ(Math.PI/16);
-
-
+            // left leg
             this.lLeg = new THREE.Object3D();
             this.lLeg.name = "leftLeg";
 
@@ -187,12 +180,7 @@ define(["three", "material"],
             this.lLeg.translateX(-torsoSize[0] * 1.2);
             this.lLeg.translateY(torsoSize[2] * 0.3);
 
-           // this.lLeg.rotateX(Math.PI/8);
-
-            var lFootJoint = this.lLeg.getObjectByName("footJoint");
-
-           // lFootJoint.rotateZ(-Math.PI/16);
-            
+            // right leg
             this.rLeg = new THREE.Object3D();
             this.rLeg.name = "rightLeg";
 
@@ -207,17 +195,7 @@ define(["three", "material"],
             this.rLeg.translateX(torsoSize[0] * 1.2);
             this.rLeg.translateY(torsoSize[2] * 0.3);
             this.rLeg.rotateY(Math.PI);
-
-           // this.rLeg.rotateX(-Math.PI/8);
-
-
-            console.log(this.rLeg);
-
-            var rFootJoint = this.rLeg.getObjectByName("footJoint");
-
-            //rFootJoint.rotateZ(Math.PI/16);
-
-
+            
             this.getMesh = function () {
                 return this.root;
             }

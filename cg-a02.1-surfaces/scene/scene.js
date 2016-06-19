@@ -29,11 +29,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.renderer = renderer;
                 scope.torsoSize = [0, 0, 0];
                 scope.t = 0.0;
-                scope.soundBuffer =[];
-
-
-
-
+                scope.soundBuffer = [];
 
 
                 scope.camera = new THREE.PerspectiveCamera(66, width / height, 0.1, 5000);
@@ -148,6 +144,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                     scope.renderer.render(scope.scene, scope.camera);
 
+                    // starts the animation
                     scope.animation();
 
                 };
@@ -157,10 +154,15 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 };
 
 
+                /**
+                 * starts the animation and sets audio sounds.
+                 * @type {Function}
+                 */
                 this.animation = (function () {
+                    // is the robot set
                     if (!scope.animate) return;
 
-
+                    // adds the soundfile into the array
                     if (scope.animationTimer == 0) {
                         scope.soundBuffer.push(scope.loadAudio("audio/Audio1.mp3"));
                         scope.soundBuffer.push(scope.loadAudio("audio/Audio2.wav"));
@@ -172,20 +174,30 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         scope.soundBuffer.push(scope.loadAudio("audio/Audio8.wav"));
                         scope.soundBuffer.push(scope.loadAudio("audio/Audio9.wav"));
                     }
+
                     var robot = scope.scene.getObjectByName("robot", true);
-                    var volume = 1 - robot.position.distanceTo(scope.camera.position)/5000;
-                    if(volume <0) volume=0;
-                    for(var i = 0; i < scope.soundBuffer.length; i++) {
+
+                    var volume = 1 - robot.position.distanceTo(scope.camera.position) / 5000;
+
+                    if (volume < 0) volume = 0;
+
+                    for (var i = 0; i < scope.soundBuffer.length; i++) {
                         scope.soundBuffer[i].setVolume(volume);
                     }
 
-                    scope.soundBuffer[scope.soundBuffer.length-2].setVolume(volume*0.3);
+                    scope.soundBuffer[scope.soundBuffer.length - 2].setVolume(volume * 0.3);
 
                     scope.playAudio();
+
                     scope.animateHead();
+
                     scope.animationTimer++;
+
                     if (scope.animationTimer > 60 && scope.animateionEvent == "start") {
-                        if(!scope.soundBuffer[scope.soundBuffer.length-1].isPlaying)scope.soundBuffer[scope.soundBuffer.length-1].play();
+
+                        if (!scope.soundBuffer[scope.soundBuffer.length - 1].isPlaying)
+                            scope.soundBuffer[scope.soundBuffer.length - 1].play();
+
                         scope.rotateTorso();
                     }
                     if (scope.animateionEvent == "move") {
@@ -207,17 +219,22 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 var startPosition = undefined;
                 var frustumLeaveTime = 0;
 
+                /**
+                 * animates the head rotation
+                 */
                 this.animateHead = function () {
 
                     if (randomHead == 0 && waitHeadAnim <= 0) {
-                        if(scope.soundBuffer[scope.soundBuffer.length-2].isPlaying)return;
+
+                        if (scope.soundBuffer[scope.soundBuffer.length - 2].isPlaying) return;
+
                         randomHead = Math.random() * Math.PI / 2 - Math.PI / 4 + rest;
                         sign = Math.abs(randomHead) / randomHead;
                         headRotationSpeed = 0;
                         if (randomHead < Math.PI / 8 && randomHead > -Math.PI / 8) {
                             randomHead = 0;
                         } else {
-                            scope.soundBuffer[scope.soundBuffer.length-2].play();
+                            scope.soundBuffer[scope.soundBuffer.length - 2].play();
                             waitHeadAnim = Math.floor(Math.random() * 100);
                         }
                     }
@@ -235,12 +252,15 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                         if ((Math.abs(randomHead) / randomHead) != sign) {
                             randomHead = 0;
-                            if(scope.soundBuffer[scope.soundBuffer.length-2].isPlaying)scope.soundBuffer[scope.soundBuffer.length-2].stop();
+                            if (scope.soundBuffer[scope.soundBuffer.length - 2].isPlaying)scope.soundBuffer[scope.soundBuffer.length - 2].stop();
                         }
                     }
                     waitHeadAnim--;
                 };
 
+                /**
+                 * brings the robot into the moving position and set him in the move mode
+                 */
                 this.rotateTorso = function () {
 
                     var torso = scope.scene.getObjectByName("torso", true);
@@ -267,13 +287,18 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     }
 
                 };
+
+                /**
+                 * moves the robot randomly and drives him back to the middle if he is outside the frustum
+                 */
                 this.moveRobot = function () {
                     var robot = scope.scene.getObjectByName("robot", true);
+
                     if (!startPosition) {
                         startPosition = new THREE.Vector3(robot.position.x, robot.position.y, robot.position.z);
                     }
-                 //   console.log("x: " + robot.position.x + "  y: " + robot.position.y + "  z: " + robot.position.z)
 
+                    // are we in the frustum
                     if (isVisible) {
                         robot.rotateY(rotation);
                     } else {
@@ -291,11 +316,17 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         direction = Math.random() - 0.2;
                         rotation = Math.random() * 0.01 - 0.005
                     }
+
                     if (direction < 0) speed -= 0.5;
+
                     else speed += 0.5;
+
                     if (speed < -6) speed = -6;
+
                     if (speed > 10) speed = 10;
+
                     robot.translateZ(speed);
+
                     //Check if robot is in camera frustum
                     var frustum = new THREE.Frustum();
                     frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(scope.camera.projectionMatrix, scope.camera.matrixWorldInverse));
@@ -303,30 +334,40 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         frustumLeaveTime++;
                         if (frustumLeaveTime > 100)isVisible = false;
                     }
-
-
                 };
 
-                this.playAudio = function(){
-                    if(Math.random()*1000 >995) {
-                        for(var i = 0; i < scope.soundBuffer.length-2; i++) {
-                            if(scope.soundBuffer[i].isPlaying)return;
-                        }
-                        var number = Math.floor(Math.random()*(scope.soundBuffer.length-2));
-                        scope.soundBuffer[number].play();
+                /**
+                 * plays random sound files
+                 */
+                this.playAudio = function () {
 
+                    if (Math.random() * 1000 > 995) {
+                        // if a sound is playing we return
+                        for (var i = 0; i < scope.soundBuffer.length - 2; i++) {
+                            if (scope.soundBuffer[i].isPlaying) return;
+                        }
+                        // get a random sound file
+                        var number = Math.floor(Math.random() * (scope.soundBuffer.length - 2));
+                        scope.soundBuffer[number].play();
                     }
                 };
 
-
+                /**
+                 * loads the soundfiles from the given path into a THREE.Audio() object
+                 * @param path
+                 * @returns THREE.Audio object
+                 */
                 this.loadAudio = function (path) {
-                    // load a resource
+                    // instantiate a loader
                     var loader = new THREE.AudioLoader();
-                    function createAudioBuffer( path ) {
 
+                    function createAudioBuffer(path) {
+                        // instantiate a listener
                         var audioListener = new THREE.AudioListener();
+                        // add the listener to the camera
                         scope.camera.add(audioListener);
-                        var audio = new THREE.Audio(audioListener) ;
+                        // instantiate audio object
+                        var audio = new THREE.Audio(audioListener);
 
                         loader.load(
                             path,
@@ -336,6 +377,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         );
                         return audio;
                     }
+
                     return createAudioBuffer(path);
                 };
 
