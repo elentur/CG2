@@ -10,13 +10,13 @@
  */
 
 define(["text!shaders/vertex_color.vs", "text!shaders/vertex_color.fs",
-        "text!shaders/planet_vs.glsl",          "text!shaders/planet_fs.glsl",
-        "text!shaders/explosion_vs.glsl",          "text!shaders/explosion_fs.glsl"
+        "text!shaders/planet_vs.glsl", "text!shaders/planet_fs.glsl",
+        "text!shaders/explosion_vs.glsl", "text!shaders/explosion_fs.glsl",
+        "text!shaders/phong_vs.glsl", "text!shaders/phong_fs.glsl"
     ],
-    (function( vs_vertex_color, fs_vertex_color,
-               vs_planet,       fs_planet,
-               vs_explosion,    fs_explosion
-    ) {
+    (function (vs_vertex_color, fs_vertex_color,
+               vs_planet, fs_planet,
+               vs_explosion, fs_explosion,vs_phong, fs_phong) {
 
             "use strict";
 
@@ -25,24 +25,25 @@ define(["text!shaders/vertex_color.vs", "text!shaders/vertex_color.fs",
             shaders["vertex_color"] = {vertex: vs_vertex_color, fragment: fs_vertex_color};
             shaders["planet"] = {vertex: vs_planet, fragment: fs_planet};
             shaders["explosion"] = {vertex: vs_explosion, fragment: fs_explosion};
+            shaders["phong"] = {vertex: vs_phong, fragment: fs_phong};
 
             // return source code of a vertex shader
-            shaders.getVertexShader = function(shadername) {
-                if(!shaders[shadername]) {
+            shaders.getVertexShader = function (shadername) {
+                if (!shaders[shadername]) {
                     throw "module shaders: unknown shader " + shadername;
                 }
-                if(!shaders[shadername].vertex) {
+                if (!shaders[shadername].vertex) {
                     throw "module shaders: no vertex shader for " + shadername;
                 }
                 return shaders[shadername].vertex;
             };
 
             // return source code of a shader
-            shaders.getFragmentShader = function(shadername) {
-                if(!shaders[shadername]) {
+            shaders.getFragmentShader = function (shadername) {
+                if (!shaders[shadername]) {
                     throw "module shaders: unknown shader " + shadername;
                 }
-                if(!shaders[shadername].fragment) {
+                if (!shaders[shadername].fragment) {
                     throw "module shaders: no fragment shader for " + shadername;
                 }
                 return shaders[shadername].fragment;
@@ -50,5 +51,5 @@ define(["text!shaders/vertex_color.vs", "text!shaders/vertex_color.fs",
 
             // module returns getter functions
             return shaders;
-    }
-)); // define module
+        }
+    )); // define module

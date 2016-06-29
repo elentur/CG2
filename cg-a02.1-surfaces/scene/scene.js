@@ -29,12 +29,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.renderer = renderer;
                 scope.torsoSize = [0, 0, 0];
                 scope.t = 0.0;
-                scope.soundBuffer =[];
-
-
-
-
-
+                scope.soundBuffer = [];
 
                 scope.camera = new THREE.PerspectiveCamera(66, width / height, 0.1, 5000);
                 scope.camera.position.z = 1000;
@@ -42,14 +37,14 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                 scope.scene = new THREE.Scene();
                 scope.scene.add(new THREE.AmbientLight(0x444444));
-                var light1 = new THREE.DirectionalLight(0xffffff, 0.5);
-                light1.position.set(1000, 1000, 1000);
 
+                var light1 = new THREE.DirectionalLight(0xffffff, 1.0);
+                light1.position.set(0.0, -1.0, -1.0);
                 scope.scene.add(light1);
+
                 var light2 = new THREE.DirectionalLight(0xffffff, 1.5);
                 light2.position.set(0, -1000, 0);
-
-                scope.scene.add(light2);
+                //scope.scene.add(light2);
 
                 scope.animate = false;
 
@@ -173,19 +168,19 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         scope.soundBuffer.push(scope.loadAudio("audio/Audio9.wav"));
                     }
                     var robot = scope.scene.getObjectByName("robot", true);
-                    var volume = 1 - robot.position.distanceTo(scope.camera.position)/5000;
-                    if(volume <0) volume=0;
-                    for(var i = 0; i < scope.soundBuffer.length; i++) {
+                    var volume = 1 - robot.position.distanceTo(scope.camera.position) / 5000;
+                    if (volume < 0) volume = 0;
+                    for (var i = 0; i < scope.soundBuffer.length; i++) {
                         scope.soundBuffer[i].setVolume(volume);
                     }
 
-                    scope.soundBuffer[scope.soundBuffer.length-2].setVolume(volume*0.3);
+                    scope.soundBuffer[scope.soundBuffer.length - 2].setVolume(volume * 0.3);
 
                     scope.playAudio();
                     scope.animateHead();
                     scope.animationTimer++;
                     if (scope.animationTimer > 60 && scope.animateionEvent == "start") {
-                        if(!scope.soundBuffer[scope.soundBuffer.length-1].isPlaying)scope.soundBuffer[scope.soundBuffer.length-1].play();
+                        if (!scope.soundBuffer[scope.soundBuffer.length - 1].isPlaying)scope.soundBuffer[scope.soundBuffer.length - 1].play();
                         scope.rotateTorso();
                     }
                     if (scope.animateionEvent == "move") {
@@ -210,14 +205,14 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 this.animateHead = function () {
 
                     if (randomHead == 0 && waitHeadAnim <= 0) {
-                        if(scope.soundBuffer[scope.soundBuffer.length-2].isPlaying)return;
+                        if (scope.soundBuffer[scope.soundBuffer.length - 2].isPlaying)return;
                         randomHead = Math.random() * Math.PI / 2 - Math.PI / 4 + rest;
                         sign = Math.abs(randomHead) / randomHead;
                         headRotationSpeed = 0;
                         if (randomHead < Math.PI / 8 && randomHead > -Math.PI / 8) {
                             randomHead = 0;
                         } else {
-                            scope.soundBuffer[scope.soundBuffer.length-2].play();
+                            scope.soundBuffer[scope.soundBuffer.length - 2].play();
                             waitHeadAnim = Math.floor(Math.random() * 100);
                         }
                     }
@@ -235,7 +230,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                         if ((Math.abs(randomHead) / randomHead) != sign) {
                             randomHead = 0;
-                            if(scope.soundBuffer[scope.soundBuffer.length-2].isPlaying)scope.soundBuffer[scope.soundBuffer.length-2].stop();
+                            if (scope.soundBuffer[scope.soundBuffer.length - 2].isPlaying)scope.soundBuffer[scope.soundBuffer.length - 2].stop();
                         }
                     }
                     waitHeadAnim--;
@@ -272,7 +267,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     if (!startPosition) {
                         startPosition = new THREE.Vector3(robot.position.x, robot.position.y, robot.position.z);
                     }
-                 //   console.log("x: " + robot.position.x + "  y: " + robot.position.y + "  z: " + robot.position.z)
+                    //   console.log("x: " + robot.position.x + "  y: " + robot.position.y + "  z: " + robot.position.z)
 
                     if (isVisible) {
                         robot.rotateY(rotation);
@@ -307,12 +302,12 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
 
                 };
 
-                this.playAudio = function(){
-                    if(Math.random()*1000 >995) {
-                        for(var i = 0; i < scope.soundBuffer.length-2; i++) {
-                            if(scope.soundBuffer[i].isPlaying)return;
+                this.playAudio = function () {
+                    if (Math.random() * 1000 > 995) {
+                        for (var i = 0; i < scope.soundBuffer.length - 2; i++) {
+                            if (scope.soundBuffer[i].isPlaying)return;
                         }
-                        var number = Math.floor(Math.random()*(scope.soundBuffer.length-2));
+                        var number = Math.floor(Math.random() * (scope.soundBuffer.length - 2));
                         scope.soundBuffer[number].play();
 
                     }
@@ -322,11 +317,12 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 this.loadAudio = function (path) {
                     // load a resource
                     var loader = new THREE.AudioLoader();
-                    function createAudioBuffer( path ) {
+
+                    function createAudioBuffer(path) {
 
                         var audioListener = new THREE.AudioListener();
                         scope.camera.add(audioListener);
-                        var audio = new THREE.Audio(audioListener) ;
+                        var audio = new THREE.Audio(audioListener);
 
                         loader.load(
                             path,
@@ -336,6 +332,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         );
                         return audio;
                     }
+
                     return createAudioBuffer(path);
                 };
 
