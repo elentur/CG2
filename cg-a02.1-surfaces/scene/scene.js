@@ -29,8 +29,9 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.renderer = renderer;
                 scope.torsoSize = [0, 0, 0];
                 scope.t = 0.0;
-                scope.soundBuffer =[];
+                scope.soundBuffer = [];
                 scope.start = Date.now();
+                scope.planet = undefined;
                 scope.explosion = undefined;
 
                 scope.camera = new THREE.PerspectiveCamera(66, width / height, 0.1, 5000);
@@ -127,7 +128,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh = bufferGeometry.getMesh();
                     scope.scene.add(scope.currentMesh);
                     scope.animationTimer = 0;
-                    scope.explosion =undefined;
+                    scope.explosion = undefined;
 
                 };
                 this.add = function (mesh) {
@@ -135,15 +136,20 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh = mesh;
                     scope.scene.add(scope.currentMesh);
                     scope.animationTimer = 0;
-                    scope.explosion =undefined;
+                    scope.explosion = undefined;
                 };
 
                 /*
                  * drawing the scene
                  */
                 this.draw = function () {
-                    if(scope.explosion != undefined){
-                        scope.explosion.uniforms['time'].value = .00015 * ( Date.now()-scope.start);
+                    if (scope.explosion != undefined) {
+                        scope.explosion.uniforms['time'].value = .00015 * ( Date.now() - scope.start);
+                    }
+                    if (scope.planet != undefined) {
+                        var v1 = Math.sin(.00015 * ( Date.now() - scope.start));
+                        var v2 = Math.cos(.00015 * ( Date.now() - scope.start));
+                        scope.planet.uniforms['lightDirection'].value = new THREE.Vector3(v1,0.0,v2);
                     }
 
                     requestAnimFrame(scope.draw);

@@ -24,7 +24,7 @@ define(["three", "shaders"],
             var textureLoader = new THREE.TextureLoader();
 
 
-            var material = new THREE.ShaderMaterial({
+            this.material = new THREE.ShaderMaterial({
                 uniforms:
                     {
                         dayTexture : { type : 't', value :  textureLoader.load("textures/earth_month04.jpg") },
@@ -41,7 +41,7 @@ define(["three", "shaders"],
                 fragmentShader: Shaders.getFragmentShader("planet")
             });
             
-            scope.mesh = new THREE.Mesh( new THREE.SphereGeometry(400, 100,100), material );
+            scope.mesh = new THREE.Mesh( new THREE.SphereGeometry(400, 100,100), this.material );
             scope.mesh.name = "planet";
 
             scope.root.add(scope.mesh);
@@ -52,7 +52,9 @@ define(["three", "shaders"],
             this.getMesh = function() {
                 return this.root;
             };
-
+            this.getMaterial = function(){
+                return this.material;
+            }
 
         }; // constructor
 

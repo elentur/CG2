@@ -33,7 +33,7 @@ define(["jquery", "BufferGeometry", "vec2", "random",
 
                 var title = $(this).attr('title')
                 $("#" + title).show();
-                if (title != "explosion" && title != "robot") {
+                if (title != "explosion" && title != "robot"&& title != "phong"&& title != "planet") {
                     $("#apendix").show();
                 }
 
@@ -194,6 +194,7 @@ define(["jquery", "BufferGeometry", "vec2", "random",
 
                 var planet = new Planet(scene);
                 scene.add(planet.getMesh());
+                scene.planet = planet.getMaterial();
 
             }));
 
