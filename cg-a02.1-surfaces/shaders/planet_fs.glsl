@@ -10,6 +10,11 @@ uniform sampler2D nightTexture;
 uniform sampler2D cloudTexture;
 uniform sampler2D specTexture;
 
+uniform int daySet;
+uniform int nightSet;
+uniform int specSet;
+uniform int cloudSet;
+
 
 
 // data from the vertex shader
@@ -24,9 +29,13 @@ vec3 lightColor = vec3(1.0,1.0,1.0);
 vec3 ambientLight = vec3(0.4,0.45,0.55);
 
 vec3 day = texture2D(dayTexture,vUv).rgb;
+if(daySet == 0) day = vec3(1.0,0.0,0.0);
 vec3 night = texture2D(nightTexture,vUv).rgb;
+if(nightSet == 0) night = vec3(1.0,1.0,0.0);
 vec3 spec =texture2D(specTexture,vUv).rgb;
+if(specSet == 0) spec = vec3(1.0,0.0,1.0);
 vec3 clouds =texture2D(cloudTexture,vUv).rgb;
+if(cloudSet == 0) clouds = vec3(0.0,1.0,1.0);
 
 
 

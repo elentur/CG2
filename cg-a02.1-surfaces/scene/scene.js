@@ -32,6 +32,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.soundBuffer = [];
                 scope.start = Date.now();
                 scope.planet = undefined;
+                scope.offset =0.0;
                 scope.explosion = undefined;
 
                 scope.camera = new THREE.PerspectiveCamera(66, width / height, 0.1, 5000);
@@ -147,9 +148,27 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                         scope.explosion.uniforms['time'].value = .00015 * ( Date.now() - scope.start);
                     }
                     if (scope.planet != undefined) {
-                        var v1 = Math.sin(.00015 * ( Date.now() - scope.start));
-                        var v2 = Math.cos(.00015 * ( Date.now() - scope.start));
-                        scope.planet.uniforms['lightDirection'].value = new THREE.Vector3(v1,0.0,v2);
+                        scope.planet.uniforms['daySet'].value = $("#chkDayTex").prop('checked')==true?1:0;
+                        scope.planet.uniforms['nightSet'].value = $("#chkNightTex").prop('checked')==true?1:0;
+                        scope.planet.uniforms['specSet'].value = $("#chkSpecTex").prop('checked')==true?1:0;
+                        scope.planet.uniforms['cloudSet'].value = $("#chkCloudTex").prop('checked')==true?1:0;
+                        if($("#chkAnimateLight").prop('checked')==true) {
+                            if(scope.offset >0.0){
+
+                                scope.start = (Date.now() -scope.offset);
+                                console.log( scope.start);
+                                scope.offset=0.0;
+                            }
+                            var v1 = Math.sin(.00015 * ( Date.now() - scope.start ));
+                            var v2 = Math.cos(.00015 * ( Date.now() - scope.start));
+                            scope.planet.uniforms['lightDirection'].value = new THREE.Vector3(v1, 0.0, v2);
+                        }else{
+                            if(scope.offset == 0.0){
+                                console.log( scope.start);
+                                scope.offset =  Date.now() - scope.start;
+                            }
+                        }
+
                     }
 
                     requestAnimFrame(scope.draw);
