@@ -1,18 +1,22 @@
 precision mediump float;
 
-
 // uniform lights (we only have the sun)
-uniform vec3 directionalLightColor[1];
-uniform vec3 directionalLightDirection[1];
 
+struct DirectionalLight {
+    vec3 direction;
+    vec3 color;
+    int shadow;
+    float shadowBias;
+    float shadowRadius;
+    vec2 shadowMapSize;
+};
+
+uniform DirectionalLight directionalLights[NUM_DIR_LIGHTS];
 uniform vec3 ambientLightColor[1];
-
-// uniform material constants k_a, k_d, k_s, alpha
-
-// uniform sampler2D textures
-
-// three js only supports int no bool
-// if you want a boolean value in the shader, use int
+uniform vec3 diffuseColor;
+uniform vec3 specColor;
+uniform float exponent;
+uniform sampler2D dayTexture;
 
 // data from the vertex shader
 varying vec4 ecPosition;
@@ -21,48 +25,25 @@ varying vec2 vUv;
 
 
 void main() {
+//    if (NUM_DIR_LIGHTS > 0){
+//
+//        vec3 lambertian = vec3(0.0,0.0,0.0);
+//        float specular = 0.0;
+//
+//        for( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {
+//
+//            vec3 normal = normalize(ecNormal);
+//            vec3 lightDir = normalize(directionalLights[i].direction * -1.0);
+//            vec3 reflectDir = reflect(-lightDir, normal);
+//            vec3 viewDir = normalize(vec3(-ecPosition));
+//
+//            lambertian = lambertian + max(dot(lightDir,normal), 0.0) * directionalLights[i].color * diffuseColor
+//            + specColor * directionalLights[i].color * pow(max(dot(reflectDir, viewDir), 0.0),exponent);
+//        }
+//
+//        gl_FragColor = vec4(ambientLightColor[0] * diffuseColor + lambertian, 1.0);
+//    }
 
-
-    // get color from different textures
-    //vec3 color = texture2D(textureUniform, texCoord).rgb;
-   
-    // normalize normal after projection
-    
-    // do we use a perspective or an orthogonal projection matrix?
-    //bool usePerspective = projectionMatrix[2][3] != 0.0;
-    // for perspective mode, the viewing direction (in eye coords) points
-    // from the vertex to the origin (0,0,0) --> use -ecPosition as direction.
-    // for orthogonal mode, the viewing direction is simply (0,0,1)
-    
-    // calculate color using phong illumination
-    // depending on GUI checkbox:
-    // color from night texture and clouds are added to ambient term (instead of ambient material k_a)
-    // color from day texture are added to diffuse term (instead of diffuse material k_d)
-
-    // Note: the texture value might have to get rescaled (gamma corrected)
-    //       e.g. color = pow(color, vec3(0.6))*2.0;
-    
-    // vector from light to current point
-    vec3 l = normalize(directionalLightDirection[0]);
-
-    
-    // diffuse contribution
-    vec3 diffuseCoeff = (daytimeTextureBool == 1 )? dayCol : diffuseMaterial;
-    // clouds at day?
-    if(cloudsTextureBool == 1) {
-        //diffuseCoeff = ...
-    }
-
-    // ...
-
-    // final diffuse term for daytime
-    //vec3 diffuse =  diffuseCoeff * directionalLightColor[0] * ndotl;
-
-    // ambient part contains lights; modify depending on time of day
-    // when ndotl == 1.0 the ambient term should be zero
-
-    vec3 color = vec3(1,0,0); //replace with ambient + diffuse + specular;
-
-    gl_FragColor = vec4(color, 1.0);
+        gl_FragColor = vec4(texture2D(dayTexture,vUv).rgb,1.0);
 
 }

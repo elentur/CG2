@@ -21,6 +21,30 @@ define(["three", "shaders"],
             // and then can be set like any other uniform variable
             // material.uniforms.<uniform-var-name>.value   = <uniform-value>;
             
+            var textureLoader = new THREE.TextureLoader();
+            var texture = (function(){
+                return textureLoader.load("textures/explosion.png", function(t){
+                    console.log(t);
+                });
+            })();
+
+            texture;
+
+            var material = new THREE.ShaderMaterial({
+                uniforms: THREE.UniformsUtils.merge([
+                    THREE.UniformsLib['lights'],
+                    {
+                        diffuseColor: {type : 'c', value: new THREE.Color(1.0, 0.0, 0.0)},
+                        specColor: {type : 'c', value: new THREE.Color(1.0, 1.0, 1.0)},
+                        exponent: {type : 'f', value: 4.0},
+                        dayTexture : { type : 't', value :  textureLoader.load("textures/explosion.png") }
+                    }
+                ]),
+                vertexShader: Shaders.getVertexShader("planet"),
+                fragmentShader: Shaders.getFragmentShader("planet"),
+                lights: true
+            });
+            
             scope.mesh = new THREE.Mesh( new THREE.SphereGeometry(400, 100,100), material );
             scope.mesh.name = "planet";
 

@@ -42,9 +42,9 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 light1.position.set(0.0, -1.0, -1.0);
                 scope.scene.add(light1);
 
-                var light2 = new THREE.DirectionalLight(0xffffff, 1.5);
-                light2.position.set(0, -1000, 0);
-                //scope.scene.add(light2);
+                var light2 = new THREE.DirectionalLight(0xffffff, 0.5);
+                light2.position.set(0.0, 1.0, -1.0);
+                scope.scene.add(light2);
 
                 scope.animate = false;
 

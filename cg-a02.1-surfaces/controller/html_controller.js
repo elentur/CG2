@@ -181,13 +181,22 @@ define(["jquery", "BufferGeometry", "vec2", "random",
             }));
 
 
-            $("#btnNewPlanet").click((function () {
-                console.log("new Planet");
+            $("#btnNewPhong").click((function () {
+                console.log("new Phong");
 
                 var phongSphere = new PhongSphere(scene);
                 scene.add(phongSphere.getMesh());
 
             }));
+
+            $("#btnNewPlanet").click((function () {
+                console.log("new Planet");
+
+                var planet = new Planet(scene);
+                scene.add(planet.getMesh());
+
+            }));
+
 
             $("#btnNewTorus").click((function () {
 

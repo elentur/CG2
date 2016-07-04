@@ -13,8 +13,6 @@ define(["three", "shaders"],
             
             var scope = this;
 
-            console.log(THREE.UniformsLib['lights']);
-
             var material = new THREE.ShaderMaterial({
                 uniforms: THREE.UniformsUtils.merge([
                     THREE.UniformsLib['lights'],
