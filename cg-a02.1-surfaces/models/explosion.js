@@ -4,8 +4,8 @@ define(["jquery", "three", "shaders"],
 
         "use strict";
 
-        var Explosion = function(scene) {
-
+        var Explosion = function(scene,config) {
+            this.config =config;
 
             this.root = new THREE.Object3D();
 
@@ -20,22 +20,22 @@ define(["jquery", "three", "shaders"],
             // the scene, the texture and the shaders correctly.
             
             // define a shader with these uniform values
+            var textureLoader = new THREE.TextureLoader();
+             this.material = new THREE.ShaderMaterial( {
+                     uniforms: {
+                         explosionTex: { value: textureLoader.load( 'textures/explosion.png' )},
+                         time: { value: 1.0 },
+                         weight:{ value: this.config.weight},
+                         freqScale:{ value: this.config.freqScale},
+                         colorScale:{ value:this.config.colorScale}
+                     },
+                     vertexShader: Shaders.getVertexShader("explosion"),
+                     fragmentShader: Shaders.getFragmentShader("explosion")
+                 } );
 
-            // var material = new THREE.ShaderMaterial( {
-            //         uniforms: {
-            //             explosionTex: ... aka explosion texture
-            //             time: ... time since start
-            //             weight: ... aka displacement weight - how strong is the displacement
-            //             freqScale: ... frequency of the noise f < 0 = only low frequency noise, f > 0 more and more high frequency noise 
-            //                            comes on
-            //             colorScale: ... rescales the access positioning into the explosion textures (high value = lighter color, low value = darker color)
-            //         },
-            //         vertexShader: Shaders.getVertexShader("explosion"),
-            //         fragmentShader: Shaders.getFragmentShader("explosion")
-            //     } );
+           /* var material = new THREE.MeshBasicMaterial();*/
+            scope.mesh = new THREE.Mesh( new THREE.SphereGeometry( 300,100, 100 ), this.material );
 
-
-            scope.mesh = new THREE.Mesh( new THREE.SphereGeometry( 300, 50, 50 ), material );
             scope.mesh.name = "explosion";
             scope.root.add(scope.mesh);
 
@@ -46,6 +46,9 @@ define(["jquery", "three", "shaders"],
             this.getMesh = function() {
                 return this.root;
             };
+            this.getMaterial = function(){
+                return this.material;
+            }
 
 
         }; // constructor

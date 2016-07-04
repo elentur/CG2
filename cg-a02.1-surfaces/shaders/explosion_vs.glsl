@@ -3,12 +3,12 @@
 //varying 
 //varying 
 
+varying float noise;
+varying vec2 vUV;
 
 uniform float time;
 uniform float weight;
 uniform float freqScale;
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 //            Perlin Noise
@@ -160,10 +160,11 @@ void main() {
     // transform the output correctly
 
     // assign varying variables for vertex shader
-    // 
+    //
+    vUV = uv;
 
-
-    // vec3 displacedPosition = ...
-    // gl_Position = ...
+    noise = noise3D(normal * freqScale + time) * (-weight);
+    vec3 displacedPosition = position +  normal *noise;
+    gl_Position =  projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
 
 }

@@ -2,9 +2,11 @@
 uniform sampler2D explosionTex;
 uniform float colorScale;
 
-//varying 
-//varying 
+varying vec2 vUv;
+varying float noise;
 
+//varying 
+//varying
 
 void main() {
 
@@ -19,8 +21,8 @@ void main() {
     // a small noise value should access a dark value in the texture
     // a high noise value should return a light value
 
-
-    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    vec2 tPos =vec2(0, 1.0 - colorScale * noise);
+    gl_FragColor = vec4( texture2D( explosionTex, tPos ) );
 
 }
 	

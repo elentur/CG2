@@ -30,6 +30,8 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.torsoSize = [0, 0, 0];
                 scope.t = 0.0;
                 scope.soundBuffer =[];
+                scope.start = Date.now();
+                scope.explosion = undefined;
 
 
 
@@ -130,6 +132,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh = bufferGeometry.getMesh();
                     scope.scene.add(scope.currentMesh);
                     scope.animationTimer = 0;
+                    scope.explosion =undefined;
 
                 };
                 this.add = function (mesh) {
@@ -137,12 +140,16 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh = mesh;
                     scope.scene.add(scope.currentMesh);
                     scope.animationTimer = 0;
+                    scope.explosion =undefined;
                 };
 
                 /*
                  * drawing the scene
                  */
                 this.draw = function () {
+                    if(scope.explosion != undefined){
+                        scope.explosion.uniforms['time'].value = .00015 * ( Date.now()-scope.start);
+                    }
 
                     requestAnimFrame(scope.draw);
 

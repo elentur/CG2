@@ -33,6 +33,7 @@ requirejs.config({
         "shaders" : "./shaders",
         "material" : "./scene/material",
         "OBJLoader" : "./loaders/OBJLoader",
+        "explosion" : "./models/explosion",
         "myObject" : "./models/myObject",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"

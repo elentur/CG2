@@ -12,9 +12,9 @@
 
 /* requireJS module definition */
 define(["jquery", "BufferGeometry", "vec2", "random",
-    "band", "ellipsoid", "torus", "helicoid", "myObject","material", "robot"],
+    "band", "ellipsoid", "torus", "helicoid", "myObject","material", "robot","explosion"],
     (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid,
-               Torus, Helicoid, MyObject,Material, Robot) {
+               Torus, Helicoid, MyObject,Material, Robot, Explosion) {
         "use strict";
 
         /*
@@ -33,9 +33,9 @@ define(["jquery", "BufferGeometry", "vec2", "random",
 
                 var title = $(this).attr('title')
                 $("#" + title).show();
-               // if (title == "ellipsoid" || title == "torus"|| title == "random"|| title == "band") {
+                if (title != "explosion" && title != "robot") {
                     $("#apendix").show();
-                //}
+                }
 
             }));
             var getType = function () {
@@ -271,6 +271,22 @@ define(["jquery", "BufferGeometry", "vec2", "random",
 
 
                 scene.add(myObject.getMesh());
+
+
+            }));
+
+            $("#btnNewExplosion").click((function () {
+                var config = {
+                    weight: parseFloat($("#weight").attr("value")),
+                    freqScale: parseFloat($("#frequencyScale").attr("value")),
+                    colorScale: parseFloat($("#colorScale").attr("value"))
+                };
+                var myObject = new Explosion(scene,config);
+
+
+                scene.add(myObject.getMesh());
+                console.log(myObject.getMaterial());
+                scene.explosion = myObject.getMaterial();
 
 
             }));

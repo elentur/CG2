@@ -45,6 +45,8 @@
         <button id="btnObjectLoader" title="objectLoader" type="button">Object Loader</button>
         <button id="btnRobot" title="robot" type="button">Robot</button>
 
+        <button id="btnExplosion" title="explosion" type="button">Explosion</button>
+
         <!-- add more here... -->
         <h3>Selected Object:</h3>
         <table id="cube" class="options">
@@ -344,6 +346,27 @@
             <tr>
                 <td>
                     <button id="btnNewObject" type="button">calculate p3 and p4</button>
+                </td>
+            </tr>
+        </table>
+        <table id="explosion" class="options">
+            <tr>
+                <td>Frequency Scale:</td>
+                <td><input id="frequencyScale" class="objParam" type="number" min="1" max="10000" value=0.5>
+            </tr>
+            <tr>
+                <td>Color Scale:</td>
+                <td><input id="colorScale" class="objParam" type="number" min="1" max="10000" value=0.015>
+            </tr>
+            <tr>
+                <td>Weight:</td>
+                <td><input id="weight" class="objParam" type="number" min="1" max="10000" value=200>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <button id="btnNewExplosion" type="button">Create Explosion</button>
                 </td>
             </tr>
         </table>
