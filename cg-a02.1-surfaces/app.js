@@ -19,7 +19,7 @@ requirejs.config({
             //If the load via CDN fails, load locally
             '../lib/jquery-1.7.2.min'],
 
-        "three" : "../lib/three.min",
+        "three" : "../lib/three",
 
         "scene" : "./scene/scene",
         "random" : "./models/random",
@@ -28,6 +28,8 @@ requirejs.config({
         "torus" : "./models/torus",
         "robot" : "./models/robot",
         "helicoid" : "./models/helicoid",
+        "phongSphere" : "models/phongSphere",
+        "planet" : "models/planet",
         "util"  : "./utils/util",
         "vec2" : "./math/vec2",
         "shaders" : "./shaders",

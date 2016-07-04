@@ -12,9 +12,9 @@
 
 /* requireJS module definition */
 define(["jquery", "BufferGeometry", "vec2", "random",
-    "band", "ellipsoid", "torus", "helicoid", "myObject","material", "robot","explosion"],
+    "band", "ellipsoid", "torus", "helicoid", "myObject","material", "robot","explosion", "phongSphere", "planet"],
     (function ($, BufferGeometry, Vec2, Random, Band, Ellipsoid,
-               Torus, Helicoid, MyObject,Material, Robot, Explosion) {
+               Torus, Helicoid, MyObject,Material, Robot, Explosion, PhongSphere, Planet) {
         "use strict";
 
         /*
@@ -178,6 +178,23 @@ define(["jquery", "BufferGeometry", "vec2", "random",
                 scene.add(robot.getMesh());
 
                 scene.animate = true;
+            }));
+
+
+            $("#btnNewPhong").click((function () {
+                console.log("new Phong");
+
+                var phongSphere = new PhongSphere(scene);
+                scene.add(phongSphere.getMesh());
+
+            }));
+
+            $("#btnNewPlanet").click((function () {
+                console.log("new Planet");
+
+                var planet = new Planet(scene);
+                scene.add(planet.getMesh());
+
             }));
 
 
